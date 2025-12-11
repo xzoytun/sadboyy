@@ -165,24 +165,23 @@
             }
         }
 
-        .volume-control {
+        .audio-player {
             position: fixed;
-            bottom: 90px;
-            right: 30px;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
             border: 2px solid rgba(255, 255, 255, 0.2);
             border-radius: 20px;
-            padding: 10px 20px;
+            padding: 15px 25px;
             color: white;
             z-index: 100;
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
 
-        .volume-slider {
-            width: 100px;
+        .audio-player audio {
+            width: 300px;
+            height: 40px;
         }
     </style>
 </head>
@@ -194,12 +193,15 @@
         <div class="text">Sometimes Love Hurts</div>
     </div>
 
-    <div class="volume-control">
-        🔊 <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="50">
-    </div>
     <button class="music-control" id="musicBtn" onclick="toggleMusic()">🎵 Play Music</button>
+    
+    <div class="audio-player">
+        <audio id="bgMusic" loop controls>
+            <source src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/examples/audio/berklee/gong_1.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+    </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
     <script>
         // Create particles
         const particlesContainer = document.getElementById('particles');
@@ -225,92 +227,40 @@
             setTimeout(() => brokenHeart.remove(), 5000);
         }, 800);
 
-        // Music with Tone.js
+        // Music control
+        const audio = document.getElementById('bgMusic');
+        const btn = document.getElementById('musicBtn');
         let isPlaying = false;
-        let synth, bass, loop;
 
-        async function initMusic() {
-            await Tone.start();
-            
-            // Main synth with reverb
-            const reverb = new Tone.Reverb(4).toDestination();
-            synth = new Tone.PolySynth(Tone.Synth, {
-                oscillator: {
-                    type: 'sine'
-                },
-                envelope: {
-                    attack: 0.8,
-                    decay: 0.3,
-                    sustain: 0.4,
-                    release: 2
-                }
-            }).connect(reverb);
-            
-            // Bass synth
-            bass = new Tone.Synth({
-                oscillator: {
-                    type: 'triangle'
-                },
-                envelope: {
-                    attack: 0.3,
-                    decay: 0.3,
-                    sustain: 0.5,
-                    release: 1
-                }
-            }).toDestination();
-            
-            synth.volume.value = -8;
-            bass.volume.value = -15;
-            
-            // Sad melody in minor key
-            const melody = [
-                ['A4', 'C5', 'E5'], ['G4', 'B4', 'D5'], 
-                ['F4', 'A4', 'C5'], ['E4', 'G4', 'B4'],
-                ['A4', 'C5', 'E5'], ['F4', 'A4', 'C5'],
-                ['G4', 'B4', 'D5'], ['E4', 'G4', 'B4']
-            ];
-            
-            const bassLine = ['A2', 'G2', 'F2', 'E2', 'A2', 'F2', 'G2', 'E2'];
-            
-            let index = 0;
-            
-            loop = new Tone.Loop((time) => {
-                const chordIndex = index % melody.length;
-                synth.triggerAttackRelease(melody[chordIndex], '1n', time);
-                bass.triggerAttackRelease(bassLine[chordIndex], '1n', time);
-                index++;
-            }, '1n');
-            
-            Tone.Transport.bpm.value = 60;
-        }
-
-        async function toggleMusic() {
-            const btn = document.getElementById('musicBtn');
-            
+        function toggleMusic() {
             if (!isPlaying) {
-                if (!synth) {
-                    await initMusic();
-                }
-                Tone.Transport.start();
-                loop.start(0);
-                isPlaying = true;
-                btn.textContent = '⏸️ Pause Music';
+                audio.play().then(() => {
+                    isPlaying = true;
+                    btn.textContent = '⏸️ Pause Music';
+                }).catch(error => {
+                    console.log('Play failed:', error);
+                    alert('Klik tombol play pada audio player di bawah untuk memutar musik');
+                });
             } else {
-                Tone.Transport.pause();
+                audio.pause();
                 isPlaying = false;
                 btn.textContent = '🎵 Play Music';
             }
         }
 
-        // Volume control
-        const volumeSlider = document.getElementById('volumeSlider');
-        volumeSlider.addEventListener('input', (e) => {
-            const volume = (e.target.value - 50) / 2; // Convert 0-100 to -25 to +25 dB
-            if (synth) {
-                synth.volume.value = volume - 8;
-                bass.volume.value = volume - 15;
-            }
+        // Sync button with audio player
+        audio.addEventListener('play', () => {
+            isPlaying = true;
+            btn.textContent = '⏸️ Pause Music';
         });
+
+        audio.addEventListener('pause', () => {
+            isPlaying = false;
+            btn.textContent = '🎵 Play Music';
+        });
+
+        // Set default volume
+        audio.volume = 0.5;
     </script>
 </body>
 </html>
