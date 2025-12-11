@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Galaksi Animasi Keren (All-in-One)</title>
+    <title>Galaksi Animasi Murni</title>
     
     <style>
         body {
@@ -18,31 +18,6 @@
             perspective: 1000px; /* Untuk efek 3D ringan */
         }
 
-        /* Style untuk konten di tengah */
-        .content {
-            position: relative; 
-            z-index: 10;
-            color: #FFFFFF;
-            text-align: center;
-            padding: 30px 40px;
-            background: rgba(255, 255, 255, 0.1); /* Latar belakang transparan */
-            backdrop-filter: blur(5px); /* Efek buram modern */
-            border-radius: 15px;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
-            animation: fadeIn 2s ease-out;
-        }
-
-        h1 {
-            font-size: 3.5em;
-            text-shadow: 0 0 15px #FFD700; /* Warna emas */
-            margin-bottom: 5px;
-        }
-
-        p {
-            font-size: 1.3em;
-            color: #ADD8E6; /* Biru muda */
-        }
-
         /* Kontainer Bintang */
         #stars-container {
             position: absolute;
@@ -52,10 +27,36 @@
             height: 100%;
         }
 
-        /* Animasi fade-in untuk konten */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-50px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* ----- BULAN ----- */
+        #moon {
+            position: absolute;
+            width: 150px; /* Ukuran bulan */
+            height: 150px;
+            background: radial-gradient(circle at 30% 30%, #f0f0f0, #c0c0c0); /* Gradasi untuk tekstur */
+            border-radius: 50%;
+            box-shadow: 0 0 40px rgba(255, 255, 255, 0.6), /* Cahaya luar */
+                        inset 10px 10px 20px rgba(0, 0, 0, 0.3); /* Kedalaman */
+            z-index: 5; /* Bulan di atas bintang */
+            animation: 
+                moonGlow 5s infinite alternate ease-in-out, /* Animasi cahaya berdenyut */
+                moonDrift 60s linear infinite alternate; /* Animasi pergerakan lambat */
+            
+            /* Posisi awal bulan agar di tengah layar */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); 
+        }
+
+        @keyframes moonGlow {
+            0% { box-shadow: 0 0 30px rgba(255, 255, 255, 0.4), inset 10px 10px 20px rgba(0, 0, 0, 0.3); }
+            50% { box-shadow: 0 0 50px rgba(255, 255, 255, 0.8), inset 10px 10px 20px rgba(0, 0, 0, 0.3); }
+            100% { box-shadow: 0 0 30px rgba(255, 255, 255, 0.4), inset 10px 10px 20px rgba(0, 0, 0, 0.3); }
+        }
+
+        @keyframes moonDrift {
+            0% { transform: translate(-50%, -50%) translate(-50px, 20px) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) translate(50px, -20px) rotate(360deg); } 
+            /* Perubahan: Menjaga bulan tetap di tengah saat drifting */
         }
 
         /* Animasi untuk bintang berkedip (twinkle) */
@@ -84,16 +85,12 @@
 <body>
 
     <div id="stars-container"></div>
-
-    <div class="content">
-        <h1>🌌 GALAKSI DIGITAL 🌠</h1>
-        <p>Animasi Latar Belakang Keren dengan Pure Web Tech.</p>
-    </div>
-
+    <div id="moon"></div> 
+    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const container = document.getElementById('stars-container');
-            const numberOfStars = 200; // Meningkatkan jumlah bintang
+            const numberOfStars = 200; 
 
             for (let i = 0; i < numberOfStars; i++) {
                 const star = document.createElement('div');
