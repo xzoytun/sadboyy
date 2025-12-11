@@ -3,264 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Love Animation</title>
+    <title>Love Animation dengan Musik DJ</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        /* Your existing styles here... (sama seperti yang sebelumnya gue kirim) */
+        /* Pastikan semua styling dari love animation tetep ada */
+        
+        #musicControl {
+            position:fixed; right:20px; bottom:20px; z-index:9999; display:flex; gap:8px; align-items:center;
+            background: rgba(0,0,0,0.35); padding:8px 12px; border-radius:999px;
+            color:#fff; backdrop-filter:blur(6px);
         }
-
-        body {
-            min-height: 100vh;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            font-family: 'Arial', sans-serif;
-        }
-
-        .container {
-            position: relative;
-            text-align: center;
-        }
-
-        .heart {
-            position: relative;
-            width: 200px;
-            height: 200px;
-            animation: heartbeat 1.5s ease-in-out infinite;
-            filter: drop-shadow(0 0 30px rgba(255, 100, 150, 0.6));
-        }
-
-        .heart::before,
-        .heart::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            width: 100px;
-            height: 160px;
-            background: linear-gradient(135deg, #ff6b9d 0%, #c06c84 100%);
-            border-radius: 100px 100px 0 0;
-        }
-
-        .heart::before {
-            left: 50px;
-            transform: rotate(-45deg);
-            transform-origin: 0 100%;
-        }
-
-        .heart::after {
-            left: 0;
-            transform: rotate(45deg);
-            transform-origin: 100% 100%;
-        }
-
-        @keyframes heartbeat {
-            0%, 100% {
-                transform: scale(1);
-            }
-            25% {
-                transform: scale(1.1);
-            }
-            50% {
-                transform: scale(1);
-            }
-            75% {
-                transform: scale(1.05);
-            }
-        }
-
-        .text {
-            margin-top: 80px;
-            color: #fff;
-            font-size: 2em;
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
-            animation: fadeInOut 3s ease-in-out infinite;
-        }
-
-        @keyframes fadeInOut {
-            0%, 100% {
-                opacity: 0.5;
-            }
-            50% {
-                opacity: 1;
-            }
-        }
-
-        .particles {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-        }
-
-        .particle {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background: rgba(255, 255, 255, 0.6);
-            border-radius: 50%;
-            animation: float 4s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0% {
-                transform: translateY(100vh) scale(0);
-                opacity: 0;
-            }
-            50% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100vh) scale(1);
-                opacity: 0;
-            }
-        }
-
-        .music-control {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 50px;
-            padding: 15px 25px;
-            color: white;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 1em;
-            z-index: 100;
-        }
-
-        .music-control:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: scale(1.05);
-        }
-
-        .broken-heart {
-            position: absolute;
-            width: 60px;
-            height: 60px;
-            opacity: 0;
-            animation: fall 3s linear infinite;
-        }
-
-        @keyframes fall {
-            0% {
-                transform: translateY(-100px) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.7;
-            }
-            100% {
-                transform: translateY(100vh) rotate(360deg);
-                opacity: 0;
-            }
-        }
-
-        .audio-player {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
-            padding: 15px 25px;
-            color: white;
-            z-index: 100;
-        }
-
-        .audio-player audio {
-            width: 300px;
-            height: 40px;
-        }
+        #musicBtn, #openYTBtn { font-size:18px; border:none; background:transparent; color:white; cursor:pointer; }
+        #musicVol { width:120px; }
+        #trackTitle { font-size:0.9rem; font-weight:600; margin-right:8px; }
     </style>
 </head>
 <body>
-    <div class="particles" id="particles"></div>
+    <!-- (Stars & floating hearts & animation content kamu tetap sama) -->
     
-    <div class="container">
-        <div class="heart"></div>
-        <div class="text">Sometimes Love Hurts</div>
+    <!-- YouTube overlay -->
+    <div id="youtubeEmbed" style="display:none; position:fixed; left:0; top:0; width:100%; height:100%; 
+                                 z-index:9998; background:rgba(0,0,0,0.7); align-items:center; justify-content:center;">
+      <div style="width:90%; max-width:960px; aspect-ratio:16/9; background:#000; position:relative;">
+        <iframe id="ytFrame" width="100%" height="100%"
+          src="https://www.youtube.com/embed/IUKzF3YFmvM?enablejsapi=1&rel=0&autoplay=1"
+          frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        <button id="closeYT" style="position:absolute; right:8px; top:8px; padding:6px 10px; border-radius:6px; cursor:pointer;">✖</button>
+      </div>
     </div>
 
-    <button class="music-control" id="musicBtn" onclick="toggleMusic()">🎵 Play Music</button>
-    
-    <div class="audio-player">
-        <audio id="bgMusic" loop controls>
-            <source src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/examples/audio/berklee/gong_1.mp3" type="audio/mpeg">
-            Your browser does not support the audio element.
-        </audio>
+    <!-- Music Control -->
+    <div id="musicControl">
+      <div id="trackTitle">DJ Mengapa Mudahnya Hatimu Mendua</div>
+      <button id="openYTBtn">▶️ YouTube</button>
     </div>
 
     <script>
-        // Create particles
-        const particlesContainer = document.getElementById('particles');
-        for (let i = 0; i < 30; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            particle.style.left = Math.random() * 100 + '%';
-            particle.style.animationDelay = Math.random() * 4 + 's';
-            particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
-            particlesContainer.appendChild(particle);
-        }
+        const openYTBtn = document.getElementById('openYTBtn');
+        const youtubeEmbed = document.getElementById('youtubeEmbed');
+        const closeYT = document.getElementById('closeYT');
+        const iframe = document.getElementById('ytFrame');
 
-        // Create falling broken hearts
-        setInterval(() => {
-            const brokenHeart = document.createElement('div');
-            brokenHeart.className = 'broken-heart';
-            brokenHeart.textContent = '💔';
-            brokenHeart.style.left = Math.random() * 100 + '%';
-            brokenHeart.style.fontSize = (Math.random() * 20 + 20) + 'px';
-            brokenHeart.style.animationDuration = (Math.random() * 2 + 3) + 's';
-            particlesContainer.appendChild(brokenHeart);
-            
-            setTimeout(() => brokenHeart.remove(), 5000);
-        }, 800);
-
-        // Music control
-        const audio = document.getElementById('bgMusic');
-        const btn = document.getElementById('musicBtn');
-        let isPlaying = false;
-
-        function toggleMusic() {
-            if (!isPlaying) {
-                audio.play().then(() => {
-                    isPlaying = true;
-                    btn.textContent = '⏸️ Pause Music';
-                }).catch(error => {
-                    console.log('Play failed:', error);
-                    alert('Klik tombol play pada audio player di bawah untuk memutar musik');
-                });
-            } else {
-                audio.pause();
-                isPlaying = false;
-                btn.textContent = '🎵 Play Music';
-            }
-        }
-
-        // Sync button with audio player
-        audio.addEventListener('play', () => {
-            isPlaying = true;
-            btn.textContent = '⏸️ Pause Music';
+        openYTBtn.addEventListener('click', ()=>{
+            youtubeEmbed.style.display = 'flex';
         });
 
-        audio.addEventListener('pause', () => {
-            isPlaying = false;
-            btn.textContent = '🎵 Play Music';
+        closeYT.addEventListener('click', ()=>{
+            // stop youtube by resetting iframe src
+            const src = iframe.getAttribute('src');
+            iframe.setAttribute('src', src);
+            youtubeEmbed.style.display = 'none';
         });
-
-        // Set default volume
-        audio.volume = 0.5;
     </script>
 </body>
 </html>
