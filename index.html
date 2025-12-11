@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Galaksi Animasi Murni</title>
+    <title>Galaksi Penuh Aksi!</title>
     
     <style>
         body {
@@ -25,6 +25,7 @@
             left: 0;
             width: 100%;
             height: 100%;
+            z-index: 0; /* Paling belakang */
         }
 
         /* ----- BULAN ----- */
@@ -41,10 +42,9 @@
                 moonGlow 5s infinite alternate ease-in-out, /* Animasi cahaya berdenyut */
                 moonDrift 60s linear infinite alternate; /* Animasi pergerakan lambat */
             
-            /* Posisi awal bulan agar di tengah layar */
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%); 
+            transform: translate(-50%, -50%); /* Memastikan bulan di tengah */
         }
 
         @keyframes moonGlow {
@@ -56,8 +56,76 @@
         @keyframes moonDrift {
             0% { transform: translate(-50%, -50%) translate(-50px, 20px) rotate(0deg); }
             100% { transform: translate(-50%, -50%) translate(50px, -20px) rotate(360deg); } 
-            /* Perubahan: Menjaga bulan tetap di tengah saat drifting */
         }
+
+        /* ----- CINCIN PLANET ----- */
+        #planet-rings {
+            position: absolute;
+            width: 250px; /* Ukuran cincin lebih besar dari bulan */
+            height: 25px; /* Ketebalan cincin */
+            background: linear-gradient(to right, rgba(200, 200, 255, 0.2), rgba(150, 150, 200, 0.5), rgba(200, 200, 255, 0.2));
+            border-radius: 50%;
+            z-index: 4; /* Di bawah bulan, di atas bintang */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotateX(70deg) rotateY(0deg); /* Memberikan perspektif 3D */
+            box-shadow: 0 0 20px rgba(150, 150, 255, 0.4);
+            animation: ringRotate 90s linear infinite; /* Cincin berputar lambat */
+        }
+
+        @keyframes ringRotate {
+            0% { transform: translate(-50%, -50%) rotateX(70deg) rotateY(0deg); }
+            100% { transform: translate(-50%, -50%) rotateX(70deg) rotateY(360deg); }
+        }
+
+        /* ----- KOMET ----- */
+        .comet {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #FFFFFF;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #FFFFFF, 0 0 20px rgba(255, 255, 255, 0.8);
+            z-index: 6; /* Di atas bulan dan cincin */
+            animation: cometPass 15s linear infinite; /* Animasi komet melintas */
+            opacity: 0; /* Sembunyikan komet di awal */
+        }
+
+        /* Ekor komet */
+        .comet::after {
+            content: '';
+            position: absolute;
+            width: 20px; /* Panjang ekor */
+            height: 2px;
+            background: linear-gradient(to left, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.8));
+            border-radius: 50%;
+            transform: translateX(2px); /* Posisikan ekor di belakang kepala komet */
+            top: 0;
+            left: 0;
+        }
+
+        @keyframes cometPass {
+            0% { 
+                transform: translate(-100vw, 50vh) scale(0.5); 
+                opacity: 0; 
+            }
+            1% { 
+                opacity: 1; /* Muncul perlahan */
+            }
+            50% { 
+                transform: translate(100vw, -50vh) scale(1); 
+                opacity: 1; 
+            }
+            99% {
+                opacity: 0; /* Menghilang perlahan */
+            }
+            100% { 
+                transform: translate(200vw, -100vh) scale(0.5); 
+                opacity: 0; 
+                display: none; /* Pastikan benar-benar hilang sebelum mengulang */
+            }
+        }
+
 
         /* Animasi untuk bintang berkedip (twinkle) */
         @keyframes twinkle {
@@ -85,39 +153,62 @@
 <body>
 
     <div id="stars-container"></div>
+    <div id="planet-rings"></div> 
     <div id="moon"></div> 
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const container = document.getElementById('stars-container');
+            const starsContainer = document.getElementById('stars-container');
             const numberOfStars = 200; 
 
+            // Membuat Bintang
             for (let i = 0; i < numberOfStars; i++) {
                 const star = document.createElement('div');
                 star.classList.add('star');
 
-                // Posisi Acak
                 star.style.left = Math.random() * 100 + 'vw';
                 star.style.top = Math.random() * 100 + 'vh';
 
-                // Ukuran Acak (1px hingga 4px)
                 const size = Math.random() * 3 + 1;
                 star.style.width = size + 'px';
                 star.style.height = size + 'px';
 
-                // Durasi dan Delay Animasi Kedip Acak
-                const twinkleDuration = Math.random() * 3 + 2; // Durasi 2s hingga 5s
-                const twinkleDelay = Math.random() * 5; // Delay hingga 5s
-                
-                // Durasi Animasi Bergerak Acak
-                const driftDuration = Math.random() * 100 + 80; // Durasi 80s hingga 180s
+                const twinkleDuration = Math.random() * 3 + 2; 
+                const twinkleDelay = Math.random() * 5; 
+                const driftDuration = Math.random() * 100 + 80; 
 
-                // Terapkan semua properti animasi
                 star.style.animation = 
                     `twinkle ${twinkleDuration}s infinite alternate ease-in-out ${twinkleDelay}s, 
                      drift ${driftDuration}s linear infinite alternate`;
 
-                container.appendChild(star);
+                starsContainer.appendChild(star);
+            }
+
+            // Membuat Komet
+            const createComet = () => {
+                const comet = document.createElement('div');
+                comet.classList.add('comet');
+                
+                // Posisi awal acak di tepi kiri atau kanan
+                const startX = Math.random() < 0.5 ? -20 : 120; // Mulai dari -20vw atau 120vw
+                const startY = Math.random() * 100; // Posisi Y acak
+                const endX = startX === -20 ? 120 : -20; // Berakhir di sisi berlawanan
+                const endY = Math.random() * 100; // Posisi Y akhir acak
+
+                comet.style.left = startX + 'vw';
+                comet.style.top = startY + 'vh';
+                
+                // Variasi durasi dan delay untuk membuat komet muncul tidak bersamaan
+                const animationDuration = Math.random() * 10 + 15; // 15s hingga 25s
+                const animationDelay = Math.random() * 10; // Delay hingga 10s
+
+                comet.style.animation = `cometPass ${animationDuration}s linear infinite ${animationDelay}s`;
+                starsContainer.appendChild(comet); // Tambahkan komet ke stars-container
+            };
+
+            // Buat beberapa komet (misal 3 komet)
+            for (let i = 0; i < 3; i++) {
+                createComet();
             }
         });
     </script>
