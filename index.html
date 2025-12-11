@@ -3,57 +3,526 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Love Animation dengan Musik DJ</title>
+    <title>Love Animation with Music</title>
     <style>
-        /* Your existing styles here... (sama seperti yang sebelumnya gue kirim) */
-        /* Pastikan semua styling dari love animation tetep ada */
-        
-        #musicControl {
-            position:fixed; right:20px; bottom:20px; z-index:9999; display:flex; gap:8px; align-items:center;
-            background: rgba(0,0,0,0.35); padding:8px 12px; border-radius:999px;
-            color:#fff; backdrop-filter:blur(6px);
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        #musicBtn, #openYTBtn { font-size:18px; border:none; background:transparent; color:white; cursor:pointer; }
-        #musicVol { width:120px; }
-        #trackTitle { font-size:0.9rem; font-weight:600; margin-right:8px; }
+
+        body {
+            min-height: 100vh;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            font-family: 'Arial Black', sans-serif;
+            position: relative;
+        }
+
+        .bg-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            animation: bgShift 10s ease-in-out infinite;
+            opacity: 0.8;
+        }
+
+        @keyframes bgShift {
+            0%, 100% {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            }
+            50% {
+                background: linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #667eea 100%);
+            }
+        }
+
+        .particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 60px;
+        }
+
+        .heart-container {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            perspective: 1000px;
+        }
+
+        .heart-3d {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 250px;
+            height: 250px;
+            animation: float3d 4s ease-in-out infinite;
+            transform-style: preserve-3d;
+        }
+
+        @keyframes float3d {
+            0%, 100% {
+                transform: translate(-50%, -50%) rotateY(0deg) scale(1);
+            }
+            25% {
+                transform: translate(-50%, -45%) rotateY(90deg) scale(1.1);
+            }
+            50% {
+                transform: translate(-50%, -50%) rotateY(180deg) scale(1);
+            }
+            75% {
+                transform: translate(-50%, -45%) rotateY(270deg) scale(1.1);
+            }
+        }
+
+        .main-heart {
+            position: relative;
+            width: 250px;
+            height: 250px;
+            animation: heartbeat 1.2s ease-in-out infinite;
+            filter: drop-shadow(0 0 50px rgba(255, 20, 147, 1))
+                    drop-shadow(0 0 100px rgba(255, 105, 180, 0.8));
+        }
+
+        .main-heart::before,
+        .main-heart::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            width: 125px;
+            height: 200px;
+            background: linear-gradient(135deg, #ff1493 0%, #ff69b4 50%, #ff8fab 100%);
+            border-radius: 125px 125px 0 0;
+        }
+
+        .main-heart::before {
+            left: 62.5px;
+            transform: rotate(-45deg);
+            transform-origin: 0 100%;
+        }
+
+        .main-heart::after {
+            left: 0;
+            transform: rotate(45deg);
+            transform-origin: 100% 100%;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            14% { transform: scale(1.25); }
+            28% { transform: scale(1); }
+            42% { transform: scale(1.25); }
+            70% { transform: scale(1); }
+        }
+
+        .energy-ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 4px solid;
+            border-radius: 50%;
+            animation: energyExpand 2s ease-out infinite;
+        }
+
+        .energy-ring:nth-child(1) {
+            border-color: rgba(255, 20, 147, 0.8);
+            animation-delay: 0s;
+        }
+
+        .energy-ring:nth-child(2) {
+            border-color: rgba(255, 105, 180, 0.8);
+            animation-delay: 0.4s;
+        }
+
+        .energy-ring:nth-child(3) {
+            border-color: rgba(255, 182, 193, 0.8);
+            animation-delay: 0.8s;
+        }
+
+        .energy-ring:nth-child(4) {
+            border-color: rgba(186, 85, 211, 0.8);
+            animation-delay: 1.2s;
+        }
+
+        .energy-ring:nth-child(5) {
+            border-color: rgba(138, 43, 226, 0.8);
+            animation-delay: 1.6s;
+        }
+
+        @keyframes energyExpand {
+            0% {
+                width: 250px;
+                height: 250px;
+                opacity: 1;
+            }
+            100% {
+                width: 600px;
+                height: 600px;
+                opacity: 0;
+            }
+        }
+
+        .text-container {
+            text-align: center;
+            z-index: 10;
+        }
+
+        .main-text {
+            font-size: 5em;
+            font-weight: 900;
+            background: linear-gradient(45deg, #ff1493, #ff69b4, #ffc0cb, #ff69b4, #ff1493);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientFlow 3s ease infinite, textPulse 1.2s ease-in-out infinite;
+            letter-spacing: 10px;
+            text-shadow: 0 0 30px rgba(255, 20, 147, 0.5);
+            filter: drop-shadow(0 0 20px rgba(255, 105, 180, 0.8));
+        }
+
+        @keyframes gradientFlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes textPulse {
+            0%, 100% { transform: scale(1); }
+            14% { transform: scale(1.15); }
+            28% { transform: scale(1); }
+            42% { transform: scale(1.15); }
+            70% { transform: scale(1); }
+        }
+
+        .sub-text {
+            font-size: 2em;
+            color: #fff;
+            margin-top: 20px;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.8),
+                         0 0 40px rgba(255, 105, 180, 0.6);
+            animation: fadeInOut 3s ease-in-out infinite;
+            letter-spacing: 5px;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        .music-player {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 105, 180, 0.5);
+            border-radius: 20px;
+            padding: 20px;
+            z-index: 100;
+            box-shadow: 0 0 40px rgba(255, 20, 147, 0.6);
+        }
+
+        .player-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: white;
+        }
+
+        .control-btn {
+            background: linear-gradient(135deg, #ff1493, #ff69b4);
+            border: none;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5em;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(255, 20, 147, 0.6);
+        }
+
+        .control-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px rgba(255, 20, 147, 1);
+        }
+
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .volume-slider {
+            width: 100px;
+            accent-color: #ff1493;
+        }
+
+        #youtubePlayer {
+            display: none;
+        }
+
+        .floating-heart {
+            position: absolute;
+            font-size: 40px;
+            animation: floatHeart 8s ease-in infinite;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        @keyframes floatHeart {
+            0% {
+                transform: translateY(0) rotate(0deg) scale(0.5);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(720deg) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        .light-ray {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            background: radial-gradient(circle at 50% 50%, 
+                        rgba(255, 20, 147, 0.2) 0%, 
+                        transparent 70%);
+            animation: rayPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes rayPulse {
+            0%, 100% {
+                opacity: 0.3;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.6;
+                transform: scale(1.1);
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- (Stars & floating hearts & animation content kamu tetap sama) -->
-    
-    <!-- YouTube overlay -->
-    <div id="youtubeEmbed" style="display:none; position:fixed; left:0; top:0; width:100%; height:100%; 
-                                 z-index:9998; background:rgba(0,0,0,0.7); align-items:center; justify-content:center;">
-      <div style="width:90%; max-width:960px; aspect-ratio:16/9; background:#000; position:relative;">
-        <iframe id="ytFrame" width="100%" height="100%"
-          src="https://www.youtube.com/embed/IUKzF3YFmvM?enablejsapi=1&rel=0&autoplay=1"
-          frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-        <button id="closeYT" style="position:absolute; right:8px; top:8px; padding:6px 10px; border-radius:6px; cursor:pointer;">✖</button>
-      </div>
+    <div class="bg-gradient"></div>
+    <div class="light-ray"></div>
+    <canvas class="particles-canvas" id="particlesCanvas"></canvas>
+
+    <div class="container">
+        <div class="heart-container">
+            <div class="energy-ring"></div>
+            <div class="energy-ring"></div>
+            <div class="energy-ring"></div>
+            <div class="energy-ring"></div>
+            <div class="energy-ring"></div>
+            <div class="heart-3d">
+                <div class="main-heart"></div>
+            </div>
+        </div>
+
+        <div class="text-container">
+            <div class="main-text">LOVE</div>
+            <div class="sub-text">Forever & Always</div>
+        </div>
     </div>
 
-    <!-- Music Control -->
-    <div id="musicControl">
-      <div id="trackTitle">DJ Mengapa Mudahnya Hatimu Mendua</div>
-      <button id="openYTBtn">▶️ YouTube</button>
+    <div class="music-player">
+        <div class="player-controls">
+            <button class="control-btn" id="playBtn" onclick="togglePlay()">▶️</button>
+            <div class="volume-control">
+                <span>🔊</span>
+                <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="50">
+            </div>
+        </div>
     </div>
+
+    <iframe id="youtubePlayer" width="0" height="0" 
+            src="https://www.youtube.com/embed/IUKzF3YFmvM?enablejsapi=1&autoplay=0&loop=1&playlist=IUKzF3YFmvM" 
+            frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen>
+    </iframe>
 
     <script>
-        const openYTBtn = document.getElementById('openYTBtn');
-        const youtubeEmbed = document.getElementById('youtubeEmbed');
-        const closeYT = document.getElementById('closeYT');
-        const iframe = document.getElementById('ytFrame');
+        // Canvas particles
+        const canvas = document.getElementById('particlesCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
-        openYTBtn.addEventListener('click', ()=>{
-            youtubeEmbed.style.display = 'flex';
+        const particles = [];
+        const particleCount = 100;
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = Math.random() * 2 - 1;
+                this.speedY = Math.random() * 2 - 1;
+                this.color = `rgba(255, ${Math.random() * 100 + 100}, ${Math.random() * 100 + 180}, ${Math.random() * 0.5 + 0.3})`;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+
+            // Draw connections
+            particles.forEach((p1, i) => {
+                particles.slice(i + 1).forEach(p2 => {
+                    const dx = p1.x - p2.x;
+                    const dy = p1.y - p2.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 150) {
+                        ctx.strokeStyle = `rgba(255, 105, 180, ${0.3 - distance / 500})`;
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(p1.x, p1.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.stroke();
+                    }
+                });
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+
+        // Floating hearts
+        setInterval(() => {
+            const heart = document.createElement('div');
+            heart.className = 'floating-heart';
+            heart.textContent = ['💕', '💖', '💗', '💓', '💝', '💞', '❤️', '💘'][Math.floor(Math.random() * 8)];
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.bottom = '-50px';
+            heart.style.animationDuration = (Math.random() * 3 + 5) + 's';
+            document.body.appendChild(heart);
+            
+            setTimeout(() => heart.remove(), 9000);
+        }, 600);
+
+        // Text change
+        const texts = [
+            { main: 'LOVE', sub: 'Forever & Always' },
+            { main: 'CINTA', sub: 'Sampai Akhir Waktu' },
+            { main: '❤️', sub: 'You & Me Together' },
+            { main: 'LOVE', sub: 'Till The End Of Time' }
+        ];
+        
+        let textIndex = 0;
+        setInterval(() => {
+            textIndex = (textIndex + 1) % texts.length;
+            document.querySelector('.main-text').textContent = texts[textIndex].main;
+            document.querySelector('.sub-text').textContent = texts[textIndex].sub;
+        }, 5000);
+
+        // YouTube player control
+        let player;
+        let isPlaying = false;
+
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('youtubePlayer', {
+                events: {
+                    'onReady': onPlayerReady
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            player.setVolume(50);
+        }
+
+        function togglePlay() {
+            const btn = document.getElementById('playBtn');
+            
+            if (!player || !player.playVideo) {
+                alert('Player sedang loading, coba lagi sebentar...');
+                return;
+            }
+
+            if (!isPlaying) {
+                player.playVideo();
+                btn.textContent = '⏸️';
+                isPlaying = true;
+            } else {
+                player.pauseVideo();
+                btn.textContent = '▶️';
+                isPlaying = false;
+            }
+        }
+
+        // Volume control
+        document.getElementById('volumeSlider').addEventListener('input', (e) => {
+            if (player && player.setVolume) {
+                player.setVolume(e.target.value);
+            }
         });
 
-        closeYT.addEventListener('click', ()=>{
-            // stop youtube by resetting iframe src
-            const src = iframe.getAttribute('src');
-            iframe.setAttribute('src', src);
-            youtubeEmbed.style.display = 'none';
+        // Load YouTube API
+        const tag = document.createElement('script');
+        tag.src = 'https://www.youtube.com/iframe_api';
+        const firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        // Resize canvas
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
         });
     </script>
 </body>
-</html>
+        </html>
