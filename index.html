@@ -55,7 +55,9 @@ body::after {
   background: radial-gradient(circle, rgba(199,125,255,0.06), transparent 70%);
   bottom: -150px; left: -150px;
 }
-
+body {
+  touch-action: none;
+}
 .app {
   position: relative; z-index: 1;
   display: flex; flex-direction: column;
@@ -727,6 +729,68 @@ function newGame(){
 }
 
 newGame();
+// ─ TOUCH SUPPORT (FIX FINAL) ─
+let touchDragging = false;
+
+document.addEventListener('touchstart', (e) => {
+  const slot = e.target.closest('.piece-slot');
+  if (!slot) return;
+
+  const i = [...document.querySelectorAll('.piece-slot')].indexOf(slot);
+  if (i === -1 || !pieces[i]) return;
+
+  touchDragging = true;
+  dragPiece = pieces[i];
+  dragSlot = i;
+  selPiece = pieces[i];
+  selSlot = i;
+
+  const ghost = document.getElementById('dragGhost');
+  const pgEl = slot.querySelector('.piece-grid');
+
+  if (pgEl) {
+    ghost.innerHTML = '';
+    const clone = pgEl.cloneNode(true);
+    ghost.appendChild(clone);
+    ghost.style.display = 'block';
+  }
+});
+
+document.addEventListener('touchmove', (e) => {
+  if (!touchDragging || !dragPiece) return;
+
+  const touch = e.touches[0];
+  const ghost = document.getElementById('dragGhost');
+
+  ghost.style.left = touch.clientX - 25 + 'px';
+  ghost.style.top = touch.clientY - 25 + 'px';
+
+  const target = document.elementFromPoint(touch.clientX, touch.clientY);
+  const cell = target?.closest?.('.cell');
+
+  if (cell) {
+    onEnter(+cell.dataset.r, +cell.dataset.c);
+  } else {
+    clearPreview();
+  }
+});
+
+document.addEventListener('touchend', (e) => {
+  if (!touchDragging || !dragPiece) return;
+
+  const touch = e.changedTouches[0];
+  const target = document.elementFromPoint(touch.clientX, touch.clientY);
+  const cell = target?.closest?.('.cell');
+
+  if (cell) {
+    doPlace(dragPiece, dragSlot, +cell.dataset.r, +cell.dataset.c);
+  }
+
+  endDrag();
+  dragPiece = null;
+  dragSlot = null;
+  touchDragging = false;
+});
 </script>
 </body>
 </html>
