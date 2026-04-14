@@ -2,507 +2,868 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Selamat Datang di Dunia Tipu-Tipu</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,900;1,400&family=Special+Elite&family=Courier+Prime:ital@0;1&display=swap" rel="stylesheet"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CAMPAIGN — Defender of Earth</title>
   <style>
-    :root {
-      --gold: #c9a84c;
-      --gold-light: #f0d080;
-      --red: #c0392b;
-      --dark: #0a0806;
-      --paper: #1a1510;
-      --smoke: #2a241e;
-    }
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap');
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --neon-cyan: #00fff7;
+      --neon-pink: #ff0080;
+      --neon-yellow: #ffe600;
+      --dark: #050a14;
+      --panel: rgba(0,255,247,0.07);
+      --border: rgba(0,255,247,0.25);
+    }
 
     body {
-      background-color: var(--dark);
-      color: var(--gold);
-      font-family: 'Special Elite', cursive;
+      background: var(--dark);
+      font-family: 'Share Tech Mono', monospace;
+      color: var(--neon-cyan);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       min-height: 100vh;
-      overflow-x: hidden;
-      cursor: crosshair;
+      overflow: hidden;
     }
 
-    /* Grain overlay */
+    /* Starfield background */
     body::before {
       content: '';
       position: fixed;
       inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
+      background-image:
+        radial-gradient(1px 1px at 10% 15%, rgba(255,255,255,0.8) 0%, transparent 100%),
+        radial-gradient(1px 1px at 25% 60%, rgba(255,255,255,0.5) 0%, transparent 100%),
+        radial-gradient(1px 1px at 40% 30%, rgba(255,255,255,0.7) 0%, transparent 100%),
+        radial-gradient(1px 1px at 55% 80%, rgba(255,255,255,0.4) 0%, transparent 100%),
+        radial-gradient(1px 1px at 70% 20%, rgba(255,255,255,0.9) 0%, transparent 100%),
+        radial-gradient(1px 1px at 85% 50%, rgba(255,255,255,0.6) 0%, transparent 100%),
+        radial-gradient(1px 1px at 90% 75%, rgba(255,255,255,0.5) 0%, transparent 100%),
+        radial-gradient(1px 1px at 15% 90%, rgba(255,255,255,0.7) 0%, transparent 100%),
+        radial-gradient(2px 2px at 50% 50%, rgba(0,255,247,0.3) 0%, transparent 100%),
+        radial-gradient(2px 2px at 80% 10%, rgba(255,0,128,0.3) 0%, transparent 100%);
       pointer-events: none;
-      z-index: 999;
-      opacity: 0.4;
+      z-index: 0;
     }
 
-    /* Vignette */
-    body::after {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.85) 100%);
-      pointer-events: none;
-      z-index: 998;
-    }
-
-    .scene {
+    #wrapper {
       position: relative;
-      min-height: 100vh;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* HUD */
+    #hud {
+      width: 600px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 16px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 4px 4px 0 0;
+    }
+
+    .hud-block { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+    .hud-label { font-size: 9px; letter-spacing: 3px; opacity: 0.5; text-transform: uppercase; }
+    .hud-value { font-family: 'Orbitron', monospace; font-size: 18px; font-weight: 700; color: var(--neon-cyan); }
+    .hud-value.pink { color: var(--neon-pink); }
+    .hud-value.yellow { color: var(--neon-yellow); }
+
+    /* Health bar */
+    #health-bar-wrap {
+      width: 600px;
+      height: 6px;
+      background: rgba(255,0,128,0.15);
+      border: 1px solid rgba(255,0,128,0.3);
+      border-radius: 0;
+    }
+    #health-bar {
+      height: 100%;
+      width: 100%;
+      background: linear-gradient(90deg, var(--neon-pink), #ff4db8);
+      transition: width 0.2s ease;
+      box-shadow: 0 0 8px var(--neon-pink);
+    }
+
+    /* Canvas */
+    canvas {
+      display: block;
+      border-left: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+      background: transparent;
+      cursor: crosshair;
+    }
+
+    /* Bottom bar */
+    #bottom-bar {
+      width: 600px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 16px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 0 0 4px 4px;
+      font-size: 10px;
+      opacity: 0.6;
+      letter-spacing: 1px;
+    }
+
+    /* Overlay */
+    #overlay {
+      position: absolute;
+      inset: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 40px 20px;
-    }
-
-    /* Floating smoke particles */
-    .particles {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 1;
-    }
-    .particle {
-      position: absolute;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(201,168,76,0.08), transparent);
-      animation: float linear infinite;
-    }
-    @keyframes float {
-      0%   { transform: translateY(100vh) scale(0); opacity: 0; }
-      10%  { opacity: 1; }
-      90%  { opacity: 0.5; }
-      100% { transform: translateY(-20vh) scale(1.5); opacity: 0; }
-    }
-
-    /* Header badge */
-    .badge {
-      position: relative;
+      gap: 18px;
+      background: rgba(5,10,20,0.92);
       z-index: 10;
+      border: 1px solid var(--border);
+    }
+
+    #overlay h1 {
+      font-family: 'Orbitron', monospace;
+      font-size: 36px;
+      font-weight: 900;
+      color: var(--neon-cyan);
+      text-shadow: 0 0 20px var(--neon-cyan), 0 0 60px rgba(0,255,247,0.4);
+      letter-spacing: 6px;
       text-align: center;
-      margin-bottom: 10px;
-      animation: fadeDown 1s ease both;
+      line-height: 1.2;
     }
-    .badge-inner {
-      display: inline-block;
-      border: 1px solid rgba(201,168,76,0.3);
-      padding: 6px 24px;
-      font-family: 'Courier Prime', monospace;
-      font-size: 11px;
+
+    #overlay .subtitle {
+      font-size: 12px;
       letter-spacing: 4px;
+      opacity: 0.5;
       text-transform: uppercase;
-      color: rgba(201,168,76,0.6);
-      position: relative;
     }
-    .badge-inner::before, .badge-inner::after {
-      content: '◆';
+
+    #overlay .stats-box {
+      display: flex;
+      gap: 30px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      padding: 14px 28px;
+      border-radius: 3px;
+    }
+
+    .stat-item { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .stat-label { font-size: 9px; letter-spacing: 3px; opacity: 0.5; }
+    .stat-val { font-family: 'Orbitron', monospace; font-size: 22px; color: var(--neon-yellow); }
+
+    .btn {
+      font-family: 'Orbitron', monospace;
+      font-size: 13px;
+      letter-spacing: 4px;
+      padding: 12px 36px;
+      background: transparent;
+      color: var(--neon-cyan);
+      border: 1.5px solid var(--neon-cyan);
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: all 0.2s ease;
+      box-shadow: 0 0 10px rgba(0,255,247,0.2);
+    }
+    .btn:hover {
+      background: rgba(0,255,247,0.12);
+      box-shadow: 0 0 24px rgba(0,255,247,0.5);
+      transform: scale(1.03);
+    }
+    .btn.pink {
+      color: var(--neon-pink);
+      border-color: var(--neon-pink);
+      box-shadow: 0 0 10px rgba(255,0,128,0.2);
+    }
+    .btn.pink:hover {
+      background: rgba(255,0,128,0.12);
+      box-shadow: 0 0 24px rgba(255,0,128,0.5);
+    }
+
+    /* Level up flash */
+    #level-flash {
       position: absolute;
       top: 50%;
-      transform: translateY(-50%);
-      color: var(--gold);
-      font-size: 8px;
-    }
-    .badge-inner::before { left: -12px; }
-    .badge-inner::after  { right: -12px; }
-
-    /* Main title */
-    .main-title {
-      position: relative;
-      z-index: 10;
-      text-align: center;
-      animation: fadeDown 1.2s ease both;
-    }
-    .title-selamat {
-      font-family: 'Courier Prime', monospace;
-      font-size: clamp(12px, 2vw, 16px);
-      letter-spacing: 8px;
-      text-transform: uppercase;
-      color: rgba(201,168,76,0.5);
-      margin-bottom: 8px;
-      font-style: italic;
-    }
-    .title-datang {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(52px, 10vw, 120px);
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Orbitron', monospace;
+      font-size: 28px;
       font-weight: 900;
-      line-height: 0.9;
-      color: var(--gold);
-      text-shadow:
-        0 0 40px rgba(201,168,76,0.4),
-        0 0 80px rgba(201,168,76,0.1),
-        3px 3px 0 rgba(0,0,0,0.8);
-      position: relative;
-      letter-spacing: -2px;
-    }
-    .title-datang .accent {
-      color: var(--red);
-      font-style: italic;
-    }
-
-    /* Divider */
-    .divider {
-      position: relative;
-      z-index: 10;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin: 24px 0;
-      width: min(600px, 90vw);
-      animation: fadeIn 1.5s ease both;
-    }
-    .divider-line {
-      flex: 1;
-      height: 1px;
-      background: linear-gradient(to right, transparent, var(--gold), transparent);
-    }
-    .divider-icon {
-      font-size: 20px;
-      color: var(--gold);
-      animation: spin 8s linear infinite;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    /* Subtitle */
-    .subtitle {
-      position: relative;
-      z-index: 10;
-      font-family: 'Playfair Display', serif;
-      font-style: italic;
-      font-size: clamp(18px, 3.5vw, 32px);
-      color: var(--gold-light);
-      text-align: center;
-      margin-bottom: 8px;
-      animation: fadeIn 1.6s ease both;
-      text-shadow: 0 0 20px rgba(201,168,76,0.3);
-    }
-
-    /* Tagline */
-    .tagline {
-      position: relative;
-      z-index: 10;
-      font-family: 'Courier Prime', monospace;
-      font-size: clamp(11px, 1.5vw, 13px);
-      color: rgba(201,168,76,0.45);
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      text-align: center;
-      margin-bottom: 50px;
-      animation: fadeIn 1.8s ease both;
-    }
-
-    /* Cards row */
-    .cards {
-      position: relative;
-      z-index: 10;
-      display: flex;
-      gap: 20px;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-bottom: 50px;
-      animation: fadeUp 2s ease both;
-    }
-    .card {
-      background: var(--paper);
-      border: 1px solid rgba(201,168,76,0.2);
-      padding: 24px 28px;
-      width: 180px;
-      text-align: center;
-      position: relative;
-      transition: all 0.3s ease;
-      cursor: pointer;
-    }
-    .card::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(201,168,76,0.05), transparent);
+      color: var(--neon-yellow);
+      text-shadow: 0 0 20px var(--neon-yellow);
+      letter-spacing: 5px;
+      z-index: 9;
+      pointer-events: none;
       opacity: 0;
       transition: opacity 0.3s;
-    }
-    .card:hover {
-      border-color: var(--gold);
-      transform: translateY(-4px);
-      box-shadow: 0 8px 30px rgba(201,168,76,0.15);
-    }
-    .card:hover::before { opacity: 1; }
-    .card-icon {
-      font-size: 32px;
-      margin-bottom: 12px;
-      display: block;
-    }
-    .card-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 15px;
-      color: var(--gold-light);
-      margin-bottom: 6px;
-    }
-    .card-desc {
-      font-family: 'Courier Prime', monospace;
-      font-size: 10px;
-      color: rgba(201,168,76,0.4);
-      letter-spacing: 1px;
-      line-height: 1.6;
-    }
-
-    /* Warning strip */
-    .warning {
-      position: relative;
-      z-index: 10;
-      width: min(600px, 90vw);
-      border: 1px solid rgba(192,57,43,0.4);
-      padding: 16px 24px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 40px;
-      animation: fadeUp 2.2s ease both;
-      background: rgba(192,57,43,0.05);
-    }
-    .warning-icon {
-      font-size: 24px;
-      flex-shrink: 0;
-      animation: pulse 2s ease-in-out infinite;
-    }
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-    .warning-text {
-      font-family: 'Courier Prime', monospace;
-      font-size: 11px;
-      color: rgba(192,57,43,0.8);
-      letter-spacing: 1px;
-      line-height: 1.8;
-    }
-    .warning-text strong {
-      color: #e74c3c;
-      display: block;
-      letter-spacing: 3px;
-      font-size: 12px;
-      margin-bottom: 4px;
-    }
-
-    /* CTA Button */
-    .cta-wrap {
-      position: relative;
-      z-index: 10;
-      animation: fadeUp 2.4s ease both;
-    }
-    .cta {
-      display: inline-block;
-      padding: 16px 48px;
-      background: transparent;
-      border: 2px solid var(--gold);
-      color: var(--gold);
-      font-family: 'Special Elite', cursive;
-      font-size: 14px;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      text-decoration: none;
-      position: relative;
-      overflow: hidden;
-      transition: all 0.4s ease;
-      cursor: pointer;
-    }
-    .cta::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: var(--gold);
-      transform: translateX(-101%);
-      transition: transform 0.4s ease;
-      z-index: -1;
-    }
-    .cta:hover {
-      color: var(--dark);
-      text-shadow: none;
-    }
-    .cta:hover::before { transform: translateX(0); }
-
-    /* Footer */
-    .footer {
-      position: relative;
-      z-index: 10;
-      margin-top: 60px;
       text-align: center;
-      font-family: 'Courier Prime', monospace;
-      font-size: 10px;
-      letter-spacing: 2px;
-      color: rgba(201,168,76,0.2);
-      animation: fadeIn 3s ease both;
     }
 
-    /* Decorative corner borders */
-    .corner {
-      position: fixed;
-      width: 60px;
-      height: 60px;
-      z-index: 20;
+    /* Power-up indicator */
+    #powerup-indicator {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 11px;
+      letter-spacing: 3px;
+      color: var(--neon-yellow);
+      text-shadow: 0 0 8px var(--neon-yellow);
+      z-index: 8;
       pointer-events: none;
-    }
-    .corner-tl { top: 20px; left: 20px; border-top: 1px solid rgba(201,168,76,0.3); border-left: 1px solid rgba(201,168,76,0.3); }
-    .corner-tr { top: 20px; right: 20px; border-top: 1px solid rgba(201,168,76,0.3); border-right: 1px solid rgba(201,168,76,0.3); }
-    .corner-bl { bottom: 20px; left: 20px; border-bottom: 1px solid rgba(201,168,76,0.3); border-left: 1px solid rgba(201,168,76,0.3); }
-    .corner-br { bottom: 20px; right: 20px; border-bottom: 1px solid rgba(201,168,76,0.3); border-right: 1px solid rgba(201,168,76,0.3); }
-
-    /* Animations */
-    @keyframes fadeDown {
-      from { opacity: 0; transform: translateY(-30px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to   { opacity: 1; }
-    }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Typing cursor blink */
-    .blink {
-      animation: blink 1s step-end infinite;
-    }
-    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
-
-    /* Scanline effect */
-    .scanlines {
-      position: fixed;
-      inset: 0;
-      background: repeating-linear-gradient(
-        to bottom,
-        transparent,
-        transparent 2px,
-        rgba(0,0,0,0.03) 2px,
-        rgba(0,0,0,0.03) 4px
-      );
-      pointer-events: none;
-      z-index: 997;
+      opacity: 0;
+      transition: opacity 0.3s;
     }
   </style>
 </head>
 <body>
-
-  <div class="scanlines"></div>
-  <div class="particles" id="particles"></div>
-
-  <!-- Corner decorations -->
-  <div class="corner corner-tl"></div>
-  <div class="corner corner-tr"></div>
-  <div class="corner corner-bl"></div>
-  <div class="corner corner-br"></div>
-
-  <div class="scene">
-
-    <div class="badge">
-      <div class="badge-inner">Est. Sejak Zaman Nenek Moyang</div>
+<div id="wrapper">
+  <!-- HUD -->
+  <div id="hud">
+    <div class="hud-block">
+      <div class="hud-label">Score</div>
+      <div class="hud-value" id="score-val">0</div>
     </div>
-
-    <div class="main-title">
-      <div class="title-selamat">— selamat datang di —</div>
-      <div class="title-datang">
-        Dunia<br><span class="accent">Tipu-Tipu</span>
-      </div>
+    <div class="hud-block">
+      <div class="hud-label">Level</div>
+      <div class="hud-value yellow" id="level-val">1</div>
     </div>
-
-    <div class="divider">
-      <div class="divider-line"></div>
-      <div class="divider-icon">♠</div>
-      <div class="divider-line"></div>
+    <div class="hud-block">
+      <div class="hud-label">Lives</div>
+      <div class="hud-value pink" id="lives-val">♥ ♥ ♥</div>
     </div>
-
-    <div class="subtitle">
-      Di sini, semua bisa diatur.<br>
-      Asalkan kamu <em>tidak</em> yang diatur.
+    <div class="hud-block">
+      <div class="hud-label">Hi-Score</div>
+      <div class="hud-value" id="hi-val">0</div>
     </div>
-
-    <div class="tagline">
-      Percaya diri · Senyum manis · Kabur duluan<span class="blink">_</span>
-    </div>
-
-    <div class="cards">
-      <div class="card">
-        <span class="card-icon">🃏</span>
-        <div class="card-title">Kartu AS</div>
-        <div class="card-desc">Selalu simpan<br>satu kartu di<br>balik lengan baju</div>
-      </div>
-      <div class="card">
-        <span class="card-icon">🪞</span>
-        <div class="card-title">Cermin Retak</div>
-        <div class="card-desc">Tampilkan yang<br>indah, sembunyikan<br>yang asli</div>
-      </div>
-      <div class="card">
-        <span class="card-icon">🎩</span>
-        <div class="card-title">Sulap Kata</div>
-        <div class="card-desc">Bukan bohong.<br>Hanya... narasi<br>alternatif.</div>
-      </div>
-      <div class="card">
-        <span class="card-icon">💨</span>
-        <div class="card-title">Exit Strategy</div>
-        <div class="card-desc">Pintu darurat<br>selalu terbuka<br>untuk yang siap</div>
-      </div>
-    </div>
-
-    <div class="warning">
-      <div class="warning-icon">⚠</div>
-      <div class="warning-text">
-        <strong>PERINGATAN KERAS</strong>
-        Konten ini bersifat satir & hiburan semata.
-        Di kehidupan nyata, tipu-tipu itu dosa, kena karma,
-        dan bisa masuk penjara. Tolong jangan dipraktikkan. 🙏
-      </div>
-    </div>
-
-    <div class="cta-wrap">
-      <a class="cta" onclick="this.textContent='...Kabur Duluan ✓'; setTimeout(()=>this.textContent='Masuk Sekarang', 2000)">
-        Masuk Sekarang
-      </a>
-    </div>
-
-    <div class="footer">
-      ◆ &nbsp; DUNIA TIPU-TIPU ™ &nbsp; · &nbsp; Hak Cipta Tidak Dilindungi &nbsp; · &nbsp; Wong Penting Jalan &nbsp; ◆
-    </div>
-
   </div>
 
-  <script>
-    // Generate floating particles
-    const container = document.getElementById('particles');
-    for (let i = 0; i < 18; i++) {
-      const p = document.createElement('div');
-      p.className = 'particle';
-      const size = Math.random() * 120 + 40;
-      p.style.cssText = `
-        width: ${size}px;
-        height: ${size}px;
-        left: ${Math.random() * 100}%;
-        animation-duration: ${Math.random() * 15 + 12}s;
-        animation-delay: ${Math.random() * -20}s;
-      `;
-      container.appendChild(p);
+  <div id="health-bar-wrap"><div id="health-bar"></div></div>
+
+  <!-- Game canvas area -->
+  <div style="position:relative;">
+    <canvas id="gameCanvas" width="600" height="500"></canvas>
+
+    <!-- Overlay -->
+    <div id="overlay">
+      <div class="subtitle">Defender of Earth</div>
+      <h1 id="msg">CAMPAIGN</h1>
+      <div class="stats-box" id="stats-box" style="display:none;">
+        <div class="stat-item"><div class="stat-label">Score</div><div class="stat-val" id="final-score">0</div></div>
+        <div class="stat-item"><div class="stat-label">Level</div><div class="stat-val" id="final-level">1</div></div>
+        <div class="stat-item"><div class="stat-label">Kills</div><div class="stat-val" id="final-kills">0</div></div>
+      </div>
+      <button class="btn" id="main-btn" onclick="startGame()">MULAI GAME</button>
+    </div>
+
+    <div id="level-flash">LEVEL UP!</div>
+    <div id="powerup-indicator" id="powerup-indicator"></div>
+  </div>
+
+  <div id="bottom-bar">
+    <span>← → / WASD : Gerak</span>
+    <span>SPACE : Tembak</span>
+    <span>Mouse : Aim & Click</span>
+  </div>
+</div>
+
+<script>
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+const W = canvas.width, H = canvas.height;
+
+// State
+let state = 'idle'; // idle, playing, dead, gameover
+let score = 0, hiScore = 0, level = 1, lives = 3, health = 100;
+let kills = 0;
+let frame = 0;
+let animId;
+let mouseX = W/2, mouseY = H-60;
+
+// Entities
+let player, bullets, enemies, particles, powerups, explosions;
+
+// Input
+const keys = {};
+document.addEventListener('keydown', e => {
+  keys[e.key] = true;
+  if (['ArrowLeft','ArrowRight','ArrowUp','ArrowDown',' '].includes(e.key)) e.preventDefault();
+});
+document.addEventListener('keyup', e => { keys[e.key] = false; });
+canvas.addEventListener('mousemove', e => {
+  const r = canvas.getBoundingClientRect();
+  mouseX = e.clientX - r.left;
+  mouseY = e.clientY - r.top;
+});
+canvas.addEventListener('click', () => { if (state === 'playing') shootBullet(); });
+
+// ─── Player ───────────────────────────────────────────────────────────────────
+function makePlayer() {
+  return {
+    x: W/2, y: H - 70,
+    w: 32, h: 36,
+    speed: 4.5,
+    shootCooldown: 0,
+    shootRate: 15, // frames
+    powerup: null,
+    powerupTimer: 0,
+    invincible: 0,
+    shield: false,
+  };
+}
+
+function drawPlayer(p) {
+  const x = p.x, y = p.y;
+
+  // Glow
+  if (p.powerup === 'rapid') {
+    ctx.shadowColor = '#ffe600'; ctx.shadowBlur = 18;
+  } else if (p.powerup === 'spread') {
+    ctx.shadowColor = '#00fff7'; ctx.shadowBlur = 18;
+  } else {
+    ctx.shadowColor = '#00fff7'; ctx.shadowBlur = 10;
+  }
+
+  // Blink when invincible
+  if (p.invincible > 0 && Math.floor(p.invincible/4) % 2 === 0) {
+    ctx.shadowBlur = 0;
+    ctx.globalAlpha = 0.3;
+  }
+
+  // Ship body
+  ctx.fillStyle = '#00fff7';
+  ctx.beginPath();
+  ctx.moveTo(x, y - 18);
+  ctx.lineTo(x - 14, y + 18);
+  ctx.lineTo(x - 6, y + 10);
+  ctx.lineTo(x, y + 14);
+  ctx.lineTo(x + 6, y + 10);
+  ctx.lineTo(x + 14, y + 18);
+  ctx.closePath();
+  ctx.fill();
+
+  // Cockpit
+  ctx.fillStyle = p.powerup === 'rapid' ? '#ffe600' : '#050a14';
+  ctx.beginPath();
+  ctx.ellipse(x, y - 4, 5, 8, 0, 0, Math.PI*2);
+  ctx.fill();
+
+  // Engine glow
+  ctx.fillStyle = `rgba(255,${100 + Math.random()*80},0,0.85)`;
+  ctx.beginPath();
+  ctx.moveTo(x - 8, y + 14);
+  ctx.lineTo(x - 4, y + 14 + 6 + Math.random()*6);
+  ctx.lineTo(x, y + 12);
+  ctx.closePath();
+  ctx.fill();
+  ctx.beginPath();
+  ctx.moveTo(x + 8, y + 14);
+  ctx.lineTo(x + 4, y + 14 + 6 + Math.random()*6);
+  ctx.lineTo(x, y + 12);
+  ctx.closePath();
+  ctx.fill();
+
+  // Shield
+  if (p.shield) {
+    ctx.strokeStyle = 'rgba(0,255,247,0.6)';
+    ctx.lineWidth = 2;
+    ctx.shadowColor = '#00fff7'; ctx.shadowBlur = 16;
+    ctx.beginPath();
+    ctx.arc(x, y, 28, 0, Math.PI*2);
+    ctx.stroke();
+  }
+
+  ctx.globalAlpha = 1;
+  ctx.shadowBlur = 0;
+}
+
+// ─── Bullets ──────────────────────────────────────────────────────────────────
+function shootBullet() {
+  const p = player;
+  if (p.shootCooldown > 0) return;
+  p.shootCooldown = p.shootRate;
+
+  const spd = 9;
+  const dx = mouseX - p.x, dy = mouseY - p.y;
+  const dist = Math.hypot(dx, dy) || 1;
+
+  if (p.powerup === 'spread') {
+    for (let a of [-0.2, 0, 0.2]) {
+      const angle = Math.atan2(dy, dx) + a;
+      bullets.push({ x: p.x, y: p.y-10, vx: Math.cos(angle)*spd, vy: Math.sin(angle)*spd, life: 80, type: 'spread' });
+    }
+  } else {
+    bullets.push({ x: p.x, y: p.y-10, vx: (dx/dist)*spd, vy: (dy/dist)*spd, life: 80, type: 'normal' });
+  }
+
+  // Muzzle flash
+  spawnParticles(p.x, p.y - 10, '#00fff7', 3, 2);
+}
+
+function drawBullet(b) {
+  ctx.save();
+  ctx.shadowColor = b.type === 'spread' ? '#00fff7' : '#ffe600';
+  ctx.shadowBlur = 10;
+  ctx.fillStyle = b.type === 'spread' ? '#00fff7' : '#ffe600';
+  ctx.beginPath();
+  ctx.ellipse(b.x, b.y, 3, 6, Math.atan2(b.vy, b.vx) + Math.PI/2, 0, Math.PI*2);
+  ctx.fill();
+  ctx.restore();
+}
+
+// ─── Enemies ──────────────────────────────────────────────────────────────────
+const ENEMY_TYPES = [
+  { type: 'grunt',  color: '#ff0080', hp: 1, size: 14, score: 10, speed: 1.2 },
+  { type: 'tank',   color: '#ff6600', hp: 3, size: 18, score: 30, speed: 0.7 },
+  { type: 'speeder',color: '#aa00ff', hp: 1, size: 10, score: 20, speed: 2.2 },
+  { type: 'bomber', color: '#ff3300', hp: 2, size: 16, score: 25, speed: 0.5, shoots: true },
+];
+
+function spawnEnemy() {
+  const lvl = level;
+  let pool = [ENEMY_TYPES[0]];
+  if (lvl >= 2) pool.push(ENEMY_TYPES[2]);
+  if (lvl >= 3) pool.push(ENEMY_TYPES[1]);
+  if (lvl >= 4) pool.push(ENEMY_TYPES[3]);
+  const t = pool[Math.floor(Math.random() * pool.length)];
+
+  const x = 20 + Math.random() * (W - 40);
+  enemies.push({
+    x, y: -20,
+    hp: t.hp + Math.floor(lvl/3),
+    maxHp: t.hp + Math.floor(lvl/3),
+    size: t.size,
+    color: t.color,
+    score: t.score * lvl,
+    speed: t.speed + (lvl-1)*0.1,
+    type: t.type,
+    vx: (Math.random()-0.5) * 1.5,
+    vy: t.speed + (lvl-1)*0.1,
+    shootTimer: t.shoots ? 60 + Math.floor(Math.random()*60) : 9999,
+    angle: 0,
+    zigzag: Math.random() > 0.5,
+    zigzagTimer: 0,
+  });
+}
+
+function drawEnemy(e) {
+  ctx.save();
+  ctx.shadowColor = e.color;
+  ctx.shadowBlur = 12;
+  ctx.fillStyle = e.color;
+  ctx.translate(e.x, e.y);
+  ctx.rotate(e.angle);
+
+  if (e.type === 'grunt') {
+    // Diamond
+    ctx.beginPath();
+    ctx.moveTo(0, -e.size);
+    ctx.lineTo(e.size, 0);
+    ctx.lineTo(0, e.size);
+    ctx.lineTo(-e.size, 0);
+    ctx.closePath();
+    ctx.fill();
+  } else if (e.type === 'tank') {
+    // Hexagon
+    ctx.beginPath();
+    for (let i=0; i<6; i++) {
+      const a = (i/6)*Math.PI*2 - Math.PI/6;
+      i===0 ? ctx.moveTo(Math.cos(a)*e.size, Math.sin(a)*e.size) : ctx.lineTo(Math.cos(a)*e.size, Math.sin(a)*e.size);
+    }
+    ctx.closePath();
+    ctx.fill();
+    // HP bar
+    ctx.fillStyle = 'rgba(0,0,0,0.5)';
+    ctx.fillRect(-e.size, e.size+4, e.size*2, 4);
+    ctx.fillStyle = '#ff3300';
+    ctx.fillRect(-e.size, e.size+4, e.size*2*(e.hp/e.maxHp), 4);
+  } else if (e.type === 'speeder') {
+    // Triangle pointing down
+    ctx.beginPath();
+    ctx.moveTo(0, e.size);
+    ctx.lineTo(-e.size, -e.size);
+    ctx.lineTo(e.size, -e.size);
+    ctx.closePath();
+    ctx.fill();
+  } else if (e.type === 'bomber') {
+    // Circle with cross
+    ctx.beginPath();
+    ctx.arc(0, 0, e.size, 0, Math.PI*2);
+    ctx.fill();
+    ctx.strokeStyle = '#050a14';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(-e.size, 0); ctx.lineTo(e.size, 0);
+    ctx.moveTo(0, -e.size); ctx.lineTo(0, e.size);
+    ctx.stroke();
+  }
+
+  ctx.restore();
+}
+
+// Enemy bullets
+let enemyBullets = [];
+function spawnEnemyBullet(e) {
+  const dx = player.x - e.x, dy = player.y - e.y;
+  const dist = Math.hypot(dx, dy) || 1;
+  const spd = 3.5;
+  enemyBullets.push({ x: e.x, y: e.y, vx: (dx/dist)*spd, vy: (dy/dist)*spd, life: 90 });
+}
+
+function drawEnemyBullet(b) {
+  ctx.save();
+  ctx.shadowColor = '#ff0080';
+  ctx.shadowBlur = 8;
+  ctx.fillStyle = '#ff0080';
+  ctx.beginPath();
+  ctx.arc(b.x, b.y, 4, 0, Math.PI*2);
+  ctx.fill();
+  ctx.restore();
+}
+
+// ─── Power-ups ────────────────────────────────────────────────────────────────
+const POWERUP_TYPES = ['rapid', 'spread', 'shield', 'health'];
+function spawnPowerup(x, y) {
+  if (Math.random() > 0.25) return; // 25% chance
+  const type = POWERUP_TYPES[Math.floor(Math.random()*POWERUP_TYPES.length)];
+  powerups.push({ x, y, type, vy: 1.2, life: 300, pulse: 0 });
+}
+
+const PU_COLORS = { rapid:'#ffe600', spread:'#00fff7', shield:'#00ffaa', health:'#ff0080' };
+const PU_LABELS = { rapid:'⚡', spread:'✦', shield:'⬡', health:'♥' };
+function drawPowerup(p) {
+  ctx.save();
+  p.pulse += 0.08;
+  const s = 1 + Math.sin(p.pulse) * 0.15;
+  ctx.translate(p.x, p.y);
+  ctx.scale(s, s);
+  ctx.shadowColor = PU_COLORS[p.type];
+  ctx.shadowBlur = 16;
+  ctx.strokeStyle = PU_COLORS[p.type];
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.arc(0, 0, 12, 0, Math.PI*2);
+  ctx.stroke();
+  ctx.fillStyle = PU_COLORS[p.type];
+  ctx.font = '14px Arial';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(PU_LABELS[p.type], 0, 0);
+  ctx.restore();
+}
+
+// ─── Particles ────────────────────────────────────────────────────────────────
+function spawnParticles(x, y, color, count, size=3) {
+  for (let i=0; i<count; i++) {
+    const angle = Math.random() * Math.PI*2;
+    const spd = 1 + Math.random()*3;
+    particles.push({
+      x, y,
+      vx: Math.cos(angle)*spd,
+      vy: Math.sin(angle)*spd,
+      life: 20 + Math.random()*20,
+      maxLife: 40,
+      color, size: size * (0.5 + Math.random())
+    });
+  }
+}
+
+function bigExplosion(x, y, color) {
+  spawnParticles(x, y, color, 20, 4);
+  spawnParticles(x, y, '#ffffff', 8, 2);
+}
+
+// ─── Grid background ──────────────────────────────────────────────────────────
+function drawGrid() {
+  ctx.save();
+  ctx.strokeStyle = 'rgba(0,255,247,0.04)';
+  ctx.lineWidth = 1;
+  const gs = 40;
+  for (let x=0; x<W; x+=gs) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
+  for (let y=0; y<H; y+=gs) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+  ctx.restore();
+}
+
+// ─── HUD Update ───────────────────────────────────────────────────────────────
+function updateHUD() {
+  document.getElementById('score-val').textContent = score;
+  document.getElementById('level-val').textContent = level;
+  document.getElementById('hi-val').textContent = hiScore;
+  const h = Math.max(0, health);
+  const lArr = [];
+  for (let i=0;i<lives;i++) lArr.push('♥');
+  document.getElementById('lives-val').textContent = lArr.join(' ') || '—';
+  document.getElementById('health-bar').style.width = h + '%';
+}
+
+// ─── Level flash ──────────────────────────────────────────────────────────────
+function showLevelFlash(txt) {
+  const el = document.getElementById('level-flash');
+  el.textContent = txt;
+  el.style.opacity = '1';
+  setTimeout(() => { el.style.opacity = '0'; }, 1400);
+}
+
+// ─── Power-up indicator ───────────────────────────────────────────────────────
+function showPowerupText(txt) {
+  const el = document.getElementById('powerup-indicator');
+  el.textContent = txt;
+  el.style.opacity = '1';
+  setTimeout(() => { el.style.opacity = '0'; }, 1800);
+}
+
+// ─── Collision ────────────────────────────────────────────────────────────────
+function circleRect(cx, cy, cr, rx, ry, rw, rh) {
+  const nearX = Math.max(rx, Math.min(cx, rx+rw));
+  const nearY = Math.max(ry, Math.min(cy, ry+rh));
+  return Math.hypot(cx-nearX, cy-nearY) < cr;
+}
+
+// ─── GAME LOOP ────────────────────────────────────────────────────────────────
+let spawnInterval = 80;
+let spawnTimer = 0;
+let levelTimer = 0;
+let levelThreshold = 300;
+
+function startGame() {
+  state = 'playing';
+  score = 0; level = 1; lives = 3; health = 100; kills = 0;
+  frame = 0; spawnTimer = 0; levelTimer = 0;
+  spawnInterval = 80;
+  player = makePlayer();
+  bullets = []; enemies = []; particles = []; powerups = []; enemyBullets = [];
+
+  document.getElementById('overlay').style.display = 'none';
+  document.getElementById('stats-box').style.display = 'none';
+  updateHUD();
+
+  if (animId) cancelAnimationFrame(animId);
+  loop();
+}
+
+function loop() {
+  animId = requestAnimationFrame(loop);
+  if (state !== 'playing') return;
+
+  frame++;
+  levelTimer++;
+  spawnTimer++;
+  ctx.clearRect(0, 0, W, H);
+  drawGrid();
+
+  // Level progression
+  if (levelTimer >= levelThreshold) {
+    level++;
+    levelTimer = 0;
+    levelThreshold = Math.max(150, 300 - level*20);
+    spawnInterval = Math.max(20, 80 - level*6);
+    showLevelFlash(`LEVEL ${level}`);
+    // Bonus health on level up
+    health = Math.min(100, health + 20);
+  }
+
+  // Spawn enemies
+  if (spawnTimer >= spawnInterval) {
+    spawnTimer = 0;
+    const count = 1 + Math.floor(level/3);
+    for (let i=0;i<count;i++) spawnEnemy();
+  }
+
+  // ── Player movement ──────────────────────────────────────────────────
+  const p = player;
+  if ((keys['ArrowLeft'] || keys['a'] || keys['A'])) p.x = Math.max(20, p.x - p.speed);
+  if ((keys['ArrowRight'] || keys['d'] || keys['D'])) p.x = Math.min(W-20, p.x + p.speed);
+  if ((keys['ArrowUp'] || keys['w'] || keys['W'])) p.y = Math.max(40, p.y - p.speed);
+  if ((keys['ArrowDown'] || keys['s'] || keys['S'])) p.y = Math.min(H-20, p.y + p.speed);
+  if (keys[' ']) shootBullet();
+  if (p.shootCooldown > 0) p.shootCooldown--;
+  if (p.invincible > 0) p.invincible--;
+  if (p.powerupTimer > 0) {
+    p.powerupTimer--;
+    if (p.powerupTimer === 0) { p.powerup = null; p.shield = false; p.shootRate = 15; }
+  }
+
+  // ── Update bullets ───────────────────────────────────────────────────
+  bullets = bullets.filter(b => {
+    b.x += b.vx; b.y += b.vy; b.life--;
+    return b.life > 0 && b.x > -10 && b.x < W+10 && b.y > -10 && b.y < H+10;
+  });
+
+  enemyBullets = enemyBullets.filter(b => {
+    b.x += b.vx; b.y += b.vy; b.life--;
+    // Hit player
+    if (p.invincible === 0 && !p.shield && Math.hypot(b.x-p.x, b.y-p.y) < 14) {
+      health -= 15;
+      spawnParticles(b.x, b.y, '#ff0080', 8, 3);
+      p.invincible = 60;
+      if (health <= 0) { lives--; health = 100; if (lives <= 0) gameOver(); }
+      return false;
+    }
+    return b.life > 0 && b.x > 0 && b.x < W && b.y > 0 && b.y < H;
+  });
+
+  // ── Update enemies ───────────────────────────────────────────────────
+  enemies = enemies.filter(e => {
+    e.y += e.vy;
+    e.x += e.vx;
+    e.angle += 0.03;
+    if (e.zigzag) { e.zigzagTimer++; e.vx = Math.sin(e.zigzagTimer*0.05) * e.speed * 1.5; }
+    if (e.x < e.size) e.vx = Math.abs(e.vx);
+    if (e.x > W-e.size) e.vx = -Math.abs(e.vx);
+
+    // Shooter enemies
+    e.shootTimer--;
+    if (e.shootTimer <= 0) {
+      spawnEnemyBullet(e);
+      e.shootTimer = 80 + Math.floor(Math.random()*40);
     }
 
-    // Cursor trail effect
-    document.addEventListener('mousemove', e => {
-      const dot = document.createElement('div');
-      dot.style.cssText = `
-        position: fixed;
-        left: ${e.clientX}px;
-        top: ${e.clientY}px;
-        width: 4px; height: 4px;
-        background: rgba(201,168,76,0.5);
-        border-radius: 50%;
-        pointer-events: none;
-        z-index: 9999;
-        transition: opacity 0.6s;
-        transform: translate(-50%, -50%);
-      `;
-      document.body.appendChild(dot);
-      requestAnimationFrame(() => {
-        dot.style.opacity = '0';
-        setTimeout(() => dot.remove(), 600);
-      });
+    // Bullet collision
+    let hit = false;
+    bullets = bullets.filter(b => {
+      if (Math.hypot(b.x - e.x, b.y - e.y) < e.size + 4) {
+        e.hp--;
+        spawnParticles(b.x, b.y, e.color, 5, 2);
+        hit = true;
+        return false;
+      }
+      return true;
     });
-  </script>
 
+    if (e.hp <= 0) {
+      score += e.score;
+      kills++;
+      if (score > hiScore) hiScore = score;
+      bigExplosion(e.x, e.y, e.color);
+      spawnPowerup(e.x, e.y);
+      updateHUD();
+      return false;
+    }
+
+    // Player collision
+    if (p.invincible === 0 && Math.hypot(e.x - p.x, e.y - p.y) < e.size + 14) {
+      if (p.shield) {
+        e.hp = 0; // shield destroys enemy
+        bigExplosion(e.x, e.y, e.color);
+        return false;
+      }
+      health -= 25;
+      p.invincible = 80;
+      if (health <= 0) { lives--; health = 100; if (lives <= 0) { gameOver(); return false; } }
+    }
+
+    // Out of bounds
+    if (e.y > H + 30) { health -= 8; if (health <= 0) { lives--; health = 100; if (lives <= 0) gameOver(); } updateHUD(); return false; }
+    return true;
+  });
+
+  // ── Power-ups ─────────────────────────────────────────────────────────
+  powerups = powerups.filter(pu => {
+    pu.y += pu.vy;
+    pu.life--;
+    if (Math.hypot(pu.x - p.x, pu.y - p.y) < 22) {
+      // Apply
+      if (pu.type === 'health') {
+        health = Math.min(100, health + 35);
+        showPowerupText('♥ +35 HP');
+      } else if (pu.type === 'rapid') {
+        p.powerup = 'rapid'; p.powerupTimer = 300; p.shootRate = 5;
+        showPowerupText('⚡ RAPID FIRE!');
+      } else if (pu.type === 'spread') {
+        p.powerup = 'spread'; p.powerupTimer = 300; p.shootRate = 12;
+        showPowerupText('✦ SPREAD SHOT!');
+      } else if (pu.type === 'shield') {
+        p.powerup = 'shield'; p.powerupTimer = 400; p.shield = true;
+        showPowerupText('⬡ SHIELD ON!');
+      }
+      spawnParticles(pu.x, pu.y, PU_COLORS[pu.type], 12, 3);
+      updateHUD();
+      return false;
+    }
+    return pu.life > 0 && pu.y < H + 20;
+  });
+
+  // ── Particles ──────────────────────────────────────────────────────────
+  particles = particles.filter(pt => {
+    pt.x += pt.vx; pt.y += pt.vy;
+    pt.vy += 0.05;
+    pt.life--;
+    ctx.save();
+    ctx.globalAlpha = pt.life / pt.maxLife;
+    ctx.fillStyle = pt.color;
+    ctx.shadowColor = pt.color;
+    ctx.shadowBlur = 4;
+    ctx.beginPath();
+    ctx.arc(pt.x, pt.y, pt.size, 0, Math.PI*2);
+    ctx.fill();
+    ctx.restore();
+    return pt.life > 0;
+  });
+
+  // ── Draw ──────────────────────────────────────────────────────────────
+  powerups.forEach(drawPowerup);
+  enemyBullets.forEach(drawEnemyBullet);
+  bullets.forEach(drawBullet);
+  enemies.forEach(drawEnemy);
+  drawPlayer(p);
+
+  // Crosshair
+  ctx.save();
+  ctx.strokeStyle = 'rgba(0,255,247,0.5)';
+  ctx.lineWidth = 1;
+  ctx.shadowColor = '#00fff7';
+  ctx.shadowBlur = 6;
+  const cx = mouseX, cy = mouseY;
+  ctx.beginPath(); ctx.moveTo(cx-10,cy); ctx.lineTo(cx+10,cy); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(cx,cy-10); ctx.lineTo(cx,cy+10); ctx.stroke();
+  ctx.beginPath(); ctx.arc(cx,cy,6,0,Math.PI*2); ctx.stroke();
+  ctx.restore();
+
+  // Powerup timer bar
+  if (p.powerup && p.powerupTimer > 0) {
+    const pct = p.powerupTimer / 400;
+    ctx.save();
+    ctx.fillStyle = 'rgba(0,0,0,0.4)';
+    ctx.fillRect(W/2-50, H-12, 100, 5);
+    ctx.fillStyle = PU_COLORS[p.powerup];
+    ctx.shadowColor = PU_COLORS[p.powerup];
+    ctx.shadowBlur = 8;
+    ctx.fillRect(W/2-50, H-12, 100*pct, 5);
+    ctx.restore();
+  }
+
+  updateHUD();
+}
+
+function gameOver() {
+  state = 'gameover';
+  if (score > hiScore) hiScore = score;
+
+  const ov = document.getElementById('overlay');
+  ov.style.display = 'flex';
+  document.getElementById('msg').textContent = lives <= 0 ? 'GAME OVER' : 'VICTORY';
+  document.getElementById('stats-box').style.display = 'flex';
+  document.getElementById('final-score').textContent = score;
+  document.getElementById('final-level').textContent = level;
+  document.getElementById('final-kills').textContent = kills;
+  const btn = document.getElementById('main-btn');
+  btn.textContent = 'MAIN LAGI';
+  btn.className = 'btn pink';
+  updateHUD();
+}
+
+// Init overlay
+document.getElementById('main-btn').textContent = 'MULAI GAME';
+document.getElementById('main-btn').className = 'btn';
+</script>
 </body>
 </html>
