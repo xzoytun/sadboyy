@@ -730,6 +730,18 @@ function newGame(){
   document.getElementById('hintText').textContent='👆 Klik blok di bawah, lalu klik posisi di grid';
 }
 
+function snapToGrid(x, y){
+  const wrap = document.querySelector('.grid-wrap');
+  const rect = wrap.getBoundingClientRect();
+
+  const gx = x - rect.left - 12;
+  const gy = y - rect.top - 12;
+
+  const col = Math.floor(gx / (CS + GAP));
+  const row = Math.floor(gy / (CS + GAP));
+
+  return { row, col };
+}
 newGame();
 // ─ TOUCH SUPPORT (FULL FIX FINAL) ─
 let touchDragging = false;
@@ -787,6 +799,12 @@ document.addEventListener('touchmove', (e) => {
 
   const target = document.elementFromPoint(touch.clientX, touch.clientY);
   const cell = target?.closest?.('.cell');
+  
+  if (cell) {
+  ghost.style.transform = 'translate(-50%, -50%) scale(1.12)';
+} else {
+  ghost.style.transform = 'translate(-50%, -50%) scale(1.05)';
+}
 
   if (cell) {
     onEnter(+cell.dataset.r, +cell.dataset.c);
@@ -799,11 +817,11 @@ document.addEventListener('touchend', (e) => {
   if (!touchDragging || !dragPiece) return;
 
   const touch = e.changedTouches[0];
-  const target = document.elementFromPoint(touch.clientX, touch.clientY);
-  const cell = target?.closest?.('.cell');
 
-  if (cell) {
-    doPlace(dragPiece, dragSlot, +cell.dataset.r, +cell.dataset.c);
+  const { row, col } = snapToGrid(touch.clientX, touch.clientY);
+
+  if (row >= 0 && col >= 0 && row < ROWS && col < COLS) {
+    doPlace(dragPiece, dragSlot, row, col);
   }
 
   endDrag();
