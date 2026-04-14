@@ -662,6 +662,8 @@ function startDrag(e,i){
     clone.style.gap='4px';
     ghost.appendChild(clone);
     ghost.style.display='block';
+    ghost.style.opacity = '0.95';
+    ghost.style.filter = 'drop-shadow(0 6px 12px rgba(0,0,0,0.4))';
     ghost.style.left=e.clientX-25+'px';
     ghost.style.top=e.clientY-25+'px';
   }
@@ -729,14 +731,15 @@ function newGame(){
 }
 
 newGame();
-// ─ TOUCH SUPPORT (FIX FINAL) ─
+// ─ TOUCH SUPPORT (FULL FIX FINAL) ─
 let touchDragging = false;
 
 document.addEventListener('touchstart', (e) => {
   const slot = e.target.closest('.piece-slot');
   if (!slot) return;
 
-  const i = [...document.querySelectorAll('.piece-slot')].indexOf(slot);
+  const slots = [...document.querySelectorAll('.piece-slot')];
+  const i = slots.indexOf(slot);
   if (i === -1 || !pieces[i]) return;
 
   touchDragging = true;
@@ -750,9 +753,25 @@ document.addEventListener('touchstart', (e) => {
 
   if (pgEl) {
     ghost.innerHTML = '';
+
     const clone = pgEl.cloneNode(true);
+
+    // 🔥 BESARIN BLOCK (BIAR SAMA KAYAK GRID)
+    clone.querySelectorAll('.piece-mini').forEach(m => {
+      m.style.width = '50px';
+      m.style.height = '50px';
+      if (m.style.background && m.style.background !== 'transparent') {
+        m.style.boxShadow = '0 2px 10px rgba(0,0,0,0.4)';
+      }
+    });
+
+    clone.style.gap = '4px';
+
     ghost.appendChild(clone);
     ghost.style.display = 'block';
+
+    // 🔥 CENTER + SEDIKIT ZOOM
+    ghost.style.transform = 'translate(-50%, -50%) scale(1.05)';
   }
 });
 
@@ -762,8 +781,9 @@ document.addEventListener('touchmove', (e) => {
   const touch = e.touches[0];
   const ghost = document.getElementById('dragGhost');
 
-  ghost.style.left = touch.clientX - 25 + 'px';
-  ghost.style.top = touch.clientY - 25 + 'px';
+  // 🔥 POSISI TENGAH JARI
+  ghost.style.left = touch.clientX + 'px';
+  ghost.style.top = touch.clientY + 'px';
 
   const target = document.elementFromPoint(touch.clientX, touch.clientY);
   const cell = target?.closest?.('.cell');
