@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Block Blast DJ Edition - Aldi0016</title>
+    <title>Block Blast - Ambient Edition</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Nunito:wght@400;700&display=swap');
 
         :root {
-            --bg: #020205;
-            --bg2: #0a0b1e;
-            --surface: #161a36;
-            --border: rgba(0, 242, 255, 0.3);
+            --bg: #050508;
+            --bg2: #0e1025;
+            --surface: #1a1e3d;
+            --border: rgba(0, 242, 255, 0.2);
             --text: #ffffff;
             --accent: #00f2ff;
-            --accent2: #ff00e5;
+            --accent2: #7000ff;
             --cs: 44px; 
             --gap: 5px;
         }
@@ -34,13 +34,10 @@
         .glow-bg {
             position: fixed; inset: 0;
             background: 
-                radial-gradient(circle at 20% 30%, rgba(0, 242, 255, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(255, 0, 229, 0.15) 0%, transparent 50%);
+                radial-gradient(circle at 20% 30%, rgba(0, 242, 255, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(112, 0, 255, 0.05) 0%, transparent 50%);
             z-index: -1;
-            animation: pulseBg 4s infinite alternate;
         }
-
-        @keyframes pulseBg { 0% { opacity: 0.5; } 100% { opacity: 1; } }
 
         .app {
             display: flex; flex-direction: column;
@@ -56,7 +53,6 @@
             font-size: 22px; font-weight: 900;
             background: linear-gradient(90deg, var(--accent), var(--accent2));
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 10px var(--accent));
         }
 
         .music-btn {
@@ -64,16 +60,18 @@
             width: 50px; height: 50px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             cursor: pointer; font-size: 20px; transition: 0.3s;
-            box-shadow: 0 0 15px rgba(0,0,0,0.5);
-            z-index: 10;
         }
         .music-btn.active { 
-            border-color: var(--accent2); 
-            box-shadow: 0 0 20px var(--accent2);
-            animation: beat 0.5s infinite;
+            border-color: var(--accent); 
+            box-shadow: 0 0 15px var(--accent);
+            animation: pulse 2s infinite;
         }
 
-        @keyframes beat { 0% { transform: scale(1); } 10% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
 
         .stats { display: flex; gap: 10px; }
         .stat-card {
@@ -81,13 +79,13 @@
             border-radius: 12px; padding: 6px 15px; text-align: center;
             min-width: 80px;
         }
-        .stat-card .label { font-size: 9px; letter-spacing: 1px; color: var(--accent); font-weight: 700; }
+        .stat-card .label { font-size: 9px; color: var(--accent); font-weight: 700; }
         .stat-card .value { font-size: 20px; font-weight: 900; font-family: 'Orbitron'; }
 
         .grid-wrap {
-            background: var(--surface); border: 4px solid #1f2347;
+            background: var(--surface); border: 4px solid #252a52;
             border-radius: 14px; padding: 5px;
-            box-shadow: 0 0 40px rgba(0,0,0,0.8);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         #grid { 
@@ -99,50 +97,38 @@
         .cell { 
             width: var(--cs); height: var(--cs); 
             border-radius: 6px; background: var(--bg2); 
-            transition: background 0.2s, transform 0.1s; 
+            transition: background 0.3s, transform 0.2s; 
         }
         .cell.prev-ok { 
-            background: rgba(255, 255, 255, 0.25) !important; 
-            transform: scale(0.95);
+            background: rgba(255, 255, 255, 0.15) !important; 
+            transform: scale(0.9);
         }
 
         .tray { 
-            background: rgba(22, 26, 54, 0.6); 
+            background: rgba(22, 26, 54, 0.4); 
             border-radius: 20px; padding: 15px 5px; 
             width: 100%; border: 1px solid var(--border); 
         }
         .tray-slots { display: flex; justify-content: space-around; align-items: center; height: 100px; }
         .piece-slot { width: 100px; height: 100px; display: flex; align-items: center; justify-content: center; cursor: grab; }
 
-        #dragGhost { position: fixed; pointer-events: none; z-index: 9999; display: none; opacity: 0.9; }
+        #dragGhost { 
+            position: fixed; pointer-events: none; z-index: 9999; 
+            display: none; opacity: 0.8;
+        }
 
         .overlay {
             display: none; position: fixed; inset: 0; z-index: 10000;
-            background: rgba(2,2,5,0.95); backdrop-filter: blur(15px);
+            background: rgba(2,2,5,0.9); backdrop-filter: blur(10px);
             align-items: center; justify-content: center; flex-direction: column;
-            text-align: center;
         }
         .overlay.show { display: flex; }
         .btn {
             padding: 15px 40px; border-radius: 50px; border: none;
             background: linear-gradient(135deg, var(--accent), var(--accent2));
             color: white; font-weight: 900; font-family: 'Orbitron'; cursor: pointer;
-            box-shadow: 0 0 20px rgba(0, 242, 255, 0.5);
             margin-top: 20px;
         }
-
-        /* DEVELOPER STYLE */
-        .dev-footer {
-            margin-top: 10px;
-            font-size: 12px;
-            color: var(--accent);
-            text-decoration: none;
-            font-weight: bold;
-            letter-spacing: 1px;
-            opacity: 0.8;
-            transition: 0.3s;
-        }
-        .dev-footer:hover { opacity: 1; text-shadow: 0 0 10px var(--accent); }
     </style>
 </head>
 <body>
@@ -151,21 +137,20 @@
 <div id="dragGhost"></div>
 
 <div class="overlay" id="overlay">
-    <h1 style="font-family:'Orbitron'; font-size:40px; color:var(--accent2)">GAME OVER</h1>
+    <h1 style="font-family:'Orbitron'; font-size:32px; color:var(--accent)">GAME OVER</h1>
     <h2 id="finalScore" style="font-size:60px; margin: 10px 0;">0</h2>
-    <p id="konyolText" style="color: #fff; font-style: italic;">"Yah konyol banget!"</p>
-    <button class="btn" onclick="newGame()">PLAY AGAIN</button>
+    <button class="btn" onclick="newGame()">COBA LAGI</button>
 </div>
 
 <div class="app">
     <div class="header" style="display:flex; width:100%; justify-content:space-between; align-items:center;">
         <div class="logo-wrap">
-            <div class="music-btn" id="mBtn" onclick="toggleMusic()">🎧</div>
-            <div class="logo">DJ BLAST</div>
+            <div class="music-btn" id="mBtn" onclick="toggleMusic()">🔇</div>
+            <div class="logo">ZEN BLAST</div>
         </div>
         <div class="stats">
-            <div class="stat-card"><div class="label">SCORE</div><div id="scoreVal" class="value">0</div></div>
-            <div class="stat-card"><div class="label">BEST</div><div id="bestVal" class="value">0</div></div>
+            <div class="stat-card"><div class="label">SKOR</div><div id="scoreVal" class="value">0</div></div>
+            <div class="stat-card"><div class="label">TERBAIK</div><div id="bestVal" class="value">0</div></div>
         </div>
     </div>
 
@@ -181,93 +166,122 @@
         </div>
     </div>
     
-    <!-- DEV CREDIT -->
-    <a href="https://t.me/Aldi0016" target="_blank" class="dev-footer">TELEGRAM: @Aldi0016</a>
+    <p style="font-size: 11px; color: var(--accent); opacity: 0.6;">🎵 Ambient Mode: Aktifkan untuk relaksasi</p>
 </div>
 
 <script>
 /**
- * AUDIO & FUNNY VOICES ENGINE
+ * AUDIO ENGINE - ZEN AMBIENT
  */
 let audioCtx;
 let isPlaying = false;
-let nextBeatTime = 0;
-let beatIndex = 0;
-const BPM = 124;
-const secondsPerBeat = 60 / BPM / 4; 
+let ambientOscs = [];
 
 function initAudio() {
     if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 }
 
-// Fungsi suara lucu (Text To Speech kustom)
-function speakFunny(text, type) {
-    if (!window.speechSynthesis) return;
+function playAmbient() {
+    const frequencies = [196.00, 261.63, 329.63, 392.00]; // G3, C4, E4, G4 (C Major)
     
-    // Batalkan suara sebelumnya agar tidak tumpang tindih
-    window.speechSynthesis.cancel();
-    
-    const msg = new SpeechSynthesisUtterance(text);
-    msg.lang = 'id-ID';
-    
-    if (type === 'pintar') {
-        msg.pitch = 1.8; // Suara tinggi/lucu
-        msg.rate = 1.2;
-    } else {
-        msg.pitch = 0.6; // Suara berat/konyol
-        msg.rate = 0.8;
-    }
-    
-    window.speechSynthesis.speak(msg);
+    frequencies.forEach((freq, i) => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        const lfo = audioCtx.createOscillator();
+        const lfoGain = audioCtx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.value = freq;
+
+        lfo.type = 'sine';
+        lfo.frequency.value = 0.1 + (i * 0.05);
+        lfoGain.gain.value = 0.1;
+
+        gain.gain.setValueAtTime(0, audioCtx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.05, audioCtx.currentTime + 2);
+
+        lfo.connect(lfoGain);
+        lfoGain.connect(gain.gain);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc.start();
+        lfo.start();
+        ambientOscs.push({osc, lfo, gain});
+    });
 }
 
-function playKick(time) {
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.frequency.setValueAtTime(150, time);
-    osc.frequency.exponentialRampToValueAtTime(0.01, time + 0.5);
-    gain.gain.setValueAtTime(0.3, time);
-    gain.gain.exponentialRampToValueAtTime(0.01, time + 0.5);
-    osc.connect(gain); gain.connect(audioCtx.destination);
-    osc.start(time); osc.stop(time + 0.5);
-}
-
-function scheduler() {
-    while (nextBeatTime < audioCtx.currentTime + 0.1) {
-        if (beatIndex % 4 === 0) playKick(nextBeatTime);
-        nextBeatTime += secondsPerBeat;
-        beatIndex = (beatIndex + 1) % 16;
-    }
-    if (isPlaying) setTimeout(scheduler, 25);
+function stopAmbient() {
+    ambientOscs.forEach(obj => {
+        obj.gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 1);
+        setTimeout(() => {
+            obj.osc.stop();
+            obj.lfo.stop();
+        }, 1000);
+    });
+    ambientOscs = [];
 }
 
 function toggleMusic() {
     initAudio();
     if (audioCtx.state === 'suspended') audioCtx.resume();
+    
     isPlaying = !isPlaying;
     const btn = document.getElementById('mBtn');
     btn.classList.toggle('active', isPlaying);
-    btn.textContent = isPlaying ? '🔥' : '🎧';
-    if (isPlaying) {
-        nextBeatTime = audioCtx.currentTime;
-        scheduler();
+    btn.textContent = isPlaying ? '🎵' : '🔇';
+
+    if (isPlaying) playAmbient();
+    else stopAmbient();
+}
+
+function playSFX(type) {
+    if (!audioCtx) return;
+    const now = audioCtx.currentTime;
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+
+    if (type === 'place') {
+        // Soft Thump
+        osc.frequency.setValueAtTime(150, now);
+        osc.frequency.exponentialRampToValueAtTime(40, now + 0.1);
+        gain.gain.setValueAtTime(0.1, now);
+        gain.gain.linearRampToValueAtTime(0, now + 0.1);
+    } else if (type === 'clear') {
+        // Crystal Chime
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(800, now);
+        osc.frequency.exponentialRampToValueAtTime(1200, now + 0.3);
+        gain.gain.setValueAtTime(0.1, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
+    } else if (type === 'over') {
+        // Deep Fall
+        osc.frequency.setValueAtTime(200, now);
+        osc.frequency.linearRampToValueAtTime(20, now + 1);
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.linearRampToValueAtTime(0, now + 1);
     }
+
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(now + 1);
 }
 
 /**
  * GAME ENGINE
  */
 const ROWS = 8, COLS = 8;
-let grid = [], score = 0, best = parseInt(localStorage.getItem('dj_blast_best') || '0');
+let grid = [], score = 0, best = parseInt(localStorage.getItem('zen_blast_best') || '0');
 let pieces = [null, null, null], dragPiece = null, dragSlot = null;
 let CS = 44, GAP = 5;
-const Y_OFFSET = 100; 
+const Y_OFFSET = 80; 
 
 const COLORS = [
-    { f: '#00f2ff', g: 'rgba(0,242,255,0.5)' },
-    { f: '#ff00e5', g: 'rgba(255,0,229,0.5)' },
-    { f: '#7000ff', g: 'rgba(112,0,255,0.5)' },
-    { f: '#00ff88', g: 'rgba(0,255,136,0.5)' }
+    { f: '#00f2ff', g: 'rgba(0,242,255,0.4)' },
+    { f: '#7000ff', g: 'rgba(112,0,255,0.4)' },
+    { f: '#00ff88', g: 'rgba(0,255,136,0.4)' },
+    { f: '#ff0077', g: 'rgba(255,0,119,0.4)' }
 ];
 
 const SHAPES = [
@@ -309,7 +323,7 @@ function renderTray() {
             const dot = document.createElement('div');
             dot.style.gridRow = r+1; dot.style.gridColumn = c+1;
             dot.style.width = '18px'; dot.style.height = '18px'; dot.style.borderRadius = '4px';
-            dot.style.background = p.color.f; dot.style.boxShadow = `0 0 8px ${p.color.g}`;
+            dot.style.background = p.color.f; dot.style.boxShadow = `0 0 5px ${p.color.g}`;
             container.appendChild(dot);
         });
         slot.appendChild(container);
@@ -330,7 +344,7 @@ function startDrag(e, idx) {
         const d = document.createElement('div');
         d.style.gridRow = r+1; d.style.gridColumn = c+1;
         d.style.width = CS+'px'; d.style.height = CS+'px'; d.style.borderRadius='6px';
-        d.style.background = dragPiece.color.f; d.style.boxShadow = `0 0 20px ${dragPiece.color.g}`;
+        d.style.background = dragPiece.color.f; d.style.boxShadow = `0 0 15px ${dragPiece.color.g}`;
         container.appendChild(d);
     });
     ghost.appendChild(container);
@@ -341,17 +355,16 @@ function startDrag(e, idx) {
 
 function moveGhost(e) {
     const ghost = document.getElementById('dragGhost');
-    ghost.style.left = (e.clientX - (CS/2)) + 'px';
-    ghost.style.top = (e.clientY - Y_OFFSET) + 'px';
+    const visualX = e.clientX - (CS / 2);
+    const visualY = e.clientY - Y_OFFSET;
+    ghost.style.left = visualX + 'px';
+    ghost.style.top = visualY + 'px';
     document.querySelectorAll('.cell').forEach(c => c.classList.remove('prev-ok'));
     const pos = getGridPos(e);
     if(pos) {
         const cells = getShapeCells(dragPiece, pos.r, pos.c);
         if(cells && cells.every(([r,c]) => !grid[r][c])) {
-            cells.forEach(([r,c]) => {
-                const cellEl = document.getElementById(`cell-${r}-${c}`);
-                if(cellEl) cellEl.classList.add('prev-ok');
-            });
+            cells.forEach(([r,c]) => document.getElementById(`cell-${r}-${c}`).classList.add('prev-ok'));
         }
     }
 }
@@ -362,8 +375,7 @@ function getGridPos(e) {
     const targetY = (e.clientY - Y_OFFSET + (CS / 2)) - rect.top;
     const c = Math.floor(targetX / (CS + GAP));
     const r = Math.floor(targetY / (CS + GAP));
-    if (r >= 0 && r < ROWS && c >= 0 && c < COLS) return {r, c};
-    return null;
+    return (r >= 0 && r < ROWS && c >= 0 && c < COLS) ? {r, c} : null;
 }
 
 function endDrag(e) {
@@ -379,13 +391,13 @@ function endDrag(e) {
             });
             pieces[dragSlot] = null;
             score += cells.length;
+            playSFX('place');
             checkLines();
         }
     }
     document.getElementById('dragGhost').style.display = 'none';
     if(pieces.every(p => p === null)) spawnPieces();
-    renderTray(); 
-    updateStats();
+    renderTray(); updateStats();
     if(!hasMoves()) gameOver();
     window.onpointermove = null; window.onpointerup = null;
 }
@@ -399,21 +411,15 @@ function checkLines() {
     let rl = [], cl = [];
     for(let r=0; r<ROWS; r++) if(grid[r].every(c => c !== null)) rl.push(r);
     for(let c=0; c<COLS; c++) if(grid.every(r => r[c] !== null)) cl.push(c);
-    
     if(rl.length > 0 || cl.length > 0) {
-        // SUARA PINTAR SEKALI
-        speakFunny("Pintar sekali!", "pintar");
-        
+        playSFX('clear');
         rl.forEach(r => { for(let c=0; c<COLS; c++) grid[r][c] = null; });
         cl.forEach(c => { for(let r=0; r<ROWS; r++) grid[r][c] = null; });
         score += (rl.length + cl.length) * 100;
-        
         setTimeout(() => {
-            for(let r=0; r<ROWS; r++) for(let c=0; c<COLS; c++) {
-                if(!grid[r][c]) {
-                    const el = document.getElementById(`cell-${r}-${c}`);
-                    el.style.background = ''; el.style.boxShadow = '';
-                }
+            for(let r=0; r<ROWS; r++) for(let c=0; c<COLS; c++) if(!grid[r][c]) {
+                const el = document.getElementById(`cell-${r}-${c}`);
+                el.style.background = ''; el.style.boxShadow = '';
             }
         }, 200);
     }
@@ -432,13 +438,12 @@ function hasMoves() {
 
 function updateStats() {
     document.getElementById('scoreVal').textContent = score;
-    if(score > best) { best = score; localStorage.setItem('dj_blast_best', best); }
+    if(score > best) { best = score; localStorage.setItem('zen_blast_best', best); }
     document.getElementById('bestVal').textContent = best;
 }
 
 function gameOver() {
-    // SUARA KONYOL BANGET
-    speakFunny("Yah, konyol banget!", "konyol");
+    playSFX('over');
     document.getElementById('finalScore').textContent = score;
     document.getElementById('overlay').classList.add('show');
 }
@@ -455,8 +460,7 @@ function resize() {
 }
 
 window.onresize = resize;
-resize(); 
-newGame();
+resize(); newGame();
 </script>
 </body>
 </html>
