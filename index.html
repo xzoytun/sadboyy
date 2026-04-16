@@ -3,20 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Block Blast Pro Max</title>
+    <title>Block Blast Pro Max Ultra</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap');
 
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         :root {
-            --bg: #0a0b14;
-            --bg2: #161829;
-            --surface: #22253f;
-            --border: rgba(255,255,255,0.08);
+            --bg: #05060f;
+            --bg2: #121425;
+            --surface: #1d203f;
+            --border: rgba(255,255,255,0.1);
             --text: #ffffff;
             --text2: #a0a0c0;
-            --radius: 20px;
+            --accent: #4cc9f0;
+            --accent2: #c77dff;
             --cs: 44px; 
             --gap: 5px;
         }
@@ -34,16 +35,16 @@
 
         .glow-bg {
             position: fixed; inset: 0;
-            background: radial-gradient(circle at 20% 20%, rgba(76,201,240,0.15) 0%, transparent 40%),
-                        radial-gradient(circle at 80% 80%, rgba(199,125,255,0.15) 0%, transparent 40%);
+            background: radial-gradient(circle at 10% 10%, rgba(76,201,240,0.2) 0%, transparent 40%),
+                        radial-gradient(circle at 90% 90%, rgba(199,125,255,0.2) 0%, transparent 40%);
             z-index: -1;
         }
 
         .app {
             display: flex; flex-direction: column;
-            align-items: center; gap: 20px;
+            align-items: center; gap: 15px;
             width: 100%; max-width: 450px;
-            padding: 20px;
+            padding: 15px;
         }
 
         .header {
@@ -51,38 +52,36 @@
             justify-content: space-between; width: 100%;
         }
 
+        .logo-wrap { display: flex; align-items: center; gap: 10px; }
         .logo {
-            font-size: 24px; font-weight: 900;
-            background: linear-gradient(135deg, #4cc9f0, #c77dff);
+            font-size: 20px; font-weight: 900;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 8px rgba(76,201,240,0.4));
+            text-shadow: 0 0 15px rgba(76,201,240,0.5);
         }
 
         .music-btn {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            width: 40px; height: 40px;
-            border-radius: 12px;
+            background: var(--surface); border: 1px solid var(--border);
+            width: 40px; height: 40px; border-radius: 12px;
             display: flex; align-items: center; justify-content: center;
-            cursor: pointer; font-size: 18px;
-            transition: 0.2s;
+            cursor: pointer; font-size: 18px; transition: 0.2s;
         }
+        .music-btn.active { border-color: var(--accent); box-shadow: 0 0 10px var(--accent); }
 
-        .music-btn:active { transform: scale(0.9); }
-
-        .stats { display: flex; gap: 10px; }
+        .stats { display: flex; gap: 8px; }
         .stat-card {
             background: var(--surface); border: 1px solid var(--border);
-            border-radius: 12px; padding: 6px 14px; text-align: center;
+            border-radius: 12px; padding: 4px 12px; text-align: center;
+            min-width: 70px;
         }
-        .stat-card .label { font-size: 9px; text-transform: uppercase; color: var(--text2); letter-spacing: 0.5px; }
-        .stat-card .value { font-size: 18px; font-weight: 900; }
+        .stat-card .label { font-size: 8px; text-transform: uppercase; color: var(--text2); font-weight: 700; }
+        .stat-card .value { font-size: 18px; font-weight: 900; color: #fff; }
 
-        /* Grid */
+        /* Grid System */
         .grid-wrap {
             background: var(--surface); border: 4px solid var(--surface);
-            border-radius: 12px; padding: 5px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            border-radius: 14px; padding: 5px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
         }
 
         #grid {
@@ -100,52 +99,51 @@
 
         .cell.prev-ok { 
             background: rgba(255,255,255,0.2) !important; 
-            transform: scale(0.9);
-            box-shadow: inset 0 0 10px rgba(255,255,255,0.2);
+            transform: scale(0.85);
+            border: 1px solid rgba(255,255,255,0.4);
         }
 
         .cell.clearing { animation: clearAnim 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
 
         @keyframes clearAnim {
-            0% { transform: scale(1); filter: brightness(2.5) white; }
+            0% { transform: scale(1); filter: brightness(3); background: white; }
             100% { transform: scale(0); opacity: 0; }
         }
 
-        /* Tray pieces */
+        /* Tray */
         .tray {
-            background: var(--surface); border-radius: var(--radius);
-            padding: 20px 10px; width: 100%;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            background: var(--surface); border-radius: 20px;
+            padding: 15px 5px; width: 100%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
         }
 
         .tray-slots { display: flex; justify-content: space-around; align-items: center; height: 100px; }
 
         .piece-slot {
             width: 100px; height: 100px; display: flex; align-items: center;
-            justify-content: center; background: rgba(0,0,0,0.2);
-            border-radius: 15px; cursor: grab; transition: transform 0.2s;
+            justify-content: center; background: rgba(0,0,0,0.25);
+            border-radius: 15px; cursor: grab;
         }
-        .piece-slot:active { cursor: grabbing; }
 
-        /* Ghost Follower */
         #dragGhost {
             position: fixed; pointer-events: none; z-index: 9999;
-            display: none; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
-            transform: scale(1.05);
+            display: none; filter: drop-shadow(0 15px 30px rgba(0,0,0,0.6));
+            transform: scale(1.1);
         }
 
         .overlay {
             display: none; position: fixed; inset: 0; z-index: 10000;
-            background: rgba(10,11,20,0.95); backdrop-filter: blur(15px);
+            background: rgba(5,6,15,0.95); backdrop-filter: blur(20px);
             align-items: center; justify-content: center; flex-direction: column;
+            text-align: center; padding: 20px;
         }
         .overlay.show { display: flex; }
 
         .btn {
-            padding: 16px 45px; border-radius: 50px; border: none;
-            background: linear-gradient(135deg, #4cc9f0, #c77dff);
-            color: white; font-weight: 900; cursor: pointer; font-size: 18px;
-            box-shadow: 0 8px 20px rgba(76,201,240,0.4);
+            padding: 18px 50px; border-radius: 50px; border: none;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: white; font-weight: 900; cursor: pointer; font-size: 20px;
+            box-shadow: 0 10px 25px rgba(76,201,240,0.4);
             transition: 0.2s;
         }
         .btn:active { transform: scale(0.95); }
@@ -157,18 +155,21 @@
 <div id="dragGhost"></div>
 
 <div class="overlay" id="overlay">
-    <h1 style="font-size:50px; margin-bottom:10px; letter-spacing: -1px;">GAME OVER</h1>
-    <p style="margin-bottom:30px; font-size: 22px; color: var(--text2)">Skor kamu: <span id="finalScore" style="color:white; font-weight:900">0</span></p>
-    <button class="btn" onclick="newGame()">MAIN LAGI</button>
+    <h2 id="overTitle" style="color:var(--accent2); font-size: 16px; text-transform: uppercase; letter-spacing: 4px; margin-bottom: 10px;">Game Over</h2>
+    <h1 style="font-size:60px; margin-bottom:10px; line-height: 1;">SKOR<br><span id="finalScore" style="color:white">0</span></h1>
+    <p style="margin-bottom:30px; font-size: 18px; color: var(--text2)">Terbaik: <span id="finalBest" style="color:var(--accent)">0</span></p>
+    <button class="btn" onclick="newGame()">COBA LAGI</button>
 </div>
 
 <div class="app">
     <div class="header">
-        <div class="music-btn" onclick="toggleMusic()"><span id="musicIcon">🔇</span></div>
-        <div class="logo">BLOCK BLAST ✨</div>
+        <div class="logo-wrap">
+            <div class="music-btn" id="mBtn" onclick="toggleMusic()">🔇</div>
+            <div class="logo">PRO MAX ✨</div>
+        </div>
         <div class="stats">
-            <div class="stat-card"><div class="label">Skor</div><div class="value" id="scoreVal">0</div></div>
-            <div class="stat-card"><div class="label">Terbaik</div><div class="value" id="bestVal">0</div></div>
+            <div class="stat-card"><div class="label">SKOR</div><div class="value" id="scoreVal">0</div></div>
+            <div class="stat-card"><div class="label">TERBAIK</div><div class="value" id="bestVal">0</div></div>
         </div>
     </div>
 
@@ -186,82 +187,122 @@
 </div>
 
 <script>
-/** 
- * AUDIO & MUSIC ENGINE
+/**
+ * AUDIO ENGINE - PROFESSIONAL SYNTH
  */
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+let audioCtx;
 let musicPlaying = false;
-let musicTimer = null;
-let beatStep = 0;
-const scale = [220, 261.63, 293.66, 329.63, 392.00, 440]; // A Minor Pentatonic
+let musicLoop;
+let beatCount = 0;
 
-function playMusicTick() {
+// Chord Progression: Am - F - C - G
+const chords = [
+    [220.00, 261.63, 329.63], // Am
+    [174.61, 220.00, 261.63], // F
+    [261.63, 329.63, 392.00], // C
+    [196.00, 246.94, 293.66]  // G
+];
+
+function initAudio() {
+    if (!audioCtx) audioCtx = new AudioContext();
+}
+
+function playMusic() {
     if (!musicPlaying) return;
     const now = audioCtx.currentTime;
-    
-    // Kick Drum
-    if (beatStep % 4 === 0) {
+    const chordIdx = Math.floor(beatCount / 8) % chords.length;
+    const currentChord = chords[chordIdx];
+
+    // 1. Bassline (Setiap beat ganjil)
+    if (beatCount % 2 === 0) {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(currentChord[0] / 2, now);
+        gain.gain.setValueAtTime(0.08, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        osc.start(); osc.stop(now + 0.5);
+    }
+
+    // 2. Rhythm Synth
+    if (beatCount % 4 === 0) {
+        currentChord.forEach(freq => {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(freq, now);
+            gain.gain.setValueAtTime(0.03, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 1);
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.start(); osc.stop(now + 1);
+        });
+    }
+
+    // 3. Kick Drum (Setiap beat 1 & 3)
+    if (beatCount % 4 === 0) {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.frequency.setValueAtTime(100, now);
+        osc.frequency.exponentialRampToValueAtTime(0.01, now + 0.1);
+        gain.gain.setValueAtTime(0.1, now);
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        osc.start(); osc.stop(now + 0.1);
+    }
+
+    beatCount++;
+    musicLoop = setTimeout(playMusic, 250); // 120 BPM
+}
+
+function toggleMusic() {
+    initAudio();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    musicPlaying = !musicPlaying;
+    const btn = document.getElementById('mBtn');
+    btn.textContent = musicPlaying ? '🔊' : '🔇';
+    btn.classList.toggle('active', musicPlaying);
+    if (musicPlaying) playMusic();
+    else clearTimeout(musicLoop);
+}
+
+function playSFX(type) {
+    if (!audioCtx) return;
+    const now = audioCtx.currentTime;
+
+    if (type === 'place') {
         const o = audioCtx.createOscillator();
         const g = audioCtx.createGain();
-        o.frequency.setValueAtTime(100, now);
-        o.frequency.exponentialRampToValueAtTime(0.01, now + 0.1);
-        g.gain.setValueAtTime(0.15, now);
-        g.gain.linearRampToValueAtTime(0, now + 0.1);
+        o.frequency.setValueAtTime(150, now);
+        o.frequency.exponentialRampToValueAtTime(40, now + 0.1);
+        g.gain.setValueAtTime(0.2, now);
         o.connect(g); g.connect(audioCtx.destination);
         o.start(); o.stop(now + 0.1);
     }
 
-    // Synth Melody
-    if (beatStep % 4 === 0) {
-        const o = audioCtx.createOscillator();
-        const g = audioCtx.createGain();
-        o.type = 'triangle';
-        const freq = scale[Math.floor(Math.random() * scale.length)];
-        o.frequency.setValueAtTime(freq, now);
-        g.gain.setValueAtTime(0.03, now);
-        g.gain.exponentialRampToValueAtTime(0.001, now + 0.8);
-        o.connect(g); g.connect(audioCtx.destination);
-        o.start(); o.stop(now + 0.8);
-    }
-
-    beatStep = (beatStep + 1) % 16;
-    musicTimer = setTimeout(playMusicTick, 250); // Tempo 120bpm
-}
-
-function toggleMusic() {
-    if (audioCtx.state === 'suspended') audioCtx.resume();
-    musicPlaying = !musicPlaying;
-    document.getElementById('musicIcon').textContent = musicPlaying ? '🔊' : '🔇';
-    if (musicPlaying) playMusicTick();
-    else clearTimeout(musicTimer);
-}
-
-function playSFX(type) {
-    if (audioCtx.state === 'suspended') audioCtx.resume();
-    const now = audioCtx.currentTime;
-
-    if (type === 'place') {
-        const o1 = audioCtx.createOscillator();
-        const g1 = audioCtx.createGain();
-        o1.frequency.setValueAtTime(120, now);
-        o1.frequency.exponentialRampToValueAtTime(0.01, now + 0.15);
-        g1.gain.setValueAtTime(0.3, now);
-        g1.gain.linearRampToValueAtTime(0, now + 0.15);
-        o1.connect(g1); g1.connect(audioCtx.destination);
-        o1.start(); o1.stop(now + 0.15);
-    }
-
     if (type === 'clear') {
-        [0, 0.07, 0.14].forEach((d, i) => {
+        [0, 0.08, 0.16].forEach((d, i) => {
             const o = audioCtx.createOscillator();
             const g = audioCtx.createGain();
             o.type = 'sine';
-            o.frequency.setValueAtTime(500 + (i * 200), now + d);
+            o.frequency.setValueAtTime(440 * (1 + i * 0.25), now + d);
             g.gain.setValueAtTime(0.1, now + d);
-            g.gain.exponentialRampToValueAtTime(0.001, now + d + 0.4);
+            g.gain.exponentialRampToValueAtTime(0.001, now + d + 0.5);
             o.connect(g); g.connect(audioCtx.destination);
-            o.start(now + d); o.stop(now + d + 0.4);
+            o.start(now + d); o.stop(now + d + 0.5);
         });
+    }
+
+    if (type === 'gameover') {
+        const o = audioCtx.createOscillator();
+        const g = audioCtx.createGain();
+        o.type = 'sawtooth';
+        o.frequency.setValueAtTime(200, now);
+        o.frequency.exponentialRampToValueAtTime(50, now + 1);
+        g.gain.setValueAtTime(0.2, now);
+        g.gain.linearRampToValueAtTime(0, now + 1);
+        o.connect(g); g.connect(audioCtx.destination);
+        o.start(); o.stop(now + 1);
     }
 }
 
@@ -269,7 +310,7 @@ function playSFX(type) {
  * GAME ENGINE
  */
 const ROWS = 8, COLS = 8;
-let grid = [], score = 0, best = parseInt(localStorage.getItem('bb_pro_best') || '0');
+let grid = [], score = 0, best = parseInt(localStorage.getItem('bb_ultra_best') || '0');
 let pieces = [null, null, null], dragPiece = null, dragSlot = null;
 let CS = 44, GAP = 5;
 
@@ -283,12 +324,11 @@ const COLORS = [
 
 const SHAPES = [
     [[0,0]], // Dot
-    [[0,0],[0,1]], [[0,0],[1,0]], // Line 2
+    [[0,0],[0,1]], [[0,0],[1,0]], // Lines
     [[0,0],[0,1],[1,0],[1,1]], // Square
-    [[0,0],[0,1],[0,2]], [[0,0],[1,0],[2,0]], // Line 3
+    [[0,0],[0,1],[0,2]], [[0,0],[1,0],[2,0]],
     [[0,0],[1,0],[1,1]], [[0,0],[0,1],[1,1]], // L Small
-    [[0,0],[1,0],[2,0],[2,1]], [[0,0],[0,1],[0,2],[1,2]], // L Big
-    [[0,0],[1,0],[2,0]], [[0,1],[1,1],[2,1]], // Line 3 vert
+    [[0,0],[1,0],[2,0],[2,1]], [[0,1],[1,1],[2,1],[2,0]], // L Big
     [[0,0],[0,1],[0,2],[0,3]], [[0,0],[1,0],[2,0],[3,0]] // Line 4
 ];
 
@@ -327,7 +367,6 @@ function renderTray() {
         const maxC = Math.max(...p.shape.map(s => s[1]));
         container.style.gridTemplateColumns = `repeat(${maxC+1}, 18px)`;
         container.style.gap = '3px';
-
         for(let r=0; r<=maxR; r++) {
             for(let c=0; c<=maxC; c++) {
                 const dot = document.createElement('div');
@@ -342,33 +381,26 @@ function renderTray() {
 }
 
 function startDrag(e, idx) {
+    initAudio();
     if(!pieces[idx]) return;
-    if(!musicPlaying && !musicTimer && beatStep === 0) toggleMusic(); // Auto start music
-    
     dragPiece = pieces[idx];
     dragSlot = idx;
     const ghost = document.getElementById('dragGhost');
     ghost.style.display = 'block';
     ghost.innerHTML = '';
-    
     const container = document.createElement('div');
     container.style.display = 'grid';
     const maxR = Math.max(...dragPiece.shape.map(s => s[0]));
     const maxC = Math.max(...dragPiece.shape.map(s => s[1]));
     container.style.gridTemplateColumns = `repeat(${maxC+1}, ${CS}px)`;
     container.style.gap = `${GAP}px`;
-
-    for(let r=0; r<=maxR; r++) {
-        for(let c=0; c<=maxC; c++) {
-            const d = document.createElement('div');
-            d.style.width = CS+'px'; d.style.height = CS+'px'; d.style.borderRadius='6px';
-            if(dragPiece.shape.some(s=>s[0]===r && s[1]===c)) {
-                d.style.background = dragPiece.color.f;
-                d.style.boxShadow = `0 0 15px ${dragPiece.color.g}`;
-            }
-            container.appendChild(d);
-        }
-    }
+    dragPiece.shape.forEach(() => {
+        const d = document.createElement('div');
+        d.style.width = CS+'px'; d.style.height = CS+'px'; d.style.borderRadius='6px';
+        d.style.background = dragPiece.color.f;
+        d.style.boxShadow = `0 0 20px ${dragPiece.color.g}`;
+        container.appendChild(d);
+    });
     ghost.appendChild(container);
     moveGhost(e);
     window.onpointermove = moveGhost;
@@ -377,10 +409,8 @@ function startDrag(e, idx) {
 
 function moveGhost(e) {
     const ghost = document.getElementById('dragGhost');
-    // Offset agar balok terlihat di atas jari (Mobile friendly)
     const ox = CS * 1.5;
     const oy = e.pointerType === 'touch' ? CS * 2.5 : CS / 2;
-    
     ghost.style.left = (e.clientX - ox) + 'px';
     ghost.style.top = (e.clientY - oy) + 'px';
 
@@ -403,7 +433,7 @@ function endDrag(e) {
                 grid[r][c] = dragPiece.color;
                 const el = document.getElementById(`cell-${r}-${c}`);
                 el.style.background = dragPiece.color.f;
-                el.style.boxShadow = `inset 0 0 10px rgba(255,255,255,0.3), 0 5px 15px ${dragPiece.color.g}`;
+                el.style.boxShadow = `inset 0 0 10px rgba(255,255,255,0.4), 0 5px 15px ${dragPiece.color.g}`;
             });
             pieces[dragSlot] = null;
             score += cells.length;
@@ -411,15 +441,11 @@ function endDrag(e) {
             checkLines();
         }
     }
-
     document.getElementById('dragGhost').style.display = 'none';
     if(pieces.every(p => p === null)) spawnPieces();
     renderTray();
     updateStats();
-    if(!hasMoves()) {
-        document.getElementById('finalScore').textContent = score;
-        document.getElementById('overlay').classList.add('show');
-    }
+    if(!hasMoves()) gameOver();
     window.onpointermove = null;
     window.onpointerup = null;
 }
@@ -430,14 +456,12 @@ function getGridPos(e) {
     const oy = e.pointerType === 'touch' ? CS * 2.5 : CS / 2;
     const x = Math.floor((e.clientX - ox - r.left + CS/2) / (CS + GAP));
     const y = Math.floor((e.clientY - oy - r.top + CS/2) / (CS + GAP));
-    if(x>=0 && x<COLS && y>=0 && y<ROWS) return {r:y, c:x};
-    return null;
+    return (x>=0 && x<COLS && y>=0 && y<ROWS) ? {r:y, c:x} : null;
 }
 
 function getShapeCells(p, r, c) {
     const cells = p.shape.map(([sr, sc]) => [r + sr, c + sc]);
-    if(cells.some(([rr, cc]) => rr<0 || rr>=ROWS || cc<0 || cc>=COLS)) return null;
-    return cells;
+    return cells.some(([rr, cc]) => rr<0 || rr>=ROWS || cc<0 || cc>=COLS) ? null : cells;
 }
 
 function checkLines() {
@@ -448,25 +472,15 @@ function checkLines() {
     if(rl.length > 0 || cl.length > 0) {
         playSFX('clear');
         rl.forEach(r => {
-            for(let c=0; c<COLS; c++) {
-                grid[r][c] = null;
-                document.getElementById(`cell-${r}-${c}`).classList.add('clearing');
-            }
+            for(let c=0; c<COLS; c++) { grid[r][c] = null; document.getElementById(`cell-${r}-${c}`).classList.add('clearing'); }
         });
         cl.forEach(c => {
-            for(let r=0; r<ROWS; r++) {
-                grid[r][c] = null;
-                document.getElementById(`cell-${r}-${c}`).classList.add('clearing');
-            }
+            for(let r=0; r<ROWS; r++) { grid[r][c] = null; document.getElementById(`cell-${r}-${c}`).classList.add('clearing'); }
         });
         setTimeout(() => {
-            for(let r=0; r<ROWS; r++) {
-                for(let c=0; c<COLS; c++) {
-                    if(!grid[r][c]) {
-                        const el = document.getElementById(`cell-${r}-${c}`);
-                        el.className = 'cell'; el.style.background = ''; el.style.boxShadow = '';
-                    }
-                }
+            for(let r=0; r<ROWS; r++) for(let c=0; c<COLS; c++) if(!grid[r][c]) {
+                const el = document.getElementById(`cell-${r}-${c}`);
+                el.className = 'cell'; el.style.background = ''; el.style.boxShadow = '';
             }
             score += (rl.length + cl.length) * 100;
             updateStats();
@@ -477,19 +491,33 @@ function checkLines() {
 function hasMoves() {
     return pieces.some(p => {
         if(!p) return false;
-        for(let r=0; r<ROWS; r++) {
-            for(let c=0; c<COLS; c++) {
-                const cells = getShapeCells(p, r, c);
-                if(cells && cells.every(([rr,cc]) => !grid[rr][cc])) return true;
-            }
+        for(let r=0; r<ROWS; r++) for(let c=0; c<COLS; c++) {
+            const cells = getShapeCells(p, r, c);
+            if(cells && cells.every(([rr,cc]) => !grid[rr][cc])) return true;
         }
         return false;
     });
 }
 
+function gameOver() {
+    playSFX('gameover');
+    // Final check for high score
+    if(score > best) {
+        best = score;
+        localStorage.setItem('bb_ultra_best', best);
+    }
+    document.getElementById('finalScore').textContent = score;
+    document.getElementById('finalBest').textContent = best;
+    document.getElementById('overlay').classList.add('show');
+}
+
 function updateStats() {
     document.getElementById('scoreVal').textContent = score;
-    if(score > best) { best = score; localStorage.setItem('bb_pro_best', best); }
+    // Update best score real-time if exceeded
+    if(score > best) {
+        best = score;
+        localStorage.setItem('bb_ultra_best', best);
+    }
     document.getElementById('bestVal').textContent = best;
 }
 
@@ -502,7 +530,7 @@ function newGame() {
 }
 
 function resize() {
-    const size = Math.min(window.innerWidth - 50, 420);
+    const size = Math.min(window.innerWidth - 40, 420);
     CS = Math.floor(size / 8) - GAP;
     document.documentElement.style.setProperty('--cs', CS + 'px');
 }
