@@ -86,8 +86,6 @@ body { display: flex; align-items: center; justify-content: center; }
   transition: background 0.2s, transform 0.1s;
 }
 
-/* Animasi & Preview */
-.cell.filled { border: none; }
 .cell.prev-ok { background: rgba(255,255,255,0.15) !important; transform: scale(0.95); border: 1px solid rgba(255,255,255,0.3); }
 .cell.clearing { animation: clearAnim 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
 
@@ -111,7 +109,6 @@ body { display: flex; align-items: center; justify-content: center; }
 .piece-slot:active { transform: scale(0.9); }
 .piece-slot.dragging-src { opacity: 0.2; }
 
-/* Ghost Follower */
 #dragGhost {
   position: fixed; pointer-events: none; z-index: 9999;
   display: none; transform: scale(1.1); filter: drop-shadow(0 10px 20px rgba(0,0,0,0.4));
@@ -131,7 +128,6 @@ body { display: flex; align-items: center; justify-content: center; }
   box-shadow: 0 10px 25px rgba(76,201,240,0.4);
   transition: transform 0.2s;
 }
-.btn:hover { transform: translateY(-3px); }
 </style>
 </head>
 <body>
@@ -169,7 +165,7 @@ body { display: flex; align-items: center; justify-content: center; }
 
 <script>
 /** 
- * PRO AUDIO ENGINE
+ * PRO AUDIO ENGINE (UPDATED)
  */
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
@@ -181,38 +177,50 @@ function playSound(type) {
     const osc = audioCtx.createOscillator();
     const g = audioCtx.createGain();
     osc.type = 'sine';
-    osc.frequency.setValueAtTime(300, now);
-    osc.frequency.exponentialRampToValueAtTime(600, now + 0.1);
-    g.gain.setValueAtTime(0.2, now);
-    g.gain.linearRampToValueAtTime(0, now + 0.1);
+    osc.frequency.setValueAtTime(400, now);
+    osc.frequency.exponentialRampToValueAtTime(800, now + 0.05);
+    g.gain.setValueAtTime(0.1, now);
+    g.gain.linearRampToValueAtTime(0, now + 0.05);
     osc.connect(g); g.connect(audioCtx.destination);
-    osc.start(); osc.stop(now + 0.1);
+    osc.start(); osc.stop(now + 0.05);
   }
 
   if (type === 'place') {
-    // Synth Kick + Click
-    const osc = audioCtx.createOscillator();
-    const g = audioCtx.createGain();
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(150, now);
-    osc.frequency.exponentialRampToValueAtTime(40, now + 0.15);
-    g.gain.setValueAtTime(0.4, now);
-    g.gain.linearRampToValueAtTime(0, now + 0.15);
-    osc.connect(g); g.connect(audioCtx.destination);
-    osc.start(); osc.stop(now + 0.15);
+    // LAYER 1: Deep Thud
+    const osc1 = audioCtx.createOscillator();
+    const g1 = audioCtx.createGain();
+    osc1.type = 'sine';
+    osc1.frequency.setValueAtTime(120, now);
+    osc1.frequency.exponentialRampToValueAtTime(0.01, now + 0.15);
+    g1.gain.setValueAtTime(0.3, now);
+    g1.gain.linearRampToValueAtTime(0, now + 0.15);
+    osc1.connect(g1); g1.connect(audioCtx.destination);
+
+    // LAYER 2: High Click
+    const osc2 = audioCtx.createOscillator();
+    const g2 = audioCtx.createGain();
+    osc2.type = 'triangle';
+    osc2.frequency.setValueAtTime(1000, now);
+    osc2.frequency.exponentialRampToValueAtTime(200, now + 0.05);
+    g2.gain.setValueAtTime(0.05, now);
+    g2.gain.linearRampToValueAtTime(0, now + 0.05);
+    osc2.connect(g2); g2.connect(audioCtx.destination);
+
+    osc1.start(); osc1.stop(now + 0.15);
+    osc2.start(); osc2.stop(now + 0.05);
   }
 
   if (type === 'clear') {
-    // Arpeggio Power-up
-    [0, 0.05, 0.1, 0.15].forEach((delay, i) => {
+    [0, 0.05, 0.1, 0.15, 0.2].forEach((delay, i) => {
       const osc = audioCtx.createOscillator();
       const g = audioCtx.createGain();
-      osc.type = 'triangle';
-      osc.frequency.setValueAtTime(400 + (i * 200), now + delay);
+      osc.type = 'sine';
+      const freqs = [523.25, 659.25, 783.99, 987.77, 1046.50];
+      osc.frequency.setValueAtTime(freqs[i], now + delay);
       g.gain.setValueAtTime(0.1, now + delay);
-      g.gain.exponentialRampToValueAtTime(0.001, now + delay + 0.3);
+      g.gain.exponentialRampToValueAtTime(0.001, now + delay + 0.5);
       osc.connect(g); g.connect(audioCtx.destination);
-      osc.start(now + delay); osc.stop(now + delay + 0.3);
+      osc.start(now + delay); osc.stop(now + delay + 0.5);
     });
   }
 }
@@ -243,11 +251,11 @@ const COLORS = [
 ];
 
 const SHAPES = [
-  [[0,0]], [[0,0],[0,1]], [[0,0],[1,0]], [[0,0],[0,1],[1,0],[1,1]], // Dot, Line2, Square
-  [[0,0],[0,1],[0,2]], [[0,0],[1,0],[2,0]], // Line 3
-  [[0,0],[1,0],[1,1]], [[0,0],[0,1],[1,1]], // L Small
-  [[0,0],[1,0],[2,0],[2,1]], [[0,1],[1,1],[2,1],[2,0]], // L Big
-  [[0,0],[0,1],[0,2],[0,3]], [[0,0],[1,0],[2,0],[3,0]]  // Line 4
+  [[0,0]], [[0,0],[0,1]], [[0,0],[1,0]], [[0,0],[0,1],[1,0],[1,1]],
+  [[0,0],[0,1],[0,2]], [[0,0],[1,0],[2,0]],
+  [[0,0],[1,0],[1,1]], [[0,0],[0,1],[1,1]],
+  [[0,0],[1,0],[2,0],[2,1]], [[0,1],[1,1],[2,1],[2,0]],
+  [[0,0],[0,1],[0,2],[0,3]], [[0,0],[1,0],[2,0],[3,0]]
 ];
 
 function initGrid() {
@@ -278,7 +286,6 @@ function renderTray() {
     const slot = document.getElementById(`slot${i}`);
     slot.innerHTML = '';
     if(!pieces[i]) continue;
-
     const p = pieces[i];
     const container = document.createElement('div');
     container.style.display = 'grid';
@@ -286,13 +293,11 @@ function renderTray() {
     const maxC = Math.max(...p.shape.map(s => s[1]));
     container.style.gridTemplateColumns = `repeat(${maxC+1}, 18px)`;
     container.style.gap = '3px';
-
     for(let r=0; r<=maxR; r++) {
       for(let c=0; c<=maxC; c++) {
         const dot = document.createElement('div');
         dot.style.width = '18px'; dot.style.height = '18px'; dot.style.borderRadius = '4px';
-        const active = p.shape.some(s => s[0]===r && s[1]===c);
-        dot.style.background = active ? p.color.fill : 'transparent';
+        dot.style.background = p.shape.some(s => s[0]===r && s[1]===c) ? p.color.fill : 'transparent';
         container.appendChild(dot);
       }
     }
@@ -306,18 +311,15 @@ function startDrag(e, idx) {
   playSound('pickup');
   dragPiece = pieces[idx];
   dragSlot = idx;
-  
   const ghost = document.getElementById('dragGhost');
   ghost.style.display = 'block';
   ghost.innerHTML = '';
-  
   const container = document.createElement('div');
   container.style.display = 'grid';
   const maxR = Math.max(...dragPiece.shape.map(s => s[0]));
   const maxC = Math.max(...dragPiece.shape.map(s => s[1]));
   container.style.gridTemplateColumns = `repeat(${maxC+1}, ${CS}px)`;
   container.style.gap = `${GAP}px`;
-
   for(let r=0; r<=maxR; r++) {
     for(let c=0; c<=maxC; c++) {
       const d = document.createElement('div');
@@ -325,14 +327,11 @@ function startDrag(e, idx) {
       if(dragPiece.shape.some(s=>s[0]===r && s[1]===c)) {
         d.style.background = dragPiece.color.fill;
         d.style.boxShadow = `0 0 15px ${dragPiece.color.glow}`;
-      } else {
-        d.style.background = 'transparent';
       }
       container.appendChild(d);
     }
   }
   ghost.appendChild(container);
-  
   moveGhost(e);
   document.getElementById(`slot${idx}`).classList.add('dragging-src');
   window.onpointermove = moveGhost;
@@ -341,23 +340,16 @@ function startDrag(e, idx) {
 
 function moveGhost(e) {
   const ghost = document.getElementById('dragGhost');
-  const isTouch = e.pointerType === 'touch';
-  
-  // Offset agar blok terlihat di atas jari saat touch
-  const offX = (CS * 1.5);
-  const offY = isTouch ? (CS * 2.5) : (CS / 2);
-
+  const offX = CS * 1.5;
+  const offY = e.pointerType === 'touch' ? CS * 2.5 : CS / 2;
   ghost.style.left = (e.clientX - offX) + 'px';
   ghost.style.top = (e.clientY - offY) + 'px';
-
   clearPreview();
   const pos = getGridPos(e);
   if(pos) {
     const cells = getShapeCells(dragPiece, pos.r, pos.c);
     if(cells && canPlace(cells)) {
-      cells.forEach(([pr, pc]) => {
-        document.getElementById(`cell-${pr}-${pc}`).classList.add('prev-ok');
-      });
+      cells.forEach(([pr, pc]) => document.getElementById(`cell-${pr}-${pc}`).classList.add('prev-ok'));
     }
   }
 }
@@ -373,34 +365,25 @@ function endDrag(e) {
       checkLines();
     }
   }
-
   if(pieces.every(p => p === null)) spawnPieces();
-  
   document.getElementById('dragGhost').style.display = 'none';
   document.querySelectorAll('.piece-slot').forEach(s => s.classList.remove('dragging-src'));
   clearPreview();
   renderTray();
-  
   if(!hasMoves()) gameOver();
-
   window.onpointermove = null;
   window.onpointerup = null;
 }
 
 function getGridPos(e) {
   const gridRect = document.getElementById('grid').getBoundingClientRect();
-  const isTouch = e.pointerType === 'touch';
-  const offX = (CS * 1.5);
-  const offY = isTouch ? (CS * 2.5) : (CS / 2);
-  
+  const offX = CS * 1.5;
+  const offY = e.pointerType === 'touch' ? CS * 2.5 : CS / 2;
   const x = (e.clientX - offX + CS/2) - gridRect.left;
   const y = (e.clientY - offY + CS/2) - gridRect.top;
-  
   const c = Math.floor(x / (CS + GAP));
   const r = Math.floor(y / (CS + GAP));
-  
-  if(r >= 0 && r < ROWS && c >= 0 && c < COLS) return {r, c};
-  return null;
+  return (r >= 0 && r < ROWS && c >= 0 && c < COLS) ? {r, c} : null;
 }
 
 function getShapeCells(p, r, c) {
@@ -409,9 +392,7 @@ function getShapeCells(p, r, c) {
   return cells;
 }
 
-function canPlace(cells) {
-  return cells.every(([r, c]) => grid[r][c] === null);
-}
+function canPlace(cells) { return cells.every(([r, c]) => grid[r][c] === null); }
 
 function placePiece(cells, color) {
   cells.forEach(([r, c]) => {
@@ -425,37 +406,25 @@ function placePiece(cells, color) {
   updateStats();
 }
 
-function clearPreview() {
-  document.querySelectorAll('.cell').forEach(c => c.classList.remove('prev-ok'));
-}
+function clearPreview() { document.querySelectorAll('.cell').forEach(c => c.classList.remove('prev-ok')); }
 
 function checkLines() {
   let rToClear = [], cToClear = [];
   for(let r=0; r<ROWS; r++) if(grid[r].every(cell => cell !== null)) rToClear.push(r);
   for(let c=0; c<COLS; c++) if(grid.every(row => row[c] !== null)) cToClear.push(c);
-
   const totalLines = rToClear.length + cToClear.length;
   if(totalLines > 0) {
     playSound('clear');
     speakFeedback(totalLines);
-
-    rToClear.forEach(r => {
-      for(let c=0; c<COLS; c++) document.getElementById(`cell-${r}-${c}`).classList.add('clearing');
-    });
-    cToClear.forEach(c => {
-      for(let r=0; r<ROWS; r++) document.getElementById(`cell-${r}-${c}`).classList.add('clearing');
-    });
-
+    rToClear.forEach(r => { for(let c=0; c<COLS; c++) document.getElementById(`cell-${r}-${c}`).classList.add('clearing'); });
+    cToClear.forEach(c => { for(let r=0; r<ROWS; r++) document.getElementById(`cell-${r}-${c}`).classList.add('clearing'); });
     setTimeout(() => {
       rToClear.forEach(r => { for(let c=0; c<COLS; c++) grid[r][c] = null; });
       cToClear.forEach(c => { for(let r=0; r<ROWS; r++) grid[r][c] = null; });
-      
       for(let r=0; r<8; r++) {
         for(let c=0; c<8; c++) {
           const el = document.getElementById(`cell-${r}-${c}`);
-          if(!grid[r][c]) {
-            el.className = 'cell'; el.style.background = ''; el.style.boxShadow = '';
-          }
+          if(!grid[r][c]) { el.className = 'cell'; el.style.background = ''; el.style.boxShadow = ''; }
         }
       }
       score += totalLines * 100;
@@ -468,11 +437,9 @@ function checkLines() {
 function hasMoves() {
   return pieces.some(p => {
     if(!p) return false;
-    for(let r=0; r<ROWS; r++) {
-      for(let c=0; c<COLS; c++) {
-        const cells = getShapeCells(p, r, c);
-        if(cells && canPlace(cells)) return true;
-      }
+    for(let r=0; r<ROWS; r++) for(let c=0; c<COLS; c++) {
+      const cells = getShapeCells(p, r, c);
+      if(cells && canPlace(cells)) return true;
     }
     return false;
   });
@@ -489,10 +456,7 @@ function updateStats() {
 }
 
 function newGame() {
-  score = 0;
-  initGrid();
-  spawnPieces();
-  updateStats();
+  score = 0; initGrid(); spawnPieces(); updateStats();
   document.getElementById('overlay').classList.remove('show');
 }
 
