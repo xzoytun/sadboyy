@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Block Blast DJ Edition</title>
+    <title>Block Blast DJ Edition - Fixed</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Nunito:wght@400;700&display=swap');
 
@@ -22,7 +22,7 @@
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            height: 100%; width: 100%;
+            height: 100vh; width: 100vw;
             background: var(--bg);
             font-family: 'Nunito', sans-serif;
             color: var(--text);
@@ -50,6 +50,7 @@
             align-items: center; gap: 15px;
             width: 100%; max-width: 450px;
             padding: 15px;
+            position: relative;
         }
 
         .logo-wrap { display: flex; align-items: center; gap: 10px; }
@@ -67,6 +68,7 @@
             display: flex; align-items: center; justify-content: center;
             cursor: pointer; font-size: 20px; transition: 0.3s;
             box-shadow: 0 0 15px rgba(0,0,0,0.5);
+            z-index: 10;
         }
         .music-btn.active { 
             border-color: var(--accent2); 
@@ -84,6 +86,7 @@
         .stat-card {
             background: rgba(22, 26, 54, 0.8); border: 1px solid var(--border);
             border-radius: 12px; padding: 6px 15px; text-align: center;
+            min-width: 80px;
         }
         .stat-card .label { font-size: 9px; letter-spacing: 1px; color: var(--accent); font-weight: 700; }
         .stat-card .value { font-size: 20px; font-weight: 900; font-family: 'Orbitron'; }
@@ -94,20 +97,46 @@
             box-shadow: 0 0 40px rgba(0,0,0,0.8);
         }
 
-        #grid { display: grid; grid-template-columns: repeat(8, var(--cs)); grid-template-rows: repeat(8, var(--cs)); gap: var(--gap); }
-        .cell { width: var(--cs); height: var(--cs); border-radius: 6px; background: var(--bg2); transition: 0.2s; }
-        .cell.prev-ok { background: rgba(255,255,255,0.2) !important; transform: scale(0.8); }
+        #grid { 
+            display: grid; 
+            grid-template-columns: repeat(8, var(--cs)); 
+            grid-template-rows: repeat(8, var(--cs)); 
+            gap: var(--gap); 
+        }
+        .cell { 
+            width: var(--cs); height: var(--cs); 
+            border-radius: 6px; background: var(--bg2); 
+            transition: background 0.2s, transform 0.1s; 
+        }
+        /* Style Bayangan Penempatan */
+        .cell.prev-ok { 
+            background: rgba(255, 255, 255, 0.25) !important; 
+            box-shadow: inset 0 0 10px rgba(255,255,255,0.5);
+            transform: scale(0.95);
+        }
 
-        .tray { background: rgba(22, 26, 54, 0.6); border-radius: 20px; padding: 15px 5px; width: 100%; border: 1px solid var(--border); }
+        .tray { 
+            background: rgba(22, 26, 54, 0.6); 
+            border-radius: 20px; padding: 15px 5px; 
+            width: 100%; border: 1px solid var(--border); 
+        }
         .tray-slots { display: flex; justify-content: space-around; align-items: center; height: 100px; }
         .piece-slot { width: 100px; height: 100px; display: flex; align-items: center; justify-content: center; cursor: grab; }
 
-        #dragGhost { position: fixed; pointer-events: none; z-index: 9999; display: none; }
+        /* Ghost yang ditarik */
+        #dragGhost { 
+            position: fixed; 
+            pointer-events: none; 
+            z-index: 9999; 
+            display: none; 
+            opacity: 0.9;
+        }
 
         .overlay {
             display: none; position: fixed; inset: 0; z-index: 10000;
             background: rgba(2,2,5,0.9); backdrop-filter: blur(15px);
             align-items: center; justify-content: center; flex-direction: column;
+            text-align: center;
         }
         .overlay.show { display: flex; }
         .btn {
@@ -115,6 +144,7 @@
             background: linear-gradient(135deg, var(--accent), var(--accent2));
             color: white; font-weight: 900; font-family: 'Orbitron'; cursor: pointer;
             box-shadow: 0 0 20px rgba(0, 242, 255, 0.5);
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -125,7 +155,7 @@
 
 <div class="overlay" id="overlay">
     <h1 style="font-family:'Orbitron'; font-size:40px; color:var(--accent2)">GAME OVER</h1>
-    <h2 id="finalScore" style="font-size:60px; margin: 20px 0;">0</h2>
+    <h2 id="finalScore" style="font-size:60px; margin: 10px 0;">0</h2>
     <button class="btn" onclick="newGame()">PLAY AGAIN</button>
 </div>
 
@@ -153,25 +183,24 @@
         </div>
     </div>
     
-    <p style="font-size: 10px; color: var(--accent); opacity: 0.7;">TIPS: AKTIFKAN HEADPHONE UNTUK BASS DJ</p>
+    <p style="font-size: 10px; color: var(--accent); opacity: 0.7; font-weight: bold;">TIPS: AKTIFKAN HEADPHONE UNTUK BASS DJ</p>
 </div>
 
 <script>
 /**
- * DJ BEAT ENGINE (WEB AUDIO)
+ * AUDIO ENGINE
  */
 let audioCtx;
 let isPlaying = false;
 let nextBeatTime = 0;
 let beatIndex = 0;
 const BPM = 124;
-const secondsPerBeat = 60 / BPM / 4; // 16th notes
+const secondsPerBeat = 60 / BPM / 4; 
 
 function initAudio() {
     if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 }
 
-// Suara Kick Drum (Bass)
 function playKick(time) {
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
@@ -183,7 +212,6 @@ function playKick(time) {
     osc.start(time); osc.stop(time + 0.5);
 }
 
-// Suara Hi-Hat
 function playHiHat(time) {
     const bufferSize = audioCtx.sampleRate * 0.05;
     const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
@@ -202,10 +230,8 @@ function playHiHat(time) {
 
 function scheduler() {
     while (nextBeatTime < audioCtx.currentTime + 0.1) {
-        // DJ Beat Logic (4/4 Kick & Hi-hats)
         if (beatIndex % 4 === 0) playKick(nextBeatTime);
         if (beatIndex % 2 === 0) playHiHat(nextBeatTime);
-        
         nextBeatTime += secondsPerBeat;
         beatIndex = (beatIndex + 1) % 16;
     }
@@ -225,7 +251,6 @@ function toggleMusic() {
     }
 }
 
-// SFX untuk game
 function playSFX(type) {
     if (!audioCtx || !isPlaying) return;
     const now = audioCtx.currentTime;
@@ -245,12 +270,15 @@ function playSFX(type) {
 }
 
 /**
- * GAME ENGINE CORE
+ * GAME ENGINE
  */
 const ROWS = 8, COLS = 8;
 let grid = [], score = 0, best = parseInt(localStorage.getItem('dj_blast_best') || '0');
 let pieces = [null, null, null], dragPiece = null, dragSlot = null;
 let CS = 44, GAP = 5;
+
+// Jarak blok di atas jari agar tidak tertutup saat drag (PENTING)
+const Y_OFFSET = 100; 
 
 const COLORS = [
     { f: '#00f2ff', g: 'rgba(0,242,255,0.5)' },
@@ -262,7 +290,8 @@ const COLORS = [
 const SHAPES = [
     [[0,0]], [[0,0],[0,1]], [[0,0],[1,0]], [[0,0],[0,1],[1,0],[1,1]],
     [[0,0],[0,1],[0,2]], [[0,0],[1,0],[2,0]], [[0,0],[1,0],[1,1]],
-    [[0,0],[1,0],[2,0],[2,1]], [[0,0],[0,1],[0,2],[0,3]]
+    [[0,0],[1,0],[2,0],[2,1]], [[0,0],[0,1],[0,2],[0,3]],
+    [[0,1],[1,0],[1,1],[1,2]]
 ];
 
 function initGrid() {
@@ -276,7 +305,12 @@ function initGrid() {
 }
 
 function spawnPieces() {
-    for(let i=0; i<3; i++) pieces[i] = { shape: SHAPES[Math.floor(Math.random()*SHAPES.length)], color: COLORS[Math.floor(Math.random()*COLORS.length)] };
+    for(let i=0; i<3; i++) {
+        pieces[i] = { 
+            shape: SHAPES[Math.floor(Math.random()*SHAPES.length)], 
+            color: COLORS[Math.floor(Math.random()*COLORS.length)] 
+        };
+    }
     renderTray();
 }
 
@@ -303,12 +337,15 @@ function renderTray() {
 function startDrag(e, idx) {
     if(!pieces[idx]) return;
     dragPiece = pieces[idx]; dragSlot = idx;
+    
     const ghost = document.getElementById('dragGhost');
     ghost.style.display = 'block'; ghost.innerHTML = '';
+    
     const container = document.createElement('div');
     container.style.display = 'grid';
     const maxR = Math.max(...dragPiece.shape.map(s => s[0])), maxC = Math.max(...dragPiece.shape.map(s => s[1]));
     container.style.gridTemplateColumns = `repeat(${maxC+1}, ${CS}px)`; container.style.gap = `${GAP}px`;
+    
     dragPiece.shape.forEach(([r, c]) => {
         const d = document.createElement('div');
         d.style.gridRow = r+1; d.style.gridColumn = c+1;
@@ -316,35 +353,57 @@ function startDrag(e, idx) {
         d.style.background = dragPiece.color.f; d.style.boxShadow = `0 0 20px ${dragPiece.color.g}`;
         container.appendChild(d);
     });
+    
     ghost.appendChild(container);
     moveGhost(e);
+    
     window.onpointermove = moveGhost;
     window.onpointerup = endDrag;
 }
 
 function moveGhost(e) {
     const ghost = document.getElementById('dragGhost');
-    ghost.style.left = (e.clientX - 50) + 'px'; ghost.style.top = (e.clientY - 120) + 'px';
     
+    // Posisi visual blok melayang (di atas jari)
+    const visualX = e.clientX - (CS / 2);
+    const visualY = e.clientY - Y_OFFSET;
+    
+    ghost.style.left = visualX + 'px';
+    ghost.style.top = visualY + 'px';
+    
+    // Update Bayangan di Grid (Highlight)
     document.querySelectorAll('.cell').forEach(c => c.classList.remove('prev-ok'));
+    
     const pos = getGridPos(e);
     if(pos) {
         const cells = getShapeCells(dragPiece, pos.r, pos.c);
         if(cells && cells.every(([r,c]) => !grid[r][c])) {
-            cells.forEach(([r,c]) => document.getElementById(`cell-${r}-${c}`).classList.add('prev-ok'));
+            cells.forEach(([r,c]) => {
+                const cellEl = document.getElementById(`cell-${r}-${c}`);
+                if(cellEl) cellEl.classList.add('prev-ok');
+            });
         }
     }
 }
 
 function getGridPos(e) {
     const rect = document.getElementById('grid').getBoundingClientRect();
-    const x = e.clientX - rect.left, y = e.clientY - 120 - rect.top;
-    const c = Math.floor(x / (CS + GAP)), r = Math.floor(y / (CS + GAP));
-    return (r>=0 && r<ROWS && c>=0 && c<COLS) ? {r,c} : null;
+    
+    // Kalkulasi koordinat berdasarkan posisi visual blok, bukan kursor jari
+    const targetX = e.clientX - rect.left;
+    const targetY = (e.clientY - Y_OFFSET + (CS / 2)) - rect.top;
+    
+    const c = Math.floor(targetX / (CS + GAP));
+    const r = Math.floor(targetY / (CS + GAP));
+    
+    if (r >= 0 && r < ROWS && c >= 0 && c < COLS) return {r, c};
+    return null;
 }
 
 function endDrag(e) {
     const pos = getGridPos(e);
+    let placed = false;
+
     if(pos) {
         const cells = getShapeCells(dragPiece, pos.r, pos.c);
         if(cells && cells.every(([r,c]) => !grid[r][c])) {
@@ -358,13 +417,21 @@ function endDrag(e) {
             score += cells.length;
             playSFX('place');
             checkLines();
+            placed = true;
         }
     }
+    
     document.getElementById('dragGhost').style.display = 'none';
+    document.querySelectorAll('.cell').forEach(c => c.classList.remove('prev-ok'));
+    
     if(pieces.every(p => p === null)) spawnPieces();
-    renderTray(); updateStats();
+    renderTray(); 
+    updateStats();
+    
     if(!hasMoves()) gameOver();
-    window.onpointermove = null; window.onpointerup = null;
+    
+    window.onpointermove = null; 
+    window.onpointerup = null;
 }
 
 function getShapeCells(p, r, c) {
@@ -376,15 +443,22 @@ function checkLines() {
     let rl = [], cl = [];
     for(let r=0; r<ROWS; r++) if(grid[r].every(c => c !== null)) rl.push(r);
     for(let c=0; c<COLS; c++) if(grid.every(r => r[c] !== null)) cl.push(c);
+    
     if(rl.length > 0 || cl.length > 0) {
         playSFX('clear');
         rl.forEach(r => { for(let c=0; c<COLS; c++) grid[r][c] = null; });
         cl.forEach(c => { for(let r=0; r<ROWS; r++) grid[r][c] = null; });
         score += (rl.length + cl.length) * 100;
+        
         setTimeout(() => {
-            for(let r=0; r<ROWS; r++) for(let c=0; c<COLS; c++) if(!grid[r][c]) {
-                const el = document.getElementById(`cell-${r}-${c}`);
-                el.style.background = ''; el.style.boxShadow = '';
+            for(let r=0; r<ROWS; r++) {
+                for(let c=0; c<COLS; c++) {
+                    if(!grid[r][c]) {
+                        const el = document.getElementById(`cell-${r}-${c}`);
+                        el.style.background = ''; 
+                        el.style.boxShadow = '';
+                    }
+                }
             }
         }, 200);
     }
@@ -393,9 +467,11 @@ function checkLines() {
 function hasMoves() {
     return pieces.some(p => {
         if(!p) return false;
-        for(let r=0; r<ROWS; r++) for(let c=0; c<COLS; c++) {
-            const cells = getShapeCells(p, r, c);
-            if(cells && cells.every(([rr,cc]) => !grid[rr][cc])) return true;
+        for(let r=0; r<ROWS; r++) {
+            for(let c=0; c<COLS; c++) {
+                const cells = getShapeCells(p, r, c);
+                if(cells && cells.every(([rr,cc]) => !grid[rr][cc])) return true;
+            }
         }
         return false;
     });
@@ -403,7 +479,10 @@ function hasMoves() {
 
 function updateStats() {
     document.getElementById('scoreVal').textContent = score;
-    if(score > best) { best = score; localStorage.setItem('dj_blast_best', best); }
+    if(score > best) { 
+        best = score; 
+        localStorage.setItem('dj_blast_best', best); 
+    }
     document.getElementById('bestVal').textContent = best;
 }
 
@@ -413,7 +492,10 @@ function gameOver() {
 }
 
 function newGame() {
-    score = 0; initGrid(); spawnPieces(); updateStats();
+    score = 0; 
+    initGrid(); 
+    spawnPieces(); 
+    updateStats();
     document.getElementById('overlay').classList.remove('show');
 }
 
@@ -424,7 +506,8 @@ function resize() {
 }
 
 window.onresize = resize;
-resize(); newGame();
+resize(); 
+newGame();
 </script>
 </body>
 </html>
