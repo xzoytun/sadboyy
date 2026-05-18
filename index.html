@@ -3,198 +3,210 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>QRIS.GEN — Professional QRIS Maker</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>QRIS Fixer — Ubah Foto ke Barcode Bagus</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Library Scan QR dari Gambar -->
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+<!-- Library Generate QR -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
 <style>
-/* CSS tetap sama dengan sebelumnya, hanya beberapa aksen diganti */
 :root {
-  --bg: #f8f9fa;
-  --card: #fff;
-  --border: #e0e0e0;
-  --dark: #121212;
-  --accent: #ed1c24; /* Warna Merah QRIS */
-  --accent2: #1d4076; /* Warna Biru QRIS */
-  --muted: #757575;
-  --text: #1a1a1a;
+  --bg: #f4f4f4;
+  --accent: #ed1c24;
+  --blue: #1d4076;
+  --dark: #1a1a1a;
 }
-/* ... (Gunakan CSS dari file original anda) ... */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: var(--bg); color: var(--text); font-family: 'Syne', sans-serif; min-height: 100vh; }
-.container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
-header { padding: 28px 0; display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid var(--dark); }
-.logo { font-weight: 800; font-size: 1.6rem; letter-spacing: -1px; color: var(--dark); display: flex; align-items: center; gap: 10px; }
-.logo-dot { width: 10px; height: 10px; background: var(--accent); border-radius: 50%; }
-.hero-title { font-size: clamp(2.5rem, 7vw, 5.5rem); font-weight: 800; line-height: 1; padding: 40px 0 32px; letter-spacing: -2px; }
-.red { color: var(--accent); } .blue { color: var(--accent2); }
-.layout { display: grid; grid-template-columns: 1fr 340px; gap: 20px; align-items: start; }
-@media(max-width: 720px) { .layout { grid-template-columns: 1fr; } }
-.card { background: var(--card); border: 2px solid var(--dark); border-radius: 8px; overflow: hidden; margin-bottom: 20px; }
-.card-head { background: var(--dark); color: #fff; padding: 10px 18px; display: flex; align-items: center; gap: 10px; font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; letter-spacing: 2px; }
-.card-head .num { background: var(--accent); color: #fff; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 700; }
-.card-body { padding: 20px; }
-.drop-zone { border: 2.5px dashed var(--border); border-radius: 6px; min-height: 150px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; position: relative; background: #fafafa; }
-#preview-wrap { width: 100%; position: relative; display: none; text-align: center; padding: 10px; }
-#preview-img { max-height: 150px; border-radius: 4px; }
-.field { margin-bottom: 14px; }
-.field label { display: block; font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; color: var(--muted); margin-bottom: 6px; }
-.field input, .field select, .field textarea { width: 100%; border: 2px solid var(--border); padding: 10px; font-family: 'IBM Plex Mono', monospace; border-radius: 4px; outline: none; }
-.btn-gen { width: 100%; background: var(--dark); color: #fff; border: none; font-weight: 800; padding: 16px; border-radius: 6px; cursor: pointer; font-size: 1rem; }
-.btn-gen:hover { background: var(--accent); }
-.qr-display { background: #fff; min-height: 300px; display: flex; align-items: center; justify-content: center; border-bottom: 2px solid var(--dark); }
-#qr-canvas { max-width: 100%; }
-.btn-dl { display: block; text-align: center; padding: 12px; margin: 10px; border-radius: 5px; font-weight: 700; text-decoration: none; border: 2px solid var(--dark); }
-.btn-dl.primary { background: var(--dark); color: #fff; }
-.disabled { opacity: 0.3; pointer-events: none; }
+body { font-family: 'Syne', sans-serif; background: var(--bg); color: var(--dark); padding: 20px; }
+.container { max-width: 900px; margin: 0 auto; }
+header { text-align: center; margin-bottom: 30px; border-bottom: 3px solid var(--dark); padding-bottom: 10px; }
+
+.main-grid { display: grid; grid-template-columns: 1fr 350px; gap: 20px; }
+@media (max-width: 768px) { .main-grid { grid-template-columns: 1fr; } }
+
+.card { background: white; border: 2px solid var(--dark); border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 4px 4px 0px var(--dark); }
+.card-title { font-weight: 800; font-size: 0.9rem; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; text-transform: uppercase; }
+.num { background: var(--dark); color: white; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; }
+
+/* Upload Styling */
+.upload-box { border: 2px dashed #ccc; border-radius: 8px; padding: 20px; text-align: center; position: relative; cursor: pointer; transition: 0.2s; background: #fafafa; }
+.upload-box:hover { border-color: var(--accent); background: #fff5f5; }
+.upload-box input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+.preview-img { max-width: 100%; max-height: 150px; margin-top: 10px; border-radius: 4px; display: none; margin-left: auto; margin-right: auto; }
+
+.status-badge { font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; padding: 5px 10px; border-radius: 4px; display: inline-block; margin-top: 10px; }
+.status-ok { background: #e6fffa; color: #2c7a7b; border: 1px solid #81e6d9; }
+.status-wait { background: #fffaf0; color: #9c4221; border: 1px solid #fbd38d; }
+
+.btn-gen { width: 100%; background: var(--dark); color: white; border: none; padding: 15px; border-radius: 8px; font-weight: 800; cursor: pointer; font-size: 1rem; margin-top: 10px; transition: 0.2s; }
+.btn-gen:hover { background: var(--accent); transform: translateY(-2px); box-shadow: 0 4px 15px rgba(237, 28, 36, 0.3); }
+
+/* Hasil */
+.qr-output-container { background: white; padding: 20px; border: 2px solid var(--dark); border-radius: 12px; text-align: center; position: sticky; top: 20px; }
+#qr-canvas { width: 100%; height: auto; display: none; }
+.placeholder-qr { height: 250px; display: flex; align-items: center; justify-content: center; border: 2px dashed #eee; color: #ccc; font-size: 0.8rem; }
+.btn-dl { display: block; background: var(--blue); color: white; text-decoration: none; padding: 12px; border-radius: 6px; font-weight: 700; margin-top: 15px; font-size: 0.9rem; }
+.disabled { opacity: 0.3; pointer-events: none; filter: grayscale(1); }
 </style>
 </head>
 <body>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
 <div class="container">
   <header>
-    <div class="logo"><div class="logo-dot"></div> QRIS.GEN</div>
-    <div style="font-family: 'IBM Plex Mono'; font-size: 0.7rem;">OFFLINE GENERATOR</div>
+    <h1 style="margin:0; font-size: 2rem;">QRIS.<span style="color:var(--accent)">FIXER</span></h1>
+    <p style="font-family:'IBM Plex Mono'; font-size: 0.7rem; margin-top: 5px;">UBAH FOTO SCREENSHOT MENJADI BARCODE PROFESIONAL</p>
   </header>
 
-  <div class="hero-title">
-    RE-DESIGN <br><span class="red">YOUR</span> <span class="blue">QRIS</span>
-  </div>
-
-  <div class="layout">
+  <div class="main-grid">
+    <!-- KIRI: INPUT -->
     <div>
-      <!-- STEP 1: LOGO -->
+      <!-- STEP 1 -->
       <div class="card">
-        <div class="card-head"><span class="num">1</span> PASANG LOGO (TENGAH)</div>
-        <div class="card-body">
-          <div class="drop-zone" id="drop-zone">
-            <input type="file" id="file-input" accept="image/*" style="position:absolute; inset:0; opacity:0; cursor:pointer;">
-            <p style="font-size: 0.8rem; color: var(--muted);">Klik/Seret Logo Toko (PNG/JPG)</p>
+        <div class="card-title"><span class="num">1</span> FOTO QRIS LAMA (SCREENSHOT)</div>
+        <div class="upload-box" id="box-qris">
+          <input type="file" id="input-qris" accept="image/*">
+          <div id="text-qris">
+            <strong>Klik untuk Upload Foto QRIS</strong>
+            <p style="font-size: 0.7rem; color: #888; margin-top: 5px;">Sistem akan otomatis membaca data barcode dari foto</p>
           </div>
-          <div id="preview-wrap">
-            <img id="preview-img" alt="preview">
-            <button onclick="resetImage()" style="display:block; margin: 10px auto; border:none; background:none; color:red; cursor:pointer; font-size:0.7rem;">[ GANTI LOGO ]</button>
+          <img id="prev-qris" class="preview-img">
+        </div>
+        <div id="status-scan" class="status-badge status-wait">Menunggu foto QRIS...</div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="card">
+        <div class="card-title"><span class="num">2</span> LOGO TENGAH (OPSIONAL)</div>
+        <div class="upload-box" id="box-logo">
+          <input type="file" id="input-logo" accept="image/*">
+          <div id="text-logo">
+            <strong>Klik untuk Upload Logo Toko</strong>
+            <p style="font-size: 0.7rem; color: #888; margin-top: 5px;">Gunakan file PNG transparan untuk hasil terbaik</p>
           </div>
+          <img id="prev-logo" class="preview-img">
         </div>
       </div>
 
-      <!-- STEP 2: DATA -->
+      <!-- STEP 3 -->
       <div class="card">
-        <div class="card-head"><span class="num">2</span> DATA QRIS</div>
-        <div class="card-body">
-          <div class="field">
-            <label>TIPE INPUT</label>
-            <select id="qr-type" onchange="updatePlaceholder()">
-              <option value="qris">Data Teks QRIS (000201...)</option>
-              <option value="url">URL Link Pembayaran</option>
-            </select>
+        <div class="card-title"><span class="num">3</span> WARNA & UKURAN</div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <div>
+            <label style="font-size: 0.6rem; display: block; margin-bottom: 5px;">WARNA BARCODE</label>
+            <input type="color" id="qr-color" value="#000000" style="width:100%; height:40px; border:1px solid #ddd; border-radius:4px;">
           </div>
-          
-          <div class="field" id="field-qris">
-            <label>PASTE KODE QRIS DISINI</label>
-            <textarea id="val-qris" rows="5" placeholder="0002010102112657000303100010113003000000..."></textarea>
-          </div>
-
-          <div class="field" id="field-url" style="display:none">
-            <label>URL PEMBAYARAN</label>
-            <input type="url" id="val-url" placeholder="https://link.dana.id/qr/...">
+          <div>
+            <label style="font-size: 0.6rem; display: block; margin-bottom: 5px;">UKURAN (PX)</label>
+            <input type="number" id="qr-size" value="500" style="width:100%; padding:10px; border:1px solid #ddd; border-radius:4px;">
           </div>
         </div>
-      </div>
-
-      <!-- STEP 3: SETTINGS -->
-      <div class="card">
-        <div class="card-head"><span class="num">3</span> PENGATURAN VISUAL</div>
-        <div class="card-body">
-          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;">
-            <div class="field"><label>UKURAN QR</label><input type="number" id="qr-size" value="400"></div>
-            <div class="field">
-              <label>ERROR CORRECTION</label>
-              <select id="qr-ecl">
-                <option value="Q">Medium (Recommended)</option>
-                <option value="H" selected>High (Best for Logos)</option>
-              </select>
-            </div>
-          </div>
-          <button class="btn-gen" onclick="generateQR()">⚡ BUAT QRIS SEKARANG</button>
-        </div>
+        <button class="btn-gen" id="btn-generate" disabled>⚡ GENERATE BARCODE BARU</button>
       </div>
     </div>
 
-    <!-- OUTPUT -->
-    <div class="output-card">
-      <div class="card" style="position: sticky; top: 20px;">
-        <div class="card-head">HASIL QRIS</div>
-        <div class="qr-display" id="qr-display">
-          <canvas id="qr-canvas" style="display:none;"></canvas>
-          <div id="placeholder-text" style="color:#ccc; text-align:center; font-size:0.8rem;">Hasil akan<br>muncul disini</div>
+    <!-- KANAN: HASIL -->
+    <div>
+      <div class="qr-output-container">
+        <div class="card-title" style="justify-content: center;">HASIL BARCODE</div>
+        <div class="placeholder-qr" id="placeholder">
+          Belum ada hasil
         </div>
-        <div class="card-body">
-          <button class="btn-dl primary disabled" id="btn-dl-png">Download PNG</button>
-          <p style="font-size:0.6rem; color:var(--muted); margin-top:10px; text-align:center;">Pastikan test scan sebelum dicetak.</p>
+        <canvas id="qr-canvas"></canvas>
+        <div id="meta-info" style="margin-top: 15px; font-family: 'IBM Plex Mono'; font-size: 0.6rem; color: #888; display: none;">
+          DATA TERDETEKSI: <br>
+          <span id="detected-data" style="color: #333; word-break: break-all;">-</span>
         </div>
+        <a href="#" id="btn-download" class="btn-dl disabled">Download PNG</a>
       </div>
     </div>
   </div>
 </div>
 
 <script>
-let imgDataURL = null;
+let decodedText = "";
+let logoDataURL = null;
 
-// File Handling
-const fileInput = document.getElementById('file-input');
-fileInput.addEventListener('change', e => {
+// --- SCAN QRIS DARI FOTO ---
+document.getElementById('input-qris').addEventListener('change', function(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(event) {
+    const img = new Image();
+    img.onload = function() {
+      // Tampilkan preview foto
+      const prev = document.getElementById('prev-qris');
+      prev.src = event.target.result;
+      prev.style.display = 'block';
+      document.getElementById('text-qris').style.display = 'none';
+
+      // Scan menggunakan canvas
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 0, 0);
+      
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const code = jsQR(imageData.data, imageData.width, imageData.height);
+
+      if (code) {
+        decodedText = code.data;
+        document.getElementById('status-scan').textContent = "✓ Barcode Berhasil Dibaca!";
+        document.getElementById('status-scan').className = "status-badge status-ok";
+        document.getElementById('detected-data').textContent = decodedText.substring(0, 50) + "...";
+        document.getElementById('meta-info').style.display = 'block';
+        document.getElementById('btn-generate').disabled = false;
+      } else {
+        alert("Gagal membaca barcode! Pastikan foto QRIS jelas dan tidak terpotong.");
+        document.getElementById('status-scan').textContent = "✗ Barcode Tidak Terdeteksi";
+        document.getElementById('status-scan').className = "status-badge";
+        document.getElementById('btn-generate').disabled = true;
+      }
+    };
+    img.src = event.target.result;
+  };
+  reader.readAsDataURL(file);
+});
+
+// --- HANDLE LOGO ---
+document.getElementById('input-logo').addEventListener('change', function(e) {
   const file = e.target.files[0];
   if (file) {
     const reader = new FileReader();
-    reader.onload = ev => {
-      imgDataURL = ev.target.result;
-      document.getElementById('preview-img').src = imgDataURL;
-      document.getElementById('preview-wrap').style.display = 'block';
-      document.getElementById('drop-zone').style.display = 'none';
+    reader.onload = function(ev) {
+      logoDataURL = ev.target.result;
+      const prev = document.getElementById('prev-logo');
+      prev.src = logoDataURL;
+      prev.style.display = 'block';
+      document.getElementById('text-logo').style.display = 'none';
     };
     reader.readAsDataURL(file);
   }
 });
 
-function resetImage() {
-  imgDataURL = null;
-  document.getElementById('preview-wrap').style.display = 'none';
-  document.getElementById('drop-zone').style.display = 'flex';
-}
+// --- GENERATE QRIS BARU ---
+document.getElementById('btn-generate').addEventListener('click', function() {
+  if (!decodedText) return;
 
-function updatePlaceholder() {
-  const type = document.getElementById('qr-type').value;
-  document.getElementById('field-qris').style.display = type === 'qris' ? 'block' : 'none';
-  document.getElementById('field-url').style.display = type === 'url' ? 'block' : 'none';
-}
-
-function generateQR() {
-  const type = document.getElementById('qr-type').value;
-  let qrText = "";
-  
-  if(type === 'qris') {
-    qrText = document.getElementById('val-qris').value.trim();
-  } else {
-    qrText = document.getElementById('val-url').value.trim();
-  }
-
-  if(!qrText) return alert("Mohon isi data QRIS terlebih dahulu!");
-
-  const size = parseInt(document.getElementById('qr-size').value) || 400;
-  const ecl = document.getElementById('qr-ecl').value;
+  const size = parseInt(document.getElementById('qr-size').value) || 500;
+  const color = document.getElementById('qr-color').value;
   const canvas = document.getElementById('qr-canvas');
-  
-  document.getElementById('placeholder-text').style.display = 'none';
+  const placeholder = document.getElementById('placeholder');
+
+  placeholder.style.display = 'none';
   canvas.style.display = 'block';
 
-  // Temporary div for qrcode.js
+  // Temporary div untuk QRCode.js
   const tmpDiv = document.createElement('div');
   new QRCode(tmpDiv, {
-    text: qrText,
+    text: decodedText,
     width: size,
     height: size,
-    correctLevel: QRCode.CorrectLevel[ecl]
+    colorDark: color,
+    colorLight: "#ffffff",
+    correctLevel: QRCode.CorrectLevel.H // Level tinggi agar bisa pakai logo
   });
 
   setTimeout(() => {
@@ -202,39 +214,40 @@ function generateQR() {
     const ctx = canvas.getContext('2d');
     canvas.width = size;
     canvas.height = size;
-    ctx.drawImage(tmpCanvas, 0, 0, size, size);
+    ctx.drawImage(tmpCanvas, 0, 0);
 
-    if (imgDataURL) {
+    if (logoDataURL) {
       const logoImg = new Image();
-      logoImg.onload = () => {
-        const logoSize = size * 0.22; // Ukuran logo 22% dari QR
+      logoImg.onload = function() {
+        const logoSize = size * 0.2; // Logo 20% dari ukuran QR
         const x = (size - logoSize) / 2;
         const y = (size - logoSize) / 2;
         
-        // Background putih logo agar tidak tabrakan dengan pattern QR
+        // Background putih kotak logo
         ctx.fillStyle = "#ffffff";
-        ctx.fillRect(x - 5, y - 5, logoSize + 10, logoSize + 10);
+        ctx.fillRect(x - 6, y - 6, logoSize + 12, logoSize + 12);
         
         ctx.drawImage(logoImg, x, y, logoSize, logoSize);
-        enableDownload();
+        finishGenerate();
       };
-      logoImg.src = imgDataURL;
+      logoImg.src = logoDataURL;
     } else {
-      enableDownload();
+      finishGenerate();
     }
   }, 100);
-}
+});
 
-function enableDownload() {
-  const btn = document.getElementById('btn-dl-png');
-  btn.classList.remove('disabled');
-  btn.onclick = () => {
+function finishGenerate() {
+  const btnDl = document.getElementById('btn-download');
+  btnDl.classList.remove('disabled');
+  btnDl.onclick = function() {
     const link = document.createElement('a');
-    link.download = 'My-QRIS.png';
-    link.href = document.getElementById('qr-canvas').toDataURL();
+    link.download = 'QRIS-New-Design.png';
+    link.href = document.getElementById('qr-canvas').toDataURL('image/png');
     link.click();
   };
 }
 </script>
+
 </body>
 </html>
