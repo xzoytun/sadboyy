@@ -3,777 +3,957 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IMG2BAR — Image to Barcode Converter</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<title>QR.GEN — Image to QR Code</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500&family=Syne+Mono&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  :root {
-    --bg: #0a0a0a;
-    --surface: #111;
-    --border: #222;
-    --accent: #e8ff00;
-    --accent2: #ff4d00;
-    --text: #f0f0f0;
-    --muted: #555;
-    --card: #141414;
-  }
+:root {
+  --bg: #f5f0e8;
+  --card: #fff;
+  --border: #ddd8ce;
+  --dark: #1a1a1a;
+  --accent: #ff3c00;
+  --accent2: #0057ff;
+  --muted: #999;
+  --text: #1a1a1a;
+}
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Syne', sans-serif;
+  min-height: 100vh;
+}
 
-  /* GRID BG */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(232,255,0,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(232,255,0,0.03) 1px, transparent 1px);
-    background-size: 40px 40px;
-    pointer-events: none;
-    z-index: 0;
-  }
+/* NOISE TEXTURE */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 999;
+  opacity: 0.5;
+}
 
-  .wrap { position: relative; z-index: 1; max-width: 960px; margin: 0 auto; padding: 0 24px; }
+.container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
 
-  /* HEADER */
-  header {
-    padding: 32px 0 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
+/* HEADER */
+header {
+  padding: 28px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid var(--dark);
+}
 
-  .logo {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2rem;
-    letter-spacing: 4px;
-    color: var(--accent);
-  }
-  .logo span { color: var(--accent2); }
+.logo {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1.6rem;
+  letter-spacing: -1px;
+  color: var(--dark);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.logo-dot {
+  width: 10px; height: 10px;
+  background: var(--accent);
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.4); opacity: 0.6; }
+}
 
-  .badge {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.65rem;
-    background: var(--border);
-    color: var(--muted);
-    padding: 4px 10px;
-    border-radius: 20px;
-    letter-spacing: 1px;
-  }
+.tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--muted);
+  letter-spacing: 1px;
+  border: 1px solid var(--border);
+  padding: 4px 10px;
+  border-radius: 20px;
+}
 
-  /* HERO */
-  .hero {
-    padding: 56px 0 0;
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 24px;
-    align-items: end;
-  }
+/* BIG TITLE */
+.hero-title {
+  font-size: clamp(2.5rem, 7vw, 5.5rem);
+  font-weight: 800;
+  line-height: 1;
+  padding: 40px 0 32px;
+  letter-spacing: -2px;
+}
+.hero-title .red { color: var(--accent); }
+.hero-title .blue { color: var(--accent2); }
 
-  .hero h1 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(3rem, 8vw, 6rem);
-    line-height: 0.95;
-    letter-spacing: 2px;
-  }
-  .hero h1 em {
-    font-style: normal;
-    color: var(--accent);
-    -webkit-text-stroke: 0px;
-  }
-  .hero h1 .outline {
-    -webkit-text-stroke: 1px var(--muted);
-    color: transparent;
-  }
+/* TWO COL */
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 20px;
+  align-items: start;
+}
+@media(max-width: 720px) {
+  .layout { grid-template-columns: 1fr; }
+}
 
-  .hero-sub {
-    font-size: 0.85rem;
-    color: var(--muted);
-    font-family: 'Space Mono', monospace;
-    max-width: 200px;
-    line-height: 1.6;
-    text-align: right;
-  }
+/* CARDS */
+.card {
+  background: var(--card);
+  border: 2px solid var(--dark);
+  border-radius: 8px;
+  overflow: hidden;
+}
 
-  /* DIVIDER */
-  .divider {
-    height: 1px;
-    background: var(--border);
-    margin: 40px 0;
-    position: relative;
-  }
-  .divider::after {
-    content: '◈';
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    background: var(--bg);
-    padding: 0 12px;
-    color: var(--accent);
-    font-size: 0.8rem;
-  }
+.card-head {
+  background: var(--dark);
+  color: #fff;
+  padding: 10px 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+}
+.card-head .num {
+  background: var(--accent);
+  color: #fff;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
 
-  /* MAIN LAYOUT */
-  .main-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 16px;
-  }
+.card-body { padding: 20px; }
 
-  @media(max-width: 640px) {
-    .main-grid { grid-template-columns: 1fr; }
-    .hero { grid-template-columns: 1fr; }
-    .hero-sub { text-align: left; }
-  }
+/* DROP ZONE */
+.drop-zone {
+  border: 2.5px dashed var(--border);
+  border-radius: 6px;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  background: var(--bg);
+  overflow: hidden;
+}
+.drop-zone.drag-over {
+  border-color: var(--accent);
+  background: rgba(255,60,0,0.04);
+}
+.drop-zone.has-img { min-height: unset; padding: 0; border: none; }
+.drop-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
 
-  /* PANELS */
-  .panel {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 24px;
-    position: relative;
-    overflow: hidden;
-  }
+.drop-icon { font-size: 2.8rem; }
+.drop-hint {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.7;
+}
+.drop-hint strong { display: block; color: var(--dark); font-size: 0.85rem; margin-bottom: 2px; font-family: 'Syne', sans-serif; }
 
-  .panel::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--accent), var(--accent2));
-  }
+#preview-wrap { width: 100%; position: relative; display: none; }
+#preview-img {
+  width: 100%;
+  max-height: 260px;
+  object-fit: contain;
+  display: block;
+  background: #f0f0f0;
+  border-radius: 6px;
+}
+.change-btn {
+  position: absolute;
+  top: 8px; right: 8px;
+  background: rgba(0,0,0,0.7);
+  color: #fff;
+  border: none;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.65rem;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  letter-spacing: 1px;
+}
+.change-btn:hover { background: var(--accent); }
 
-  .panel-label {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--muted);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .panel-label::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
+/* FORM */
+.field { margin-bottom: 14px; }
+.field label {
+  display: block;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--muted);
+  letter-spacing: 1.5px;
+  margin-bottom: 6px;
+}
+.field input[type=text],
+.field input[type=url],
+.field select,
+.field textarea {
+  width: 100%;
+  border: 2px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.8rem;
+  padding: 9px 12px;
+  border-radius: 4px;
+  outline: none;
+  transition: border-color 0.15s;
+  resize: vertical;
+}
+.field input:focus, .field select:focus, .field textarea:focus {
+  border-color: var(--accent2);
+}
 
-  /* DROP ZONE */
-  .drop-zone {
-    border: 2px dashed var(--border);
-    border-radius: 4px;
-    min-height: 220px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    cursor: pointer;
-    transition: all 0.2s;
-    position: relative;
-    overflow: hidden;
-  }
-  .drop-zone:hover, .drop-zone.drag-over {
-    border-color: var(--accent);
-    background: rgba(232,255,0,0.04);
-  }
-  .drop-zone input[type=file] {
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    cursor: pointer;
-  }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
 
-  .drop-icon {
-    font-size: 2.5rem;
-    line-height: 1;
-    filter: grayscale(1);
-    opacity: 0.4;
-    transition: all 0.2s;
-  }
-  .drop-zone:hover .drop-icon { filter: none; opacity: 1; }
+.field input[type=color] {
+  width: 100%;
+  height: 40px;
+  border: 2px solid var(--border);
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 2px 4px;
+  background: var(--bg);
+}
+.field input[type=range] {
+  width: 100%;
+  accent-color: var(--accent);
+  margin-top: 4px;
+}
+.range-row { display: flex; gap: 8px; align-items: center; }
+.range-val {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--accent);
+  min-width: 30px;
+  text-align: right;
+}
 
-  .drop-text {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.75rem;
-    color: var(--muted);
-    text-align: center;
-  }
-  .drop-text strong { color: var(--accent); display: block; font-size: 0.9rem; margin-bottom: 4px; }
+/* LOGO TOGGLE */
+.toggle-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.toggle-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--muted);
+  letter-spacing: 1px;
+}
+.toggle {
+  position: relative;
+  width: 40px; height: 22px;
+}
+.toggle input { opacity: 0; width: 0; height: 0; }
+.toggle-track {
+  position: absolute;
+  inset: 0;
+  background: var(--border);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.toggle input:checked + .toggle-track { background: var(--accent2); }
+.toggle-track::before {
+  content: '';
+  position: absolute;
+  width: 16px; height: 16px;
+  background: white;
+  border-radius: 50%;
+  top: 3px; left: 3px;
+  transition: transform 0.2s;
+}
+.toggle input:checked + .toggle-track::before { transform: translateX(18px); }
 
-  /* PREVIEW */
-  #preview-img {
-    width: 100%;
-    max-height: 220px;
-    object-fit: contain;
-    border-radius: 2px;
-    display: none;
-  }
+/* SECTION SEPARATOR */
+.sep {
+  height: 1px;
+  background: var(--border);
+  margin: 16px 0;
+}
 
-  /* OPTIONS */
-  .options-panel { margin-bottom: 16px; }
+/* GENERATE BTN */
+.btn-gen {
+  width: 100%;
+  background: var(--dark);
+  color: #fff;
+  border: none;
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+  padding: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 4px;
+}
+.btn-gen:hover { background: var(--accent); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,60,0,0.3); }
+.btn-gen:active { transform: translateY(0); }
+.btn-gen:disabled { background: var(--border); color: var(--muted); cursor: not-allowed; transform: none; box-shadow: none; }
 
-  .opts-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 12px;
-    margin-top: 12px;
-  }
-  @media(max-width: 480px) { .opts-row { grid-template-columns: 1fr 1fr; } }
+/* OUTPUT CARD */
+.output-card {
+  position: sticky;
+  top: 20px;
+}
 
-  .opt-group label {
-    display: block;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--muted);
-    letter-spacing: 1px;
-    margin-bottom: 6px;
-  }
+.qr-display {
+  background: var(--bg);
+  min-height: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 2px solid var(--dark);
+  padding: 20px;
+  position: relative;
+}
 
-  select, input[type=range], input[type=color], input[type=number] {
-    width: 100%;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    color: var(--text);
-    font-family: 'Space Mono', monospace;
-    font-size: 0.75rem;
-    padding: 6px 10px;
-    border-radius: 2px;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  select:focus, input:focus { border-color: var(--accent); }
+.qr-empty {
+  text-align: center;
+  color: var(--muted);
+}
+.qr-empty .big { font-size: 3rem; margin-bottom: 8px; opacity: 0.3; }
+.qr-empty p {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.7rem;
+  line-height: 1.8;
+}
 
-  input[type=range] {
-    padding: 0;
-    accent-color: var(--accent);
-    height: 30px;
-  }
+#qr-canvas {
+  max-width: 100%;
+  border-radius: 4px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  display: none;
+}
 
-  input[type=color] {
-    padding: 2px;
-    height: 32px;
-    cursor: pointer;
-  }
+.spinner {
+  width: 36px; height: 36px;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  display: none;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
 
-  /* SLIDER LABEL */
-  .slider-row { display: flex; align-items: center; gap: 8px; }
-  .slider-val {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--accent);
-    min-width: 28px;
-    text-align: right;
-  }
+.output-actions { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
 
-  /* CONVERT BTN */
-  .btn-convert {
-    width: 100%;
-    background: var(--accent);
-    color: #000;
-    border: none;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.4rem;
-    letter-spacing: 3px;
-    padding: 14px;
-    border-radius: 2px;
-    cursor: pointer;
-    transition: all 0.15s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 16px;
-  }
-  .btn-convert:hover { background: #fff; transform: translateY(-1px); }
-  .btn-convert:active { transform: translateY(0); }
-  .btn-convert:disabled { background: var(--border); color: var(--muted); cursor: not-allowed; transform: none; }
+.btn-dl {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px;
+  border-radius: 5px;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  border: 2px solid var(--dark);
+  text-decoration: none;
+  letter-spacing: 0.5px;
+}
+.btn-dl.primary { background: var(--dark); color: #fff; }
+.btn-dl.primary:hover { background: var(--accent2); border-color: var(--accent2); }
+.btn-dl.secondary { background: transparent; color: var(--dark); }
+.btn-dl.secondary:hover { background: var(--dark); color: #fff; }
+.btn-dl:disabled, .btn-dl.disabled { opacity: 0.3; pointer-events: none; }
 
-  /* OUTPUT */
-  .output-panel {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 24px;
-    position: relative;
-    overflow: hidden;
-    min-height: 200px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-  .output-panel::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--accent2), var(--accent));
-  }
+.qr-meta {
+  padding: 0 16px 14px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.62rem;
+  color: var(--muted);
+  line-height: 1.9;
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+  display: none;
+}
+.qr-meta .val { color: var(--text); }
 
-  .output-empty {
-    text-align: center;
-    color: var(--muted);
-    font-family: 'Space Mono', monospace;
-    font-size: 0.75rem;
-    line-height: 1.8;
-  }
-  .output-empty .big { font-size: 2.5rem; margin-bottom: 8px; opacity: 0.2; }
+/* STATUS */
+.status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--muted);
+  padding: 12px 0;
+}
+.sdot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--border);
+  flex-shrink: 0;
+}
+.sdot.ok { background: #22c55e; box-shadow: 0 0 6px #22c55e88; }
+.sdot.err { background: var(--accent); }
+.sdot.busy { background: var(--accent2); animation: pulse 1s ease-in-out infinite; }
 
-  #barcode-output {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
-    display: none;
-  }
+/* FOOTER */
+footer {
+  border-top: 2px solid var(--dark);
+  margin-top: 48px;
+  padding: 20px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.foot-l { font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; color: var(--muted); }
+.foot-r { font-weight: 800; font-size: 0.9rem; color: var(--dark); }
 
-  #barcode-canvas {
-    max-width: 100%;
-    border: 1px solid var(--border);
-    border-radius: 2px;
-    background: white;
-  }
+/* ANIM */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card { animation: fadeUp 0.4s ease both; }
+.output-card { animation: fadeUp 0.4s ease 0.1s both; }
+.hero-title { animation: fadeUp 0.5s ease both; }
 
-  .btn-dl {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: transparent;
-    border: 1px solid var(--accent);
-    color: var(--accent);
-    font-family: 'Space Mono', monospace;
-    font-size: 0.75rem;
-    padding: 10px 20px;
-    border-radius: 2px;
-    cursor: pointer;
-    transition: all 0.15s;
-    text-decoration: none;
-    letter-spacing: 1px;
-  }
-  .btn-dl:hover { background: var(--accent); color: #000; }
-
-  .barcode-info {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--muted);
-    text-align: center;
-    line-height: 1.8;
-  }
-  .barcode-info span { color: var(--text); }
-
-  /* LOADING */
-  .spinner {
-    width: 32px; height: 32px;
-    border: 2px solid var(--border);
-    border-top-color: var(--accent);
-    border-radius: 50%;
-    animation: spin 0.6s linear infinite;
-    display: none;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  /* STATUS */
-  .status-bar {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--muted);
-    padding: 12px 0;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .status-dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--muted);
-    flex-shrink: 0;
-  }
-  .status-dot.active { background: var(--accent); box-shadow: 0 0 6px var(--accent); }
-  .status-dot.error { background: var(--accent2); }
-
-  /* FOOTER */
-  footer {
-    margin-top: 48px;
-    padding: 24px 0 32px;
-    border-top: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-  .foot-l {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--muted);
-  }
-  .foot-r {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1rem;
-    letter-spacing: 3px;
-    color: var(--border);
-  }
-
-  /* ANIM */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .panel, .options-panel, .output-panel, .btn-convert {
-    animation: fadeUp 0.4s ease both;
-  }
-  .panel:nth-child(2) { animation-delay: 0.05s; }
-  .options-panel { animation-delay: 0.1s; }
-  .btn-convert { animation-delay: 0.15s; }
-  .output-panel { animation-delay: 0.2s; }
+/* QRIS STYLE BADGE */
+.qris-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--dark);
+  color: #fff;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.6rem;
+  padding: 3px 10px 3px 6px;
+  border-radius: 20px;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+}
+.qris-badge .dot { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; }
 </style>
 </head>
 <body>
 
-<div class="wrap">
+<!-- qrcode.js library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<div class="container">
   <header>
-    <div class="logo">IMG<span>2</span>BAR</div>
-    <div class="badge">v1.0 · OFFLINE · FREE</div>
+    <div class="logo">
+      <div class="logo-dot"></div>
+      QR.GEN
+    </div>
+    <div class="tag">IMAGE TO QR CODE</div>
   </header>
 
-  <div class="hero">
-    <h1>CONVERT<br><em>IMAGE</em><br><span class="outline">TO BAR</span><em>CODE</em></h1>
-    <div class="hero-sub">Upload any image.<br>Customize the barcode.<br>Download instantly.</div>
+  <div class="hero-title">
+    SCAN<br><span class="red">LIKE</span> <span class="blue">QRIS</span>
   </div>
 
-  <div class="divider"></div>
+  <div class="qris-badge">
+    <span class="dot"></span>
+    GENERATOR QR CODE GRATIS · OFFLINE · INSTAN
+  </div>
 
-  <!-- INPUT + SETTINGS -->
-  <div class="main-grid">
-    <!-- Upload -->
-    <div class="panel">
-      <div class="panel-label">01 — Upload Gambar</div>
-      <div class="drop-zone" id="drop-zone">
-        <input type="file" id="file-input" accept="image/*">
-        <div class="drop-icon">🖼️</div>
-        <div class="drop-text">
-          <strong>Klik atau seret gambar</strong>
-          JPG, PNG, GIF, WEBP
+  <div class="layout">
+
+    <!-- LEFT: INPUT + SETTINGS -->
+    <div style="display:flex;flex-direction:column;gap:16px;">
+
+      <!-- UPLOAD IMAGE -->
+      <div class="card">
+        <div class="card-head">
+          <span class="num">1</span>
+          UPLOAD GAMBAR / LOGO
         </div>
-      </div>
-      <img id="preview-img" alt="preview">
-    </div>
-
-    <!-- Settings -->
-    <div class="panel">
-      <div class="panel-label">02 — Pengaturan Barcode</div>
-
-      <div class="opt-group">
-        <label>TIPE BARCODE</label>
-        <select id="bc-type">
-          <option value="CODE128">CODE 128 (Universal)</option>
-          <option value="EAN13">EAN-13</option>
-          <option value="EAN8">EAN-8</option>
-          <option value="UPC">UPC-A</option>
-          <option value="CODE39">CODE 39</option>
-          <option value="ITF14">ITF-14</option>
-          <option value="pharmacode">Pharmacode</option>
-        </select>
-      </div>
-
-      <div class="opts-row">
-        <div class="opt-group">
-          <label>LEBAR (px)</label>
-          <div class="slider-row">
-            <input type="range" id="bc-width" min="1" max="4" step="0.5" value="2">
-            <span class="slider-val" id="bc-width-val">2</span>
+        <div class="card-body">
+          <div class="drop-zone" id="drop-zone">
+            <input type="file" id="file-input" accept="image/*">
+            <div class="drop-icon">🖼️</div>
+            <div class="drop-hint">
+              <strong>Seret gambar ke sini</strong>
+              atau klik untuk pilih file<br>JPG · PNG · WEBP · GIF
+            </div>
           </div>
-        </div>
-        <div class="opt-group">
-          <label>TINGGI (px)</label>
-          <div class="slider-row">
-            <input type="range" id="bc-height" min="40" max="200" step="10" value="100">
-            <span class="slider-val" id="bc-height-val">100</span>
-          </div>
-        </div>
-        <div class="opt-group">
-          <label>MARGIN</label>
-          <div class="slider-row">
-            <input type="range" id="bc-margin" min="0" max="40" step="2" value="10">
-            <span class="slider-val" id="bc-margin-val">10</span>
+          <div id="preview-wrap">
+            <img id="preview-img" alt="preview">
+            <button class="change-btn" onclick="resetImage()">✕ GANTI</button>
           </div>
         </div>
       </div>
 
-      <div class="opts-row" style="margin-top:16px">
-        <div class="opt-group">
-          <label>WARNA BAR</label>
-          <input type="color" id="bc-linecolor" value="#000000">
+      <!-- QR CONTENT -->
+      <div class="card">
+        <div class="card-head">
+          <span class="num">2</span>
+          ISI QR CODE
         </div>
-        <div class="opt-group">
-          <label>BACKGROUND</label>
-          <input type="color" id="bc-bgcolor" value="#ffffff">
-        </div>
-        <div class="opt-group">
-          <label>TAMPILKAN TEKS</label>
-          <select id="bc-displayval">
-            <option value="true">Ya</option>
-            <option value="false">Tidak</option>
-          </select>
+        <div class="card-body">
+          <div class="field">
+            <label>TIPE KONTEN</label>
+            <select id="qr-type" onchange="updatePlaceholder()">
+              <option value="url">URL / Website</option>
+              <option value="text">Teks Bebas</option>
+              <option value="wa">WhatsApp</option>
+              <option value="email">Email</option>
+              <option value="phone">Nomor Telepon</option>
+              <option value="wifi">WiFi</option>
+              <option value="vcard">Kontak (vCard)</option>
+            </select>
+          </div>
+
+          <!-- URL -->
+          <div class="field" id="field-url">
+            <label>URL</label>
+            <input type="url" id="val-url" placeholder="https://example.com" value="https://wa.me/6281234567890">
+          </div>
+
+          <!-- TEXT -->
+          <div class="field" id="field-text" style="display:none">
+            <label>TEKS</label>
+            <textarea id="val-text" rows="3" placeholder="Ketik teks apapun..."></textarea>
+          </div>
+
+          <!-- WA -->
+          <div class="field" id="field-wa" style="display:none">
+            <label>NOMOR WA (dengan kode negara)</label>
+            <input type="text" id="val-wa-num" placeholder="628123456789">
+            <div style="margin-top:8px"></div>
+            <label>PESAN (opsional)</label>
+            <input type="text" id="val-wa-msg" placeholder="Halo, saya mau pesan...">
+          </div>
+
+          <!-- EMAIL -->
+          <div class="field" id="field-email" style="display:none">
+            <label>EMAIL</label>
+            <input type="text" id="val-email-to" placeholder="contoh@email.com">
+            <div style="margin-top:8px"></div>
+            <label>SUBJECT</label>
+            <input type="text" id="val-email-sub" placeholder="Subject email">
+          </div>
+
+          <!-- PHONE -->
+          <div class="field" id="field-phone" style="display:none">
+            <label>NOMOR TELEPON</label>
+            <input type="text" id="val-phone" placeholder="+628123456789">
+          </div>
+
+          <!-- WIFI -->
+          <div id="field-wifi" style="display:none">
+            <div class="field">
+              <label>NAMA WIFI (SSID)</label>
+              <input type="text" id="val-wifi-ssid" placeholder="NamaWiFiKamu">
+            </div>
+            <div class="two-col">
+              <div class="field">
+                <label>PASSWORD</label>
+                <input type="text" id="val-wifi-pass" placeholder="passwordwifi">
+              </div>
+              <div class="field">
+                <label>ENKRIPSI</label>
+                <select id="val-wifi-enc">
+                  <option value="WPA">WPA/WPA2</option>
+                  <option value="WEP">WEP</option>
+                  <option value="nopass">Tanpa Password</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- VCARD -->
+          <div id="field-vcard" style="display:none">
+            <div class="two-col">
+              <div class="field"><label>NAMA</label><input type="text" id="val-vc-name" placeholder="Budi Santoso"></div>
+              <div class="field"><label>TELEPON</label><input type="text" id="val-vc-phone" placeholder="+62..."></div>
+            </div>
+            <div class="two-col">
+              <div class="field"><label>EMAIL</label><input type="text" id="val-vc-email" placeholder="budi@email.com"></div>
+              <div class="field"><label>WEBSITE</label><input type="text" id="val-vc-web" placeholder="https://..."></div>
+            </div>
+            <div class="field"><label>PERUSAHAAN</label><input type="text" id="val-vc-org" placeholder="PT. Contoh"></div>
+          </div>
         </div>
       </div>
 
-      <div class="opt-group" style="margin-top:16px">
-        <label>TEKS BARCODE (kosong = dari nama file)</label>
-        <input type="text" id="bc-text" placeholder="Contoh: 1234567890123" style="width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);font-family:'Space Mono',monospace;font-size:0.75rem;padding:6px 10px;border-radius:2px;outline:none;">
+      <!-- CUSTOMIZATION -->
+      <div class="card">
+        <div class="card-head">
+          <span class="num">3</span>
+          TAMPILAN QR CODE
+        </div>
+        <div class="card-body">
+          <div class="three-col">
+            <div class="field">
+              <label>WARNA QR</label>
+              <input type="color" id="qr-color" value="#000000">
+            </div>
+            <div class="field">
+              <label>BACKGROUND</label>
+              <input type="color" id="qr-bg" value="#ffffff">
+            </div>
+            <div class="field">
+              <label>ERROR LEVEL</label>
+              <select id="qr-ecl">
+                <option value="L">L — 7%</option>
+                <option value="M">M — 15%</option>
+                <option value="Q" selected>Q — 25% ★</option>
+                <option value="H">H — 30%</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>UKURAN QR (px) — <span id="size-val">300</span>px</label>
+            <div class="range-row">
+              <input type="range" id="qr-size" min="100" max="600" step="10" value="300">
+            </div>
+          </div>
+
+          <div class="sep"></div>
+
+          <!-- LOGO EMBED TOGGLE -->
+          <div class="toggle-row">
+            <label class="toggle">
+              <input type="checkbox" id="toggle-logo" checked>
+              <span class="toggle-track"></span>
+            </label>
+            <span class="toggle-label">EMBED LOGO/GAMBAR DI TENGAH QR</span>
+          </div>
+
+          <div id="logo-opts">
+            <div class="field">
+              <label>UKURAN LOGO (% dari QR) — <span id="logo-size-val">20</span>%</label>
+              <div class="range-row">
+                <input type="range" id="logo-size" min="10" max="35" step="1" value="20">
+              </div>
+            </div>
+            <div class="field">
+              <label>PADDING LOGO (px) — <span id="logo-pad-val">6</span>px</label>
+              <div class="range-row">
+                <input type="range" id="logo-pad" min="0" max="20" step="1" value="6">
+              </div>
+            </div>
+          </div>
+
+          <button class="btn-gen" id="btn-gen">
+            ⚡ GENERATE QR CODE
+          </button>
+
+          <div class="status">
+            <div class="sdot" id="sdot"></div>
+            <span id="stext">Upload gambar untuk mulai</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT: OUTPUT -->
+    <div class="output-card">
+      <div class="card">
+        <div class="card-head">
+          <span class="num" style="background:var(--accent2)">4</span>
+          HASIL QR CODE
+        </div>
+
+        <div class="qr-display" id="qr-display">
+          <div class="qr-empty" id="qr-empty">
+            <div class="big">▣</div>
+            <p>QR Code kamu<br>akan muncul di sini</p>
+          </div>
+          <div class="spinner" id="spinner"></div>
+          <canvas id="qr-canvas"></canvas>
+        </div>
+
+        <div class="qr-meta" id="qr-meta">
+          <div>UKURAN: <span class="val" id="meta-size">—</span></div>
+          <div>ERROR LEVEL: <span class="val" id="meta-ecl">—</span></div>
+          <div>LOGO: <span class="val" id="meta-logo">—</span></div>
+          <div>KONTEN: <span class="val" id="meta-type">—</span></div>
+        </div>
+
+        <div class="output-actions">
+          <button class="btn-dl primary disabled" id="btn-dl-png">⬇ Download PNG</button>
+          <button class="btn-dl secondary disabled" id="btn-dl-svg">⬇ Download SVG</button>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- CONVERT BTN -->
-  <button class="btn-convert" id="btn-convert" disabled>
-    ⚡ GENERATE BARCODE
-  </button>
-
-  <!-- STATUS -->
-  <div class="status-bar">
-    <div class="status-dot" id="status-dot"></div>
-    <span id="status-text">Menunggu gambar diupload...</span>
-  </div>
-
-  <!-- OUTPUT -->
-  <div class="output-panel" id="output-panel">
-    <div class="output-empty" id="output-empty">
-      <div class="big">📊</div>
-      Barcode akan muncul di sini<br>setelah kamu klik Generate
-    </div>
-    <div class="spinner" id="spinner"></div>
-    <div id="barcode-output">
-      <canvas id="barcode-canvas"></canvas>
-      <div class="barcode-info" id="barcode-info"></div>
-      <a class="btn-dl" id="btn-dl" href="#">⬇ DOWNLOAD PNG</a>
-    </div>
   </div>
 
   <footer>
-    <div class="foot-l">PROSES LOKAL · TIDAK ADA DATA DIKIRIM · GRATIS SELAMANYA</div>
-    <div class="foot-r">IMG2BAR</div>
+    <div class="foot-l">PROSES LOKAL · DATA TIDAK DIKIRIM · GRATIS SELAMANYA</div>
+    <div class="foot-r">QR.GEN</div>
   </footer>
 </div>
 
-<!-- JsBarcode CDN -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.6/JsBarcode.all.min.js"></script>
-
 <script>
-  const fileInput = document.getElementById('file-input');
-  const dropZone = document.getElementById('drop-zone');
-  const previewImg = document.getElementById('preview-img');
-  const btnConvert = document.getElementById('btn-convert');
-  const statusDot = document.getElementById('status-dot');
-  const statusText = document.getElementById('status-text');
-  const outputEmpty = document.getElementById('output-empty');
-  const spinner = document.getElementById('spinner');
-  const barcodeOutput = document.getElementById('barcode-output');
-  const barcodeCanvas = document.getElementById('barcode-canvas');
-  const barcodeInfo = document.getElementById('barcode-info');
-  const btnDl = document.getElementById('btn-dl');
+// ===================== STATE =====================
+let imgFile = null;
+let imgDataURL = null;
+let generatedCanvas = null;
 
-  let currentFile = null;
-  let currentImageData = null;
+// ===================== DOM =====================
+const dropZone = document.getElementById('drop-zone');
+const fileInput = document.getElementById('file-input');
+const previewWrap = document.getElementById('preview-wrap');
+const previewImg = document.getElementById('preview-img');
+const btnGen = document.getElementById('btn-gen');
+const qrCanvas = document.getElementById('qr-canvas');
+const qrEmpty = document.getElementById('qr-empty');
+const spinner = document.getElementById('spinner');
+const sdot = document.getElementById('sdot');
+const stext = document.getElementById('stext');
 
-  // Sliders
-  const sliders = [
-    { el: document.getElementById('bc-width'), val: document.getElementById('bc-width-val') },
-    { el: document.getElementById('bc-height'), val: document.getElementById('bc-height-val') },
-    { el: document.getElementById('bc-margin'), val: document.getElementById('bc-margin-val') },
-  ];
-  sliders.forEach(({ el, val }) => {
-    el.addEventListener('input', () => val.textContent = el.value);
+// ===================== UPLOAD =====================
+dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+dropZone.addEventListener('drop', e => {
+  e.preventDefault();
+  dropZone.classList.remove('drag-over');
+  const f = e.dataTransfer.files[0];
+  if (f && f.type.startsWith('image/')) handleFile(f);
+});
+fileInput.addEventListener('change', e => { if (e.target.files[0]) handleFile(e.target.files[0]); });
+
+function handleFile(file) {
+  imgFile = file;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    imgDataURL = ev.target.result;
+    previewImg.src = imgDataURL;
+    dropZone.style.display = 'none';
+    previewWrap.style.display = 'block';
+    setStatus('ok', `✓ ${file.name} siap`);
+  };
+  reader.readAsDataURL(file);
+}
+
+function resetImage() {
+  imgFile = null;
+  imgDataURL = null;
+  previewImg.src = '';
+  previewWrap.style.display = 'none';
+  dropZone.style.display = 'flex';
+  fileInput.value = '';
+  setStatus('', 'Upload gambar untuk mulai');
+}
+
+// ===================== QR TYPE FIELDS =====================
+function updatePlaceholder() {
+  const type = document.getElementById('qr-type').value;
+  const fields = ['url','text','wa','email','phone','wifi','vcard'];
+  fields.forEach(f => {
+    const el = document.getElementById('field-' + f);
+    if (el) el.style.display = f === type ? 'block' : 'none';
   });
+}
+updatePlaceholder();
 
-  // Drag and drop
-  dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('drag-over'); });
-  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
-  dropZone.addEventListener('drop', (e) => {
-    e.preventDefault();
-    dropZone.classList.remove('drag-over');
-    const file = e.dataTransfer.files[0];
-    if (file && file.type.startsWith('image/')) loadFile(file);
-  });
+// ===================== SLIDERS =====================
+function bindSlider(id, displayId) {
+  const el = document.getElementById(id);
+  const disp = document.getElementById(displayId);
+  el.addEventListener('input', () => { disp.textContent = el.value; });
+}
+bindSlider('qr-size', 'size-val');
+bindSlider('logo-size', 'logo-size-val');
+bindSlider('logo-pad', 'logo-pad-val');
 
-  fileInput.addEventListener('change', (e) => {
-    if (e.target.files[0]) loadFile(e.target.files[0]);
-  });
+// ===================== LOGO TOGGLE =====================
+document.getElementById('toggle-logo').addEventListener('change', function() {
+  document.getElementById('logo-opts').style.display = this.checked ? 'block' : 'none';
+});
 
-  function loadFile(file) {
-    currentFile = file;
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      currentImageData = ev.target.result;
-      previewImg.src = currentImageData;
-      previewImg.style.display = 'block';
-      dropZone.style.display = 'none';
-      btnConvert.disabled = false;
-      setStatus('active', `✓ ${file.name} siap dikonversi`);
-
-      // Auto-fill teks from filename if empty
-      const nameInput = document.getElementById('bc-text');
-      if (!nameInput.value) {
-        const cleaned = file.name.replace(/\.[^/.]+$/, '').replace(/[^a-zA-Z0-9\-_.]/g, '-').substring(0, 20);
-        nameInput.placeholder = `Contoh: ${cleaned}`;
-      }
-    };
-    reader.readAsDataURL(file);
-  }
-
-  function setStatus(type, msg) {
-    statusDot.className = 'status-dot' + (type ? ' ' + type : '');
-    statusText.textContent = msg;
-  }
-
-  btnConvert.addEventListener('click', generateBarcode);
-
-  function generateBarcode() {
-    const type = document.getElementById('bc-type').value;
-    const width = parseFloat(document.getElementById('bc-width').value);
-    const height = parseInt(document.getElementById('bc-height').value);
-    const margin = parseInt(document.getElementById('bc-margin').value);
-    const lineColor = document.getElementById('bc-linecolor').value;
-    const bgColor = document.getElementById('bc-bgcolor').value;
-    const displayVal = document.getElementById('bc-displayval').value === 'true';
-
-    let text = document.getElementById('bc-text').value.trim();
-
-    // Generate barcode text based on type if not provided
-    if (!text) {
-      text = generateDefaultText(type);
+// ===================== BUILD QR STRING =====================
+function buildQRString() {
+  const type = document.getElementById('qr-type').value;
+  switch(type) {
+    case 'url': return document.getElementById('val-url').value || 'https://example.com';
+    case 'text': return document.getElementById('val-text').value || 'Hello World';
+    case 'wa': {
+      const num = document.getElementById('val-wa-num').value.replace(/\D/g,'');
+      const msg = document.getElementById('val-wa-msg').value;
+      return `https://wa.me/${num}${msg ? '?text=' + encodeURIComponent(msg) : ''}`;
     }
-
-    // Validate text for specific barcode types
-    const validated = validateAndFix(type, text);
-    if (!validated.ok) {
-      setStatus('error', '✗ ' + validated.msg);
-      return;
+    case 'email': {
+      const to = document.getElementById('val-email-to').value;
+      const sub = document.getElementById('val-email-sub').value;
+      return `mailto:${to}${sub ? '?subject=' + encodeURIComponent(sub) : ''}`;
     }
-    text = validated.text;
+    case 'phone': return `tel:${document.getElementById('val-phone').value}`;
+    case 'wifi': {
+      const ssid = document.getElementById('val-wifi-ssid').value;
+      const pass = document.getElementById('val-wifi-pass').value;
+      const enc = document.getElementById('val-wifi-enc').value;
+      return `WIFI:T:${enc};S:${ssid};P:${pass};;`;
+    }
+    case 'vcard': {
+      const n = document.getElementById('val-vc-name').value;
+      const p = document.getElementById('val-vc-phone').value;
+      const e = document.getElementById('val-vc-email').value;
+      const w = document.getElementById('val-vc-web').value;
+      const o = document.getElementById('val-vc-org').value;
+      return `BEGIN:VCARD\nVERSION:3.0\nFN:${n}\nTEL:${p}\nEMAIL:${e}\nURL:${w}\nORG:${o}\nEND:VCARD`;
+    }
+    default: return 'https://example.com';
+  }
+}
 
-    // Show spinner
-    outputEmpty.style.display = 'none';
-    spinner.style.display = 'block';
-    barcodeOutput.style.display = 'none';
+// ===================== GENERATE =====================
+btnGen.addEventListener('click', generateQR);
 
-    setStatus('', 'Generating barcode...');
+function generateQR() {
+  const qrText = buildQRString();
+  const size = parseInt(document.getElementById('qr-size').value);
+  const color = document.getElementById('qr-color').value;
+  const bg = document.getElementById('qr-bg').value;
+  const ecl = document.getElementById('qr-ecl').value;
+  const embedLogo = document.getElementById('toggle-logo').checked;
+  const logoPct = parseInt(document.getElementById('logo-size').value) / 100;
+  const logoPad = parseInt(document.getElementById('logo-pad').value);
+
+  // show spinner
+  qrEmpty.style.display = 'none';
+  qrCanvas.style.display = 'none';
+  spinner.style.display = 'block';
+  setStatus('busy', 'Generating QR code...');
+
+  // Use a hidden div for qrcode.js then copy to our canvas
+  const tmpDiv = document.createElement('div');
+  tmpDiv.style.cssText = 'position:fixed;left:-9999px;top:-9999px;';
+  document.body.appendChild(tmpDiv);
+
+  try {
+    const eclMap = { L: QRCode.CorrectLevel.L, M: QRCode.CorrectLevel.M, Q: QRCode.CorrectLevel.Q, H: QRCode.CorrectLevel.H };
+
+    new QRCode(tmpDiv, {
+      text: qrText,
+      width: size,
+      height: size,
+      colorDark: color,
+      colorLight: bg,
+      correctLevel: eclMap[ecl]
+    });
 
     setTimeout(() => {
-      try {
-        JsBarcode(barcodeCanvas, text, {
-          format: type,
-          width: width,
-          height: height,
-          displayValue: displayVal,
-          margin: margin,
-          lineColor: lineColor,
-          background: bgColor,
-          fontSize: 14,
-          fontOptions: 'bold',
-          font: 'Space Mono',
-        });
+      const tmpCanvas = tmpDiv.querySelector('canvas');
+      if (!tmpCanvas) {
+        throw new Error('QR generation failed');
+      }
 
-        spinner.style.display = 'none';
-        barcodeOutput.style.display = 'flex';
+      const ctx = qrCanvas.getContext('2d');
+      qrCanvas.width = size;
+      qrCanvas.height = size;
+      ctx.drawImage(tmpCanvas, 0, 0, size, size);
 
-        const w = barcodeCanvas.width;
-        const h = barcodeCanvas.height;
-        barcodeInfo.innerHTML = `
-          Format: <span>${type}</span> &nbsp;|&nbsp;
-          Teks: <span>${text}</span> &nbsp;|&nbsp;
-          Ukuran: <span>${w}×${h}px</span>
-        `;
+      document.body.removeChild(tmpDiv);
 
-        // Setup download
-        btnDl.onclick = (e) => {
-          e.preventDefault();
-          const a = document.createElement('a');
-          a.download = `barcode-${text}-${type}.png`;
-          a.href = barcodeCanvas.toDataURL('image/png');
-          a.click();
+      if (embedLogo && imgDataURL) {
+        const logoImg = new Image();
+        logoImg.onload = () => {
+          const logoW = size * logoPct;
+          const logoH = (logoImg.height / logoImg.width) * logoW;
+          const lx = (size - logoW) / 2;
+          const ly = (size - logoH) / 2;
+
+          // white background behind logo
+          if (logoPad > 0) {
+            ctx.fillStyle = bg;
+            ctx.beginPath();
+            ctx.roundRect(lx - logoPad, ly - logoPad, logoW + logoPad*2, logoH + logoPad*2, logoPad);
+            ctx.fill();
+          }
+
+          ctx.drawImage(logoImg, lx, ly, logoW, logoH);
+          finishQR(size, ecl, embedLogo, qrText);
         };
-
-        setStatus('active', `✓ Barcode berhasil dibuat — ${type} · "${text}"`);
-      } catch (err) {
-        spinner.style.display = 'none';
-        outputEmpty.style.display = 'block';
-        outputEmpty.innerHTML = `<div class="big">⚠️</div>Error: ${err.message}<br><small>Coba ganti tipe barcode atau teks</small>`;
-        setStatus('error', '✗ Gagal: ' + err.message);
-      }
-    }, 300);
-  }
-
-  function generateDefaultText(type) {
-    switch (type) {
-      case 'EAN13': return '5901234123457';
-      case 'EAN8': return '96385074';
-      case 'UPC': return '012345678905';
-      case 'ITF14': return '12345678901231';
-      case 'pharmacode': return '1234';
-      case 'CODE39': return 'IMG2BAR';
-      default: return 'IMG2BAR-001';
-    }
-  }
-
-  function validateAndFix(type, text) {
-    switch (type) {
-      case 'EAN13':
-        const e13 = text.replace(/\D/g, '').substring(0, 12).padStart(12, '0');
-        return { ok: true, text: e13 + calcCheckDigit(e13, 'EAN13') };
-      case 'EAN8':
-        const e8 = text.replace(/\D/g, '').substring(0, 7).padStart(7, '0');
-        return { ok: true, text: e8 + calcCheckDigit(e8, 'EAN8') };
-      case 'UPC':
-        const upc = text.replace(/\D/g, '').substring(0, 11).padStart(11, '0');
-        return { ok: true, text: upc + calcCheckDigit(upc, 'UPC') };
-      case 'ITF14':
-        const itf = text.replace(/\D/g, '').substring(0, 13).padStart(13, '0');
-        return { ok: true, text: itf + calcCheckDigit(itf, 'EAN13') };
-      case 'pharmacode':
-        const ph = parseInt(text.replace(/\D/g, '')) || 1234;
-        if (ph < 3 || ph > 131070) return { ok: true, text: '1234' };
-        return { ok: true, text: String(ph) };
-      case 'CODE39':
-        const c39 = text.replace(/[^A-Z0-9\-. $/+%]/gi, '').toUpperCase().substring(0, 30) || 'IMG2BAR';
-        return { ok: true, text: c39 };
-      default:
-        return { ok: true, text: text.substring(0, 48) || 'IMG2BAR-001' };
-    }
-  }
-
-  function calcCheckDigit(num, type) {
-    const digits = num.split('').map(Number);
-    let sum = 0;
-    for (let i = 0; i < digits.length; i++) {
-      if (type === 'UPC') {
-        sum += i % 2 === 0 ? digits[i] * 3 : digits[i];
+        logoImg.onerror = () => finishQR(size, ecl, false, qrText);
+        logoImg.src = imgDataURL;
       } else {
-        sum += i % 2 === 0 ? digits[i] : digits[i] * 3;
+        finishQR(size, ecl, embedLogo && !!imgDataURL, qrText);
       }
-    }
-    return String((10 - (sum % 10)) % 10);
-  }
+    }, 100);
 
-  // Allow pressing enter on text input
-  document.getElementById('bc-text').addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && !btnConvert.disabled) generateBarcode();
-  });
+  } catch(err) {
+    document.body.removeChild(tmpDiv);
+    spinner.style.display = 'none';
+    qrEmpty.style.display = 'flex';
+    qrEmpty.innerHTML = `<div class="big">⚠️</div><p>Error: ${err.message}</p>`;
+    setStatus('err', '✗ Gagal generate: ' + err.message);
+  }
+}
+
+function finishQR(size, ecl, hasLogo, qrText) {
+  spinner.style.display = 'none';
+  qrCanvas.style.display = 'block';
+  generatedCanvas = qrCanvas;
+
+  // meta
+  document.getElementById('qr-meta').style.display = 'block';
+  document.getElementById('meta-size').textContent = `${size}×${size}px`;
+  document.getElementById('meta-ecl').textContent = ecl;
+  document.getElementById('meta-logo').textContent = hasLogo ? 'Ya (embed di tengah)' : 'Tidak';
+  document.getElementById('meta-type').textContent = document.getElementById('qr-type').options[document.getElementById('qr-type').selectedIndex].text;
+
+  // download buttons
+  const dlPng = document.getElementById('btn-dl-png');
+  const dlSvg = document.getElementById('btn-dl-svg');
+  dlPng.classList.remove('disabled');
+  dlSvg.classList.remove('disabled');
+
+  dlPng.onclick = () => {
+    const a = document.createElement('a');
+    a.download = 'qrcode.png';
+    a.href = qrCanvas.toDataURL('image/png');
+    a.click();
+  };
+
+  dlSvg.onclick = () => {
+    // Build simple SVG from canvas
+    const dataURL = qrCanvas.toDataURL('image/png');
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${size}" height="${size}">
+  <image href="${dataURL}" width="${size}" height="${size}"/>
+</svg>`;
+    const blob = new Blob([svg], { type: 'image/svg+xml' });
+    const a = document.createElement('a');
+    a.download = 'qrcode.svg';
+    a.href = URL.createObjectURL(blob);
+    a.click();
+  };
+
+  setStatus('ok', `✓ QR Code siap — ${size}px · Error Level ${ecl}${hasLogo ? ' · Logo embedded' : ''}`);
+}
+
+// ===================== STATUS =====================
+function setStatus(type, msg) {
+  sdot.className = 'sdot' + (type ? ' ' + type : '');
+  stext.textContent = msg;
+}
 </script>
 </body>
 </html>
