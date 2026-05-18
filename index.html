@@ -3,249 +3,197 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>QRIS Fixer — Ubah Foto ke Barcode Bagus</title>
+<title>IMAGE TO BARCODE — Instan Share</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<!-- Library Scan QR dari Gambar -->
-<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
-<!-- Library Generate QR -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 <style>
 :root {
-  --bg: #f4f4f4;
-  --accent: #ed1c24;
-  --blue: #1d4076;
-  --dark: #1a1a1a;
+  --bg: #fdfcfb;
+  --accent: #ff4d00;
+  --dark: #121212;
+  --border: #e2e2e2;
 }
-body { font-family: 'Syne', sans-serif; background: var(--bg); color: var(--dark); padding: 20px; }
-.container { max-width: 900px; margin: 0 auto; }
-header { text-align: center; margin-bottom: 30px; border-bottom: 3px solid var(--dark); padding-bottom: 10px; }
+body { font-family: 'Syne', sans-serif; background: var(--bg); color: var(--dark); margin: 0; padding: 20px; }
+.container { max-width: 600px; margin: 0 auto; text-align: center; }
 
-.main-grid { display: grid; grid-template-columns: 1fr 350px; gap: 20px; }
-@media (max-width: 768px) { .main-grid { grid-template-columns: 1fr; } }
+header { margin-bottom: 40px; }
+.logo { font-size: 1.8rem; font-weight: 800; letter-spacing: -1px; }
+.logo span { color: var(--accent); }
 
-.card { background: white; border: 2px solid var(--dark); border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 4px 4px 0px var(--dark); }
-.card-title { font-weight: 800; font-size: 0.9rem; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; text-transform: uppercase; }
-.num { background: var(--dark); color: white; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; }
+.card { background: #fff; border: 3px solid var(--dark); border-radius: 16px; padding: 30px; box-shadow: 8px 8px 0px var(--dark); margin-bottom: 20px; }
 
-/* Upload Styling */
-.upload-box { border: 2px dashed #ccc; border-radius: 8px; padding: 20px; text-align: center; position: relative; cursor: pointer; transition: 0.2s; background: #fafafa; }
-.upload-box:hover { border-color: var(--accent); background: #fff5f5; }
-.upload-box input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
-.preview-img { max-width: 100%; max-height: 150px; margin-top: 10px; border-radius: 4px; display: none; margin-left: auto; margin-right: auto; }
+/* Upload Area */
+.drop-zone { border: 3px dashed var(--border); border-radius: 12px; padding: 40px 20px; cursor: pointer; transition: 0.3s; background: #fafafa; position: relative; }
+.drop-zone:hover { border-color: var(--accent); background: #fff8f5; }
+.drop-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+.drop-zone p { font-family: 'IBM Plex Mono'; font-size: 0.8rem; color: #666; }
 
-.status-badge { font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; padding: 5px 10px; border-radius: 4px; display: inline-block; margin-top: 10px; }
-.status-ok { background: #e6fffa; color: #2c7a7b; border: 1px solid #81e6d9; }
-.status-wait { background: #fffaf0; color: #9c4221; border: 1px solid #fbd38d; }
+#preview-img { max-width: 100%; border-radius: 8px; margin-top: 15px; display: none; border: 1px solid #ddd; }
 
-.btn-gen { width: 100%; background: var(--dark); color: white; border: none; padding: 15px; border-radius: 8px; font-weight: 800; cursor: pointer; font-size: 1rem; margin-top: 10px; transition: 0.2s; }
-.btn-gen:hover { background: var(--accent); transform: translateY(-2px); box-shadow: 0 4px 15px rgba(237, 28, 36, 0.3); }
+/* Progress Bar */
+.progress-wrap { display: none; margin-top: 20px; }
+.progress-bar { height: 10px; background: #eee; border-radius: 10px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--accent); width: 0%; transition: 0.3s; }
 
-/* Hasil */
-.qr-output-container { background: white; padding: 20px; border: 2px solid var(--dark); border-radius: 12px; text-align: center; position: sticky; top: 20px; }
-#qr-canvas { width: 100%; height: auto; display: none; }
-.placeholder-qr { height: 250px; display: flex; align-items: center; justify-content: center; border: 2px dashed #eee; color: #ccc; font-size: 0.8rem; }
-.btn-dl { display: block; background: var(--blue); color: white; text-decoration: none; padding: 12px; border-radius: 6px; font-weight: 700; margin-top: 15px; font-size: 0.9rem; }
-.disabled { opacity: 0.3; pointer-events: none; filter: grayscale(1); }
+/* Result */
+.result-area { display: none; margin-top: 30px; animation: fadeIn 0.5s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+#qr-canvas { margin: 0 auto; padding: 15px; background: white; border: 1px solid #eee; border-radius: 8px; }
+
+.btn { display: inline-block; width: 100%; padding: 16px; background: var(--dark); color: white; border: none; border-radius: 8px; font-weight: 800; font-size: 1rem; cursor: pointer; text-decoration: none; margin-top: 20px; }
+.btn:hover { background: var(--accent); }
+.btn-dl { background: white; color: var(--dark); border: 2px solid var(--dark); margin-top: 10px; }
+
+.info { font-size: 0.65rem; font-family: 'IBM Plex Mono'; color: #888; margin-top: 20px; line-height: 1.5; }
 </style>
 </head>
 <body>
 
 <div class="container">
   <header>
-    <h1 style="margin:0; font-size: 2rem;">QRIS.<span style="color:var(--accent)">FIXER</span></h1>
-    <p style="font-family:'IBM Plex Mono'; font-size: 0.7rem; margin-top: 5px;">UBAH FOTO SCREENSHOT MENJADI BARCODE PROFESIONAL</p>
+    <div class="logo">IMG<span>2</span>BARCODE</div>
+    <p style="font-size: 0.8rem; font-weight: 500; opacity: 0.7;">Ubah gambar apapun menjadi QR Code instan</p>
   </header>
 
-  <div class="main-grid">
-    <!-- KIRI: INPUT -->
-    <div>
-      <!-- STEP 1 -->
-      <div class="card">
-        <div class="card-title"><span class="num">1</span> FOTO QRIS LAMA (SCREENSHOT)</div>
-        <div class="upload-box" id="box-qris">
-          <input type="file" id="input-qris" accept="image/*">
-          <div id="text-qris">
-            <strong>Klik untuk Upload Foto QRIS</strong>
-            <p style="font-size: 0.7rem; color: #888; margin-top: 5px;">Sistem akan otomatis membaca data barcode dari foto</p>
-          </div>
-          <img id="prev-qris" class="preview-img">
+  <div class="card">
+    <!-- INPUT -->
+    <div id="input-section">
+      <div class="drop-zone" id="drop-zone">
+        <input type="file" id="file-input" accept="image/*">
+        <div id="drop-text">
+          <span style="font-size: 2rem;">📸</span><br>
+          <strong>Pilih atau Seret Foto</strong>
+          <p>JPG, PNG, atau Screenshot</p>
         </div>
-        <div id="status-scan" class="status-badge status-wait">Menunggu foto QRIS...</div>
+        <img id="preview-img" alt="preview">
+      </div>
+      
+      <div class="progress-wrap" id="progress-wrap">
+        <p id="status-text" style="font-size: 0.7rem; font-family: 'IBM Plex Mono'; margin-bottom: 8px;">Mengunggah gambar...</p>
+        <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
       </div>
 
-      <!-- STEP 2 -->
-      <div class="card">
-        <div class="card-title"><span class="num">2</span> LOGO TENGAH (OPSIONAL)</div>
-        <div class="upload-box" id="box-logo">
-          <input type="file" id="input-logo" accept="image/*">
-          <div id="text-logo">
-            <strong>Klik untuk Upload Logo Toko</strong>
-            <p style="font-size: 0.7rem; color: #888; margin-top: 5px;">Gunakan file PNG transparan untuk hasil terbaik</p>
-          </div>
-          <img id="prev-logo" class="preview-img">
-        </div>
-      </div>
-
-      <!-- STEP 3 -->
-      <div class="card">
-        <div class="card-title"><span class="num">3</span> WARNA & UKURAN</div>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-          <div>
-            <label style="font-size: 0.6rem; display: block; margin-bottom: 5px;">WARNA BARCODE</label>
-            <input type="color" id="qr-color" value="#000000" style="width:100%; height:40px; border:1px solid #ddd; border-radius:4px;">
-          </div>
-          <div>
-            <label style="font-size: 0.6rem; display: block; margin-bottom: 5px;">UKURAN (PX)</label>
-            <input type="number" id="qr-size" value="500" style="width:100%; padding:10px; border:1px solid #ddd; border-radius:4px;">
-          </div>
-        </div>
-        <button class="btn-gen" id="btn-generate" disabled>⚡ GENERATE BARCODE BARU</button>
-      </div>
+      <button class="btn" id="btn-upload" style="display:none;">BUAT BARCODE SEKARANG ⚡</button>
     </div>
 
-    <!-- KANAN: HASIL -->
-    <div>
-      <div class="qr-output-container">
-        <div class="card-title" style="justify-content: center;">HASIL BARCODE</div>
-        <div class="placeholder-qr" id="placeholder">
-          Belum ada hasil
-        </div>
-        <canvas id="qr-canvas"></canvas>
-        <div id="meta-info" style="margin-top: 15px; font-family: 'IBM Plex Mono'; font-size: 0.6rem; color: #888; display: none;">
-          DATA TERDETEKSI: <br>
-          <span id="detected-data" style="color: #333; word-break: break-all;">-</span>
-        </div>
-        <a href="#" id="btn-download" class="btn-dl disabled">Download PNG</a>
-      </div>
+    <!-- HASIL -->
+    <div class="result-area" id="result-area">
+      <p style="font-size: 0.8rem; margin-bottom: 15px; font-weight: 700;">✅ BARCODE BERHASIL DIBUAT</p>
+      <div id="qr-canvas"></div>
+      
+      <a href="#" id="btn-download" class="btn btn-dl">Download PNG</a>
+      <button onclick="location.reload()" class="btn" style="background:#eee; color:#333; margin-top:10px;">Buat Baru</button>
+      
+      <p class="info">
+        Link Foto: <br>
+        <span id="link-text" style="color:var(--accent); text-decoration: underline;"></span>
+      </p>
     </div>
   </div>
+
+  <p class="info">
+    *Foto di-upload ke server file.io secara anonim.<br>
+    *Foto akan otomatis terhapus dalam waktu tertentu demi keamanan.
+  </p>
 </div>
 
 <script>
-let decodedText = "";
-let logoDataURL = null;
+const fileInput = document.getElementById('file-input');
+const previewImg = document.getElementById('preview-img');
+const dropText = document.getElementById('drop-text');
+const btnUpload = document.getElementById('btn-upload');
+const progressWrap = document.getElementById('progress-wrap');
+const progressFill = document.getElementById('progress-fill');
+const statusText = document.getElementById('status-text');
+const resultArea = document.getElementById('result-area');
+const qrCanvas = document.getElementById('qr-canvas');
 
-// --- SCAN QRIS DARI FOTO ---
-document.getElementById('input-qris').addEventListener('change', function(e) {
-  const file = e.target.files[0];
-  if (!file) return;
+let selectedFile = null;
 
-  const reader = new FileReader();
-  reader.onload = function(event) {
-    const img = new Image();
-    img.onload = function() {
-      // Tampilkan preview foto
-      const prev = document.getElementById('prev-qris');
-      prev.src = event.target.result;
-      prev.style.display = 'block';
-      document.getElementById('text-qris').style.display = 'none';
-
-      // Scan menggunakan canvas
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
-      canvas.width = img.width;
-      canvas.height = img.height;
-      ctx.drawImage(img, 0, 0);
-      
-      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      const code = jsQR(imageData.data, imageData.width, imageData.height);
-
-      if (code) {
-        decodedText = code.data;
-        document.getElementById('status-scan').textContent = "✓ Barcode Berhasil Dibaca!";
-        document.getElementById('status-scan').className = "status-badge status-ok";
-        document.getElementById('detected-data').textContent = decodedText.substring(0, 50) + "...";
-        document.getElementById('meta-info').style.display = 'block';
-        document.getElementById('btn-generate').disabled = false;
-      } else {
-        alert("Gagal membaca barcode! Pastikan foto QRIS jelas dan tidak terpotong.");
-        document.getElementById('status-scan').textContent = "✗ Barcode Tidak Terdeteksi";
-        document.getElementById('status-scan').className = "status-badge";
-        document.getElementById('btn-generate').disabled = true;
-      }
-    };
-    img.src = event.target.result;
-  };
-  reader.readAsDataURL(file);
-});
-
-// --- HANDLE LOGO ---
-document.getElementById('input-logo').addEventListener('change', function(e) {
+// Handle Pilih File
+fileInput.addEventListener('change', (e) => {
   const file = e.target.files[0];
   if (file) {
+    selectedFile = file;
     const reader = new FileReader();
-    reader.onload = function(ev) {
-      logoDataURL = ev.target.result;
-      const prev = document.getElementById('prev-logo');
-      prev.src = logoDataURL;
-      prev.style.display = 'block';
-      document.getElementById('text-logo').style.display = 'none';
+    reader.onload = (ev) => {
+      previewImg.src = ev.target.result;
+      previewImg.style.display = 'block';
+      dropText.style.display = 'none';
+      btnUpload.style.display = 'block';
     };
     reader.readAsDataURL(file);
   }
 });
 
-// --- GENERATE QRIS BARU ---
-document.getElementById('btn-generate').addEventListener('click', function() {
-  if (!decodedText) return;
+// Handle Upload & Generate
+btnUpload.addEventListener('click', async () => {
+  if (!selectedFile) return;
 
-  const size = parseInt(document.getElementById('qr-size').value) || 500;
-  const color = document.getElementById('qr-color').value;
-  const canvas = document.getElementById('qr-canvas');
-  const placeholder = document.getElementById('placeholder');
+  // UI State
+  btnUpload.style.display = 'none';
+  progressWrap.style.display = 'block';
+  
+  // Simulasi progress bar
+  let p = 0;
+  const interval = setInterval(() => {
+    if (p < 90) { p += 10; progressFill.style.width = p + '%'; }
+  }, 200);
 
-  placeholder.style.display = 'none';
-  canvas.style.display = 'block';
+  // Proses Upload ke file.io (Server upload gratis & anonim)
+  const formData = new FormData();
+  formData.append('file', selectedFile);
 
-  // Temporary div untuk QRCode.js
-  const tmpDiv = document.createElement('div');
-  new QRCode(tmpDiv, {
-    text: decodedText,
-    width: size,
-    height: size,
-    colorDark: color,
-    colorLight: "#ffffff",
-    correctLevel: QRCode.CorrectLevel.H // Level tinggi agar bisa pakai logo
-  });
+  try {
+    const response = await fetch('https://file.io', {
+      method: 'POST',
+      body: formData
+    });
 
-  setTimeout(() => {
-    const tmpCanvas = tmpDiv.querySelector('canvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = size;
-    canvas.height = size;
-    ctx.drawImage(tmpCanvas, 0, 0);
+    const data = await response.json();
 
-    if (logoDataURL) {
-      const logoImg = new Image();
-      logoImg.onload = function() {
-        const logoSize = size * 0.2; // Logo 20% dari ukuran QR
-        const x = (size - logoSize) / 2;
-        const y = (size - logoSize) / 2;
-        
-        // Background putih kotak logo
-        ctx.fillStyle = "#ffffff";
-        ctx.fillRect(x - 6, y - 6, logoSize + 12, logoSize + 12);
-        
-        ctx.drawImage(logoImg, x, y, logoSize, logoSize);
-        finishGenerate();
-      };
-      logoImg.src = logoDataURL;
+    if (data.success) {
+      clearInterval(interval);
+      progressFill.style.width = '100%';
+      statusText.textContent = "Berhasil! Membuat Barcode...";
+
+      setTimeout(() => {
+        generateQR(data.link);
+      }, 500);
     } else {
-      finishGenerate();
+      throw new Error("Gagal mengunggah gambar.");
     }
-  }, 100);
+  } catch (err) {
+    alert("Error: " + err.message);
+    location.reload();
+  }
 });
 
-function finishGenerate() {
-  const btnDl = document.getElementById('btn-download');
-  btnDl.classList.remove('disabled');
-  btnDl.onclick = function() {
-    const link = document.createElement('a');
-    link.download = 'QRIS-New-Design.png';
-    link.href = document.getElementById('qr-canvas').toDataURL('image/png');
-    link.click();
-  };
+function generateQR(link) {
+  document.getElementById('input-section').style.display = 'none';
+  resultArea.style.display = 'block';
+  document.getElementById('link-text').textContent = link;
+
+  // Generate QR Code
+  qrCanvas.innerHTML = ""; // Bersihkan
+  new QRCode(qrCanvas, {
+    text: link,
+    width: 250,
+    height: 250,
+    colorDark : "#121212",
+    colorLight : "#ffffff",
+    correctLevel : QRCode.CorrectLevel.H
+  });
+
+  // Setup Download Button
+  setTimeout(() => {
+    const qrImg = qrCanvas.querySelector('img');
+    const dlBtn = document.getElementById('btn-download');
+    dlBtn.href = qrImg.src;
+    dlBtn.download = "barcode-foto.png";
+  }, 500);
 }
 </script>
 
