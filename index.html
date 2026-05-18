@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IMG2BARCODE — Instan Share</title>
+<title>IMAGE TO BARCODE — Instan Share</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Library QR Code -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 <style>
@@ -15,18 +16,20 @@ header { margin-bottom: 40px; }
 .logo { font-size: 1.8rem; font-weight: 800; letter-spacing: -1px; }
 .logo span { color: var(--accent); }
 .card { background: #fff; border: 3px solid var(--dark); border-radius: 16px; padding: 30px; box-shadow: 8px 8px 0px var(--dark); margin-bottom: 20px; }
-.drop-zone { border: 3px dashed var(--border); border-radius: 12px; padding: 40px 20px; cursor: pointer; position: relative; background: #fafafa; }
-.drop-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; z-index: 2; }
+.drop-zone { border: 3px dashed var(--border); border-radius: 12px; padding: 40px 20px; cursor: pointer; transition: 0.3s; background: #fafafa; position: relative; overflow: hidden;}
+.drop-zone:hover { border-color: var(--accent); background: #fff8f5; }
+.drop-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; z-index: 10; }
 #preview-img { max-width: 100%; border-radius: 8px; margin-top: 15px; display: none; border: 1px solid #ddd; }
 .progress-wrap { display: none; margin-top: 20px; }
 .progress-bar { height: 10px; background: #eee; border-radius: 10px; overflow: hidden; }
 .progress-fill { height: 100%; background: var(--accent); width: 0%; transition: 0.3s; }
-.result-area { display: none; margin-top: 30px; }
+.result-area { display: none; margin-top: 30px; animation: fadeIn 0.5s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 #qr-canvas { margin: 0 auto; padding: 15px; background: white; border: 1px solid #eee; border-radius: 8px; display: inline-block; }
-.btn { display: inline-block; width: 100%; padding: 16px; background: var(--dark); color: white; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; text-decoration: none; margin-top: 20px; box-sizing: border-box; }
+.btn { display: inline-block; width: 100%; padding: 16px; background: var(--dark); color: white; border: none; border-radius: 8px; font-weight: 800; font-size: 1rem; cursor: pointer; text-decoration: none; margin-top: 20px; box-sizing: border-box; }
 .btn:hover { background: var(--accent); }
-.info { font-size: 0.65rem; font-family: 'IBM Plex Mono'; color: #888; margin-top: 20px; }
-#link-text { word-break: break-all; color: var(--accent); font-weight: bold; }
+.info { font-size: 0.65rem; font-family: 'IBM Plex Mono'; color: #888; margin-top: 20px; line-height: 1.5; }
+#link-text { word-break: break-all; font-weight: bold; color: var(--accent); }
 </style>
 </head>
 <body>
@@ -34,46 +37,52 @@ header { margin-bottom: 40px; }
 <div class="container">
   <header>
     <div class="logo">IMG<span>2</span>BARCODE</div>
-    <p style="font-size: 0.8rem; opacity: 0.7;">Ubah gambar menjadi QR Code via Cloudflare Proxy</p>
+    <p style="font-size: 0.8rem; font-weight: 500; opacity: 0.7;">Ubah gambar apapun menjadi QR Code instan</p>
   </header>
 
   <div class="card">
     <div id="input-section">
-      <div class="drop-zone">
+      <div class="drop-zone" id="drop-zone">
         <input type="file" id="file-input" accept="image/*">
         <div id="drop-text">
           <span style="font-size: 2rem;">📸</span><br>
-          <strong>Klik untuk Pilih Foto</strong>
+          <strong>Pilih atau Seret Foto</strong>
+          <p>JPG, PNG, atau Screenshot</p>
         </div>
         <img id="preview-img" alt="preview">
       </div>
       
       <div class="progress-wrap" id="progress-wrap">
-        <p id="status-text" style="font-size: 0.7rem; margin-bottom: 8px;">Memproses...</p>
+        <p id="status-text" style="font-size: 0.7rem; font-family: 'IBM Plex Mono'; margin-bottom: 8px;">Mengunggah gambar...</p>
         <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
       </div>
 
-      <button class="btn" id="btn-upload" style="display:none;">BUAT QR SEKARANG ⚡</button>
+      <button class="btn" id="btn-upload" style="display:none;">BUAT BARCODE SEKARANG ⚡</button>
     </div>
 
     <div class="result-area" id="result-area">
-      <p style="font-size: 0.8rem; font-weight: 700;">✅ QR CODE BERHASIL</p>
+      <p style="font-size: 0.8rem; margin-bottom: 15px; font-weight: 700;">✅ BARCODE BERHASIL DIBUAT</p>
       <div id="qr-canvas"></div>
-      <a href="#" id="btn-download" class="btn" style="background:white; color:black; border:2px solid black;">Download QR</a>
-      <button onclick="location.reload()" class="btn" style="background:#eee; color:#333;">Buat Baru</button>
-      <p class="info">Link: <span id="link-text"></span></p>
+      <a href="#" id="btn-download" class="btn" style="background:white; color:black; border:2px solid black;">Download Gambar QR</a>
+      <button onclick="location.reload()" class="btn" style="background:#eee; color:#333; margin-top:10px;">Buat Baru</button>
+      <p class="info">Link Foto: <br><span id="link-text"></span></p>
     </div>
   </div>
 </div>
 
 <script>
+// --- KONFIGURASI WORKER KAMU ---
 const workerUrl = 'https://jirlahh.rmcklvpn.workers.dev/';
+
 const fileInput = document.getElementById('file-input');
 const previewImg = document.getElementById('preview-img');
+const dropText = document.getElementById('drop-text');
 const btnUpload = document.getElementById('btn-upload');
 const progressWrap = document.getElementById('progress-wrap');
 const progressFill = document.getElementById('progress-fill');
 const statusText = document.getElementById('status-text');
+const resultArea = document.getElementById('result-area');
+const qrCanvas = document.getElementById('qr-canvas');
 
 let selectedFile = null;
 
@@ -85,7 +94,7 @@ fileInput.addEventListener('change', (e) => {
     reader.onload = (ev) => {
       previewImg.src = ev.target.result;
       previewImg.style.display = 'block';
-      document.getElementById('drop-text').style.display = 'none';
+      dropText.style.display = 'none';
       btnUpload.style.display = 'block';
     };
     reader.readAsDataURL(file);
@@ -94,48 +103,72 @@ fileInput.addEventListener('change', (e) => {
 
 btnUpload.addEventListener('click', async () => {
   if (!selectedFile) return;
+
   btnUpload.style.display = 'none';
   progressWrap.style.display = 'block';
   statusText.textContent = "Mengunggah via Workers...";
-
+  
   let p = 0;
-  const interval = setInterval(() => { if (p < 90) { p += 5; progressFill.style.width = p + '%'; } }, 100);
+  const interval = setInterval(() => {
+    if (p < 90) { p += 5; progressFill.style.width = p + '%'; }
+  }, 100);
 
   const formData = new FormData();
+  // Uguu.se butuh nama field 'files[]'
   formData.append('files[]', selectedFile);
 
   try {
-    const response = await fetch(workerUrl, { method: 'POST', body: formData });
+    const response = await fetch(workerUrl, {
+      method: 'POST',
+      body: formData
+    });
+
+    if (!response.ok) throw new Error("Worker Error: " + response.statusText);
+
     const data = await response.json();
 
     if (data.success) {
       clearInterval(interval);
       progressFill.style.width = '100%';
       statusText.textContent = "Selesai!";
-      
-      // Tampilkan hasil
-      document.getElementById('input-section').style.display = 'none';
-      document.getElementById('result-area').style.display = 'block';
-      document.getElementById('link-text').textContent = data.files[0].url;
 
-      // Buat QR
-      new QRCode(document.getElementById('qr-canvas'), {
-        text: data.files[0].url,
-        width: 200, height: 200
-      });
-
-      // Link Download
       setTimeout(() => {
-        const qrImg = document.querySelector('#qr-canvas img');
-        if(qrImg) document.getElementById('btn-download').href = qrImg.src;
+        showResult(data.files[0].url);
       }, 500);
-
-    } else { throw new Error("Server gagal memproses gambar."); }
+    } else {
+      throw new Error("Gagal mengunggah file.");
+    }
   } catch (err) {
-    alert("Gagal: " + err.message);
+    clearInterval(interval);
+    alert("Maaf, terjadi kesalahan: " + err.message);
     location.reload();
   }
 });
+
+function showResult(link) {
+  document.getElementById('input-section').style.display = 'none';
+  resultArea.style.display = 'block';
+  document.getElementById('link-text').textContent = link;
+
+  qrCanvas.innerHTML = ""; 
+  new QRCode(qrCanvas, {
+    text: link,
+    width: 250,
+    height: 250,
+    colorDark : "#121212",
+    colorLight : "#ffffff",
+    correctLevel : QRCode.CorrectLevel.H
+  });
+
+  setTimeout(() => {
+    const qrImg = qrCanvas.querySelector('img');
+    if(qrImg) {
+      const dlBtn = document.getElementById('btn-download');
+      dlBtn.href = qrImg.src;
+      dlBtn.download = "barcode-foto.png";
+    }
+  }, 800);
+}
 </script>
 </body>
 </html>
