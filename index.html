@@ -1,174 +1,195 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IMAGE TO BARCODE — Instan Share</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<!-- Library QR Code -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
-<style>
-:root { --bg: #fdfcfb; --accent: #ff4d00; --dark: #121212; --border: #e2e2e2; }
-body { font-family: 'Syne', sans-serif; background: var(--bg); color: var(--dark); margin: 0; padding: 20px; }
-.container { max-width: 600px; margin: 0 auto; text-align: center; }
-header { margin-bottom: 40px; }
-.logo { font-size: 1.8rem; font-weight: 800; letter-spacing: -1px; }
-.logo span { color: var(--accent); }
-.card { background: #fff; border: 3px solid var(--dark); border-radius: 16px; padding: 30px; box-shadow: 8px 8px 0px var(--dark); margin-bottom: 20px; }
-.drop-zone { border: 3px dashed var(--border); border-radius: 12px; padding: 40px 20px; cursor: pointer; transition: 0.3s; background: #fafafa; position: relative; overflow: hidden;}
-.drop-zone:hover { border-color: var(--accent); background: #fff8f5; }
-.drop-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; z-index: 10; }
-#preview-img { max-width: 100%; border-radius: 8px; margin-top: 15px; display: none; border: 1px solid #ddd; }
-.progress-wrap { display: none; margin-top: 20px; }
-.progress-bar { height: 10px; background: #eee; border-radius: 10px; overflow: hidden; }
-.progress-fill { height: 100%; background: var(--accent); width: 0%; transition: 0.3s; }
-.result-area { display: none; margin-top: 30px; animation: fadeIn 0.5s ease; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-#qr-canvas { margin: 0 auto; padding: 15px; background: white; border: 1px solid #eee; border-radius: 8px; display: inline-block; }
-.btn { display: inline-block; width: 100%; padding: 16px; background: var(--dark); color: white; border: none; border-radius: 8px; font-weight: 800; font-size: 1rem; cursor: pointer; text-decoration: none; margin-top: 20px; box-sizing: border-box; }
-.btn:hover { background: var(--accent); }
-.info { font-size: 0.65rem; font-family: 'IBM Plex Mono'; color: #888; margin-top: 20px; line-height: 1.5; }
-#link-text { word-break: break-all; font-weight: bold; color: var(--accent); }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image/Text to Barcode Generator</title>
+    <!-- Tailwind CSS untuk Styling Modern -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- JsBarcode Library untuk Generate Barcode -->
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+    <!-- Tesseract.js untuk Membaca Teks dari Gambar (OCR) -->
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5.0.5/dist/tesseract.min.js"></script>
 </head>
-<body>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col justify-between">
 
-<div class="container">
-  <header>
-    <div class="logo">IMG<span>2</span>BARCODE</div>
-    <p style="font-size: 0.8rem; font-weight: 500; opacity: 0.7;">Ubah gambar apapun menjadi QR Code instan</p>
-  </header>
+    <!-- Header -->
+    <header class="bg-blue-600 text-white py-6 shadow-md text-center">
+        <h1 class="text-3xl font-bold tracking-wide">PicToBarcode 🚀</h1>
+        <p class="text-sm text-blue-100 mt-1">Ubah Gambar atau Teks Menjadi Barcode dengan Mudah</p>
+    </header>
 
-  <div class="card">
-    <div id="input-section">
-      <div class="drop-zone" id="drop-zone">
-        <input type="file" id="file-input" accept="image/*">
-        <div id="drop-text">
-          <span style="font-size: 2rem;">📸</span><br>
-          <strong>Pilih atau Seret Foto</strong>
-          <p>JPG, PNG, atau Screenshot</p>
-        </div>
-        <img id="preview-img" alt="preview">
-      </div>
-      
-      <div class="progress-wrap" id="progress-wrap">
-        <p id="status-text" style="font-size: 0.7rem; font-family: 'IBM Plex Mono'; margin-bottom: 8px;">Mengunggah gambar...</p>
-        <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
-      </div>
+    <!-- Main Content -->
+    <main class="max-w-4xl w-full mx-auto p-4 flex-grow grid md:grid-cols-2 gap-6 items-start my-6">
+        
+        <!-- Kiri: Input Area -->
+        <section class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 space-y-6">
+            <h2 class="text-xl font-semibold text-slate-700 border-b pb-2">1. Input Data</h2>
+            
+            <!-- Upload Gambar -->
+            <div class="space-y-2">
+                <label class="block text-sm font-medium text-slate-600">Upload Foto/Gambar (Ekstrak Teks):</label>
+                <div class="flex items-center justify-center w-full">
+                    <label class="flex flex-col items-center justify-center w-full h-32 border-2 border-slate-300 border-dashed rounded-xl cursor-pointer bg-slate-50 hover:bg-slate-100 transition">
+                        <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                            <svg class="w-8 h-8 mb-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                            <p class="text-xs text-slate-500"><span class="font-semibold">Klik untuk upload</span> atau drag and drop</p>
+                            <p class="text-xs text-slate-400 mt-1">PNG, JPG, JPEG</p>
+                        </div>
+                        <input id="imageInput" type="file" accept="image/*" class="hidden" />
+                    </label>
+                </div>
+                <!-- Indikator Loading OCR -->
+                <div id="ocrStatus" class="text-xs text-blue-600 font-medium hidden animate-pulse">Sedang membaca teks dari gambar... Membutuhkan waktu beberapa detik.</div>
+            </div>
 
-      <button class="btn" id="btn-upload" style="display:none;">BUAT BARCODE SEKARANG ⚡</button>
-    </div>
+            <!-- Separator -->
+            <div class="relative flex py-2 items-center">
+                <div class="flex-grow border-t border-slate-200"></div>
+                <span class="flex-shrink mx-4 text-slate-400 text-xs uppercase font-bold">Atau isi manual</span>
+                <div class="flex-grow border-t border-slate-200"></div>
+            </div>
 
-    <div class="result-area" id="result-area">
-      <p style="font-size: 0.8rem; margin-bottom: 15px; font-weight: 700;">✅ BARCODE BERHASIL DIBUAT</p>
-      <div id="qr-canvas"></div>
-      <a href="#" id="btn-download" class="btn" style="background:white; color:black; border:2px solid black;">Download Gambar QR</a>
-      <button onclick="location.reload()" class="btn" style="background:#eee; color:#333; margin-top:10px;">Buat Baru</button>
-      <p class="info">Link Foto: <br><span id="link-text"></span></p>
-    </div>
-  </div>
-</div>
+            <!-- Input Teks -->
+            <div class="space-y-2">
+                <label for="textInput" class="block text-sm font-medium text-slate-600">Teks / Kode Barcode:</label>
+                <input type="text" id="textInput" placeholder="Contoh: KODE123456" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition text-base">
+            </div>
 
-<script>
-// --- KONFIGURASI WORKER KAMU ---
-const workerUrl = 'https://jirlahh.rmcklvpn.workers.dev/';
+            <!-- Tombol Generate -->
+            <button id="generateBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-xl shadow-md transition transform active:scale-95 cursor-pointer">
+                Generate Barcode ⚡
+            </button>
+        </section>
 
-const fileInput = document.getElementById('file-input');
-const previewImg = document.getElementById('preview-img');
-const dropText = document.getElementById('drop-text');
-const btnUpload = document.getElementById('btn-upload');
-const progressWrap = document.getElementById('progress-wrap');
-const progressFill = document.getElementById('progress-fill');
-const statusText = document.getElementById('status-text');
-const resultArea = document.getElementById('result-area');
-const qrCanvas = document.getElementById('qr-canvas');
+        <!-- Kanan: Output Area -->
+        <section class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center justify-center min-h-[350px] text-center space-y-6">
+            <h2 class="text-xl font-semibold text-slate-700 border-b pb-2 w-full text-left">2. Hasil Barcode</h2>
+            
+            <!-- Tempat Barcode Muncul -->
+            <div id="barcodeContainer" class="flex flex-col items-center justify-center p-4 bg-slate-50 rounded-xl border border-slate-200 w-full min-h-[180px]">
+                <p id="placeholderText" class="text-slate-400 text-sm">Barcode Anda akan muncul di sini</p>
+                <svg id="barcode" class="hidden max-w-full"></svg>
+            </div>
 
-let selectedFile = null;
+            <!-- Tombol Download -->
+            <button id="downloadBtn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 px-4 rounded-xl shadow-md transition transform active:scale-95 hidden cursor-pointer">
+                Download Barcode (PNG) 📥
+            </button>
+        </section>
 
-fileInput.addEventListener('change', (e) => {
-  const file = e.target.files[0];
-  if (file) {
-    selectedFile = file;
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      previewImg.src = ev.target.result;
-      previewImg.style.display = 'block';
-      dropText.style.display = 'none';
-      btnUpload.style.display = 'block';
-    };
-    reader.readAsDataURL(file);
-  }
-});
+    </main>
 
-btnUpload.addEventListener('click', async () => {
-  if (!selectedFile) return;
+    <!-- Footer -->
+    <footer class="bg-slate-800 text-slate-400 text-center py-4 text-xs border-t border-slate-700">
+        &copy; 2026 PicToBarcode. Dibuat dengan menggunakan JsBarcode & Tesseract.js.
+    </footer>
 
-  btnUpload.style.display = 'none';
-  progressWrap.style.display = 'block';
-  statusText.textContent = "Mengunggah via Workers...";
-  
-  let p = 0;
-  const interval = setInterval(() => {
-    if (p < 90) { p += 5; progressFill.style.width = p + '%'; }
-  }, 100);
+    <!-- JavaScript Logic -->
+    <script>
+        const imageInput = document.getElementById('imageInput');
+        const textInput = document.getElementById('textInput');
+        const generateBtn = document.getElementById('generateBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const barcodeSvg = document.getElementById('barcode');
+        const placeholderText = document.getElementById('placeholderText');
+        const ocrStatus = document.getElementById('ocrStatus');
 
-  const formData = new FormData();
-  // Uguu.se butuh nama field 'files[]'
-  formData.append('files[]', selectedFile);
+        // 1. Logika untuk Membaca Teks dari Gambar (OCR)
+        imageInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
 
-  try {
-    const response = await fetch(workerUrl, {
-      method: 'POST',
-      body: formData
-    });
+            ocrStatus.classList.remove('hidden');
+            textInput.value = "Mengekstrak...";
 
-    if (!response.ok) throw new Error("Worker Error: " + response.statusText);
+            Tesseract.recognize(
+                file,
+                'eng', // Menggunakan bahasa inggris/angka standard
+                { logger: m => console.log(m) }
+            ).then(({ data: { text } }) => {
+                ocrStatus.classList.add('hidden');
+                // Membersihkan spasi berlebih atau baris baru agar aman jadi barcode
+                const cleanText = text.trim().replace(/\s+/g, ' ');
+                if (cleanText) {
+                    textInput.value = cleanText;
+                } else {
+                    alert("Teks tidak terdeteksi di gambar. Coba ketik manual.");
+                    textInput.value = "";
+                }
+            }).catch(err => {
+                console.error(err);
+                ocrStatus.classList.add('hidden');
+                alert("Gagal membaca gambar. Silakan masukkan teks secara manual.");
+                textInput.value = "";
+            });
+        });
 
-    const data = await response.json();
+        // 2. Logika untuk Generate Barcode
+        generateBtn.addEventListener('click', function() {
+            const value = textInput.value.trim();
 
-    if (data.success) {
-      clearInterval(interval);
-      progressFill.style.width = '100%';
-      statusText.textContent = "Selesai!";
+            if (!value || value === "Mengekstrak...") {
+                alert("Silakan masukkan teks atau upload gambar terlebih dahulu!");
+                return;
+            }
 
-      setTimeout(() => {
-        showResult(data.files[0].url);
-      }, 500);
-    } else {
-      throw new Error("Gagal mengunggah file.");
-    }
-  } catch (err) {
-    clearInterval(interval);
-    alert("Maaf, terjadi kesalahan: " + err.message);
-    location.reload();
-  }
-});
+            try {
+                // Tampilkan SVG barcode, sembunyikan placeholder
+                barcodeSvg.classList.remove('hidden');
+                placeholderText.classList.add('hidden');
 
-function showResult(link) {
-  document.getElementById('input-section').style.display = 'none';
-  resultArea.style.display = 'block';
-  document.getElementById('link-text').textContent = link;
+                // Generate menggunakan standard CODE128 (bisa huruf + angka)
+                JsBarcode("#barcode", value, {
+                    format: "CODE128",
+                    lineColor: "#0f172a", // warna Slate 900
+                    width: 2,
+                    height: 80,
+                    displayValue: true // Menampilkan teks di bawah barcode
+                });
 
-  qrCanvas.innerHTML = ""; 
-  new QRCode(qrCanvas, {
-    text: link,
-    width: 250,
-    height: 250,
-    colorDark : "#121212",
-    colorLight : "#ffffff",
-    correctLevel : QRCode.CorrectLevel.H
-  });
+                // Tampilkan tombol download setelah berhasil generate
+                downloadBtn.classList.remove('hidden');
+            } catch (error) {
+                alert("Gagal membuat barcode. Pastikan karakter didukung oleh standar CODE128.");
+                console.error(error);
+            }
+        });
 
-  setTimeout(() => {
-    const qrImg = qrCanvas.querySelector('img');
-    if(qrImg) {
-      const dlBtn = document.getElementById('btn-download');
-      dlBtn.href = qrImg.src;
-      dlBtn.download = "barcode-foto.png";
-    }
-  }, 800);
-}
-</script>
+        // 3. Logika untuk Download Barcode sebagai PNG
+        downloadBtn.addEventListener('click', function() {
+            const svg = document.getElementById('barcode');
+            const svgString = new XMLSerializer().serializeToString(svg);
+            const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+            
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const img = new Image();
+
+            img.onload = function() {
+                // Beri sedikit padding pada canvas agar tidak terlalu mepet
+                canvas.width = img.width + 40;
+                canvas.height = img.height + 40;
+                
+                // Set background putih
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Gambar barcode ke canvas
+                ctx.drawImage(img, 20, 20);
+                
+                // Trigger download PNG
+                const pngUrl = canvas.toDataURL('image/png');
+                const downloadLink = document.createElement('a');
+                downloadLink.href = pngUrl;
+                downloadLink.download = `barcode-${textInput.value.trim()}.png`;
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+            };
+
+            img.src = URL.createObjectURL(svgBlob);
+        });
+    </script>
 </body>
 </html>
