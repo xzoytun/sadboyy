@@ -3,151 +3,141 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Xtrimer Tunnel — Cek Kuota Premium</title>
+<title>Xtrimer Tunnel — Cek Kuota</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #030712;
-    --card: #111827;
-    --card-hover: #1f2937;
-    --border: rgba(255, 255, 255, 0.08);
-    --accent: #00f2ff;
-    --accent-glow: rgba(0, 242, 255, 0.3);
-    --secondary: #8b5cf6;
-    --text-main: #f3f4f6;
-    --text-muted: #9ca3af;
+    --primary: #2563eb;
+    --primary-light: #eff6ff;
+    --accent: #3b82f6;
+    --bg: #f8fafc;
+    --card-bg: #ffffff;
+    --text-dark: #1e293b;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
     --success: #10b981;
-    --error: #ef4444;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
     background-color: var(--bg);
-    color: var(--text-main);
+    color: var(--text-dark);
     font-family: 'Plus Jakarta Sans', sans-serif;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    overflow-x: hidden;
     background-image: 
-      radial-gradient(circle at 0% 0%, rgba(0, 242, 255, 0.05) 0%, transparent 50%),
-      radial-gradient(circle at 100% 100%, rgba(139, 92, 246, 0.05) 0%, transparent 50%);
+      radial-gradient(at 0% 0%, rgba(37, 99, 235, 0.05) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, rgba(59, 130, 246, 0.05) 0px, transparent 50%);
   }
 
   /* --- Navbar --- */
   nav {
-    padding: 20px 40px;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    padding: 16px 24px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid var(--border);
-    backdrop-filter: blur(10px);
     position: sticky;
     top: 0;
     z-index: 100;
-    background: rgba(3, 7, 18, 0.8);
   }
 
   .logo {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     font-weight: 800;
-    font-size: 1.2rem;
-    letter-spacing: -0.5px;
+    font-size: 1.1rem;
+    color: var(--primary);
     text-decoration: none;
-    color: white;
+    letter-spacing: -0.5px;
   }
 
-  .logo span { color: var(--accent); }
-
-  .logo-box {
-    background: linear-gradient(135deg, var(--accent), var(--secondary));
+  .logo-icon {
     width: 32px;
     height: 32px;
+    background: var(--primary);
     border-radius: 8px;
     display: grid;
     place-items: center;
+    color: white;
   }
 
-  /* --- Container --- */
+  /* --- Main Container --- */
   .container {
-    max-width: 500px;
-    margin: 60px auto;
+    max-width: 480px;
+    margin: 40px auto;
     padding: 0 20px;
     width: 100%;
   }
 
-  .hero-section {
+  .header-text {
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 32px;
   }
 
-  .hero-section h1 {
-    font-size: 2.5rem;
+  .header-text h1 {
+    font-size: 2rem;
     font-weight: 800;
-    margin-bottom: 12px;
-    background: linear-gradient(to right, #fff, #9ca3af);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--text-dark);
+    margin-bottom: 8px;
   }
 
-  .hero-section p {
+  .header-text p {
     color: var(--text-muted);
     font-size: 0.95rem;
   }
 
   /* --- Card UI --- */
   .main-card {
-    background: var(--card);
+    background: var(--card-bg);
     border: 1px solid var(--border);
     border-radius: 24px;
-    padding: 32px;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-    position: relative;
+    padding: 28px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
   }
 
-  .input-group {
-    margin-bottom: 24px;
-  }
-
-  .input-group label {
-    display: block;
+  .input-label {
     font-size: 0.75rem;
     font-weight: 700;
+    color: var(--primary);
     text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--text-muted);
-    margin-bottom: 10px;
-    margin-left: 4px;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    display: block;
   }
 
-  .input-wrapper {
+  .input-box {
     position: relative;
+    margin-bottom: 20px;
   }
 
   input[type="tel"] {
     width: 100%;
-    background: #030712;
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 16px 16px 16px 48px;
-    color: white;
-    font-family: 'JetBrains Mono', monospace;
+    background: #f1f5f9;
+    border: 2px solid transparent;
+    border-radius: 14px;
+    padding: 14px 14px 14px 46px;
     font-size: 1rem;
-    transition: all 0.3s ease;
+    font-family: 'JetBrains Mono', monospace;
+    transition: all 0.2s;
+    color: var(--text-dark);
   }
 
   input[type="tel"]:focus {
     outline: none;
-    border-color: var(--accent);
-    box-shadow: 0 0 0 4px var(--accent-glow);
+    background: white;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px var(--primary-light);
   }
 
-  .input-wrapper svg {
+  .input-box svg {
     position: absolute;
     left: 16px;
     top: 50%;
@@ -155,153 +145,143 @@
     color: var(--text-muted);
   }
 
-  .btn-primary {
+  .btn-check {
     width: 100%;
-    background: white;
-    color: black;
+    background: var(--primary);
+    color: white;
     border: none;
     padding: 16px;
-    border-radius: 16px;
+    border-radius: 14px;
     font-weight: 700;
     font-size: 1rem;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.3s;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
   }
 
-  .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1);
-    background: var(--accent);
+  .btn-check:hover {
+    background: #1d4ed8;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 15px rgba(37, 99, 235, 0.2);
   }
 
-  .btn-primary:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    transform: none;
+  .btn-check:disabled {
+    opacity: 0.7;
+    cursor: wait;
   }
 
   /* --- Results Section --- */
-  .result-header {
+  .result-section {
+    margin-top: 32px;
+    display: none;
+    animation: fadeIn 0.4s ease;
+  }
+
+  .result-info-bar {
+    background: var(--primary-light);
+    border-radius: 12px;
+    padding: 12px 16px;
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    margin-top: 40px;
+    align-items: center;
     margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid var(--border);
+    border: 1px solid rgba(37, 99, 235, 0.1);
   }
 
-  .result-header h3 {
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--text-muted);
-  }
-
-  #msisdn-display {
+  .result-info-bar span {
+    font-weight: 700;
+    color: var(--primary);
     font-family: 'JetBrains Mono', monospace;
-    color: var(--accent);
-    font-size: 0.85rem;
   }
 
-  .paket-item {
-    background: var(--card-hover);
+  /* --- Quota List --- */
+  .paket-card {
+    background: white;
     border: 1px solid var(--border);
-    border-radius: 18px;
-    padding: 20px;
+    border-radius: 16px;
+    padding: 18px;
     margin-bottom: 12px;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 16px;
-    animation: slideUp 0.4s ease forwards;
+    transition: transform 0.2s;
+  }
+
+  .paket-card:hover {
+    border-color: var(--primary);
+    background: #fafafa;
   }
 
   .paket-icon {
-    width: 48px;
-    height: 48px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 12px;
+    width: 42px;
+    height: 42px;
+    background: var(--primary-light);
+    border-radius: 10px;
     display: grid;
     place-items: center;
+    font-size: 1.2rem;
     flex-shrink: 0;
   }
 
-  .paket-content {
+  .paket-details {
     flex: 1;
   }
 
   .paket-name {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
+    font-weight: 600;
     color: var(--text-muted);
-    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    margin-bottom: 2px;
     display: block;
   }
 
   .paket-value {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: white;
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--text-dark);
     display: block;
+    margin-bottom: 6px;
   }
 
   .paket-expiry {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--secondary);
-    margin-top: 6px;
-    display: block;
-    background: rgba(139, 92, 246, 0.1);
-    width: fit-content;
-    padding: 2px 8px;
-    border-radius: 4px;
+    font-size: 0.75rem;
+    color: var(--primary);
+    background: var(--primary-light);
+    padding: 3px 8px;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 600;
   }
 
-  /* --- Loader --- */
-  .loader {
-    text-align: center;
-    padding: 40px 0;
-  }
-  
+  /* --- Utilities --- */
+  .loader { text-align: center; padding: 20px; }
   .spinner {
-    width: 30px;
-    height: 30px;
-    border: 3px solid rgba(0, 242, 255, 0.1);
-    border-top: 3px solid var(--accent);
+    width: 24px; height: 24px;
+    border: 3px solid var(--primary-light);
+    border-top-color: var(--primary);
     border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin: 0 auto 16px;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto;
   }
 
-  /* --- Error Box --- */
-  .error-box {
-    background: rgba(239, 68, 68, 0.1);
-    border: 1px solid rgba(239, 68, 68, 0.2);
-    padding: 16px;
-    border-radius: 12px;
-    color: var(--error);
-    font-size: 0.9rem;
-    display: flex;
-    gap: 10px;
-  }
-
-  /* --- Animations --- */
   @keyframes spin { to { transform: rotate(360deg); } }
-  @keyframes slideUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
   footer {
     margin-top: auto;
+    padding: 32px;
     text-align: center;
-    padding: 40px;
     color: var(--text-muted);
     font-size: 0.8rem;
-    font-family: 'JetBrains Mono', monospace;
+    border-top: 1px solid var(--border);
+    background: white;
   }
 </style>
 </head>
@@ -309,46 +289,47 @@
 
 <nav>
   <a href="#" class="logo">
-    <div class="logo-box">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="3"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+    <div class="logo-icon">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
     </div>
     XTRIMER <span>TUNNEL</span>
   </a>
-  <div style="font-family: 'JetBrains Mono'; font-size: 0.7rem; color: var(--text-muted);">STATUS: ONLINE</div>
+  <span style="font-size: 0.7rem; font-weight: 700; color: var(--success);">● SERVER ACTIVE</span>
 </nav>
 
 <div class="container">
-  <div class="hero-section">
+  <div class="header-text">
     <h1>Cek Kuota</h1>
-    <p>Pantau sisa data XL & AXIS kamu dengan akurat.</p>
+    <p>Masukkan nomor XL atau AXIS kamu</p>
   </div>
 
   <div class="main-card">
-    <div class="input-group">
-      <label>Nomor XL / AXIS</label>
-      <div class="input-wrapper">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-        <input type="tel" id="msisdn" placeholder="Contoh: 08781234xxxx" maxlength="15">
-      </div>
+    <label class="input-label">Phone Number</label>
+    <div class="input-box">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+      <input type="tel" id="msisdn" placeholder="0878..." autocomplete="off">
     </div>
 
-    <button id="btnCek" class="btn-primary">
-      <span>Periksa Kuota</span>
+    <button id="btnCek" class="btn-check">
+      <span>Cek Sekarang</span>
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </button>
 
-    <div id="result-container" style="display: none;">
-      <div class="result-header">
-        <h3>Detail Paket Aktif</h3>
-        <span id="msisdn-display"></span>
+    <!-- Hasil -->
+    <div id="result-container" class="result-section">
+      <div class="result-info-bar">
+        <small style="color:var(--text-muted)">Nomor:</small>
+        <span id="display-num">-</span>
       </div>
-      <div id="paket-list"></div>
+      <div id="paket-list">
+        <!-- List paket akan muncul di sini -->
+      </div>
     </div>
   </div>
 </div>
 
 <footer>
-  &copy; 2026 XTRIMER TUNNEL ENGINE • v4.0.0
+  &copy; 2026 Xtrimer Tunnel Team &bull; Digital Network Solution
 </footer>
 
 <script>
@@ -356,63 +337,57 @@
   const inputPhone = document.getElementById('msisdn');
   const resultContainer = document.getElementById('result-container');
   const paketList = document.getElementById('paket-list');
-  const msisdnDisplay = document.getElementById('msisdn-display');
+  const displayNum = document.getElementById('display-num');
 
-  // Utility: Membersihkan nomor
-  function formatNomor(num) {
-    num = num.replace(/[^0-9]/g, '');
-    if (num.startsWith('62')) return '0' + num.slice(2);
-    return num;
+  // Bersihkan karakter aneh dari teks API
+  function cleanText(str) {
+    return str
+      .replace(/={3,}/g, '') // Hapus ===
+      .replace(/-{3,}/g, '') // Hapus ---
+      .replace(/^\s*-\s*/, '') // Hapus strip di awal baris
+      .trim();
   }
 
-  // Utility: Icon Pintar berdasarkan kategori
-  function getSmartIcon(name) {
-    const n = name.toLowerCase();
-    if (n.includes('youtube') || n.includes('video')) return '🎬';
-    if (n.includes('sosmed') || n.includes('ig') || n.includes('facebook')) return '📱';
-    if (n.includes('malam') || n.includes('night')) return '🌙';
-    if (n.includes('game')) return '🎮';
-    if (n.includes('chat') || n.includes('wa')) return '💬';
-    return '🚀';
-  }
-
-  // Core Function: Parsing string data menjadi objek rapi
-  function parseData(rawHtml) {
-    if (!rawHtml) return [];
+  // Parsing Data agar Rapi
+  function parseHasil(raw) {
+    if (!raw) return [];
     
-    // Pecah berdasarkan <br>
-    return rawHtml.split(/<br\s*\/?>/i)
+    return raw.split(/<br\s*\/?>/i)
       .map(line => line.replace(/<[^>]+>/g, '').trim())
-      .filter(line => line.length > 5)
+      .filter(line => line.length > 5 && !line.includes('===') && !line.includes('---'))
       .map(line => {
-        // Mencari sisa kuota (biasanya angka diikuti GB/MB/Menit)
+        // Ekstrak Quota (Contoh: 10GB atau 500MB)
         const quotaMatch = line.match(/(\d+(\.\d+)?\s*(GB|MB|KB|Menit|SMS))/i);
-        const expMatch = line.match(/exp\s*(.*)$/i);
+        // Ekstrak Expiry
+        const expMatch = line.match(/exp\s*([\d\-\/\s:]+)/i);
         
-        let quotaValue = quotaMatch ? quotaMatch[0] : "Aktif";
-        let cleanName = line.replace(quotaValue, '').replace(/exp.*$/i, '').replace(/^-\s*/, '').trim();
-        let expiry = expMatch ? expMatch[1].trim() : "Selamanya";
+        let value = quotaMatch ? quotaMatch[0] : "Aktif";
+        let name = line.replace(value, '').replace(/exp.*$/i, '').replace(/^-/, '').trim();
+        let expiry = expMatch ? expMatch[1].trim() : "No Limit";
 
-        return {
-          name: cleanName || "Paket Data",
-          value: quotaValue,
-          expiry: expiry
-        };
+        return { name, value, expiry };
       });
   }
 
-  async function cekKuota() {
-    const rawNum = inputPhone.value;
-    if (rawNum.length < 9) return alert('Nomor tidak valid!');
+  function getIcon(name) {
+    const n = name.toLowerCase();
+    if (n.includes('youtube')) return '📺';
+    if (n.includes('sosmed') || n.includes('ig')) return '📱';
+    if (n.includes('malam')) return '🌙';
+    if (n.includes('game')) return '🎮';
+    return '📦';
+  }
 
-    const msisdn = formatNomor(rawNum);
-    
-    // UI Loading State
+  async function cekKuota() {
+    const msisdn = inputPhone.value.replace(/[^0-9]/g, '');
+    if (msisdn.length < 9) return;
+
+    // Loading
     btnCek.disabled = true;
     btnCek.innerHTML = '<div class="spinner"></div>';
     resultContainer.style.display = 'block';
-    msisdnDisplay.textContent = msisdn;
-    paketList.innerHTML = '<div class="loader"><div class="spinner"></div><p style="color:var(--text-muted)">Menghubungkan ke API Sidompul...</p></div>';
+    displayNum.textContent = msisdn;
+    paketList.innerHTML = '<div class="loader"><div class="spinner"></div></div>';
 
     try {
       const response = await fetch(`https://apigw.kmsp-store.com/sidompul/v4/cek_kuota?msisdn=${msisdn}&isJSON=true`, {
@@ -423,45 +398,41 @@
         }
       });
 
-      const resData = await response.json();
+      const json = await response.json();
 
-      if (resData.status === true) {
-        const items = parseData(resData.data.hasil);
+      if (json.status && json.data.hasil) {
+        const items = parseHasil(json.data.hasil);
         
         if (items.length === 0) {
-          paketList.innerHTML = '<p class="error-box">Tidak ada paket aktif ditemukan pada nomor ini.</p>';
+          paketList.innerHTML = '<p style="text-align:center; font-size:0.9rem; color:var(--text-muted); padding:20px;">Tidak ada paket aktif.</p>';
         } else {
-          paketList.innerHTML = items.map((item, index) => `
-            <div class="paket-item" style="animation-delay: ${index * 0.1}s">
-              <div class="paket-icon">${getSmartIcon(item.name)}</div>
-              <div class="paket-content">
+          paketList.innerHTML = items.map(item => `
+            <div class="paket-card">
+              <div class="paket-icon">${getIcon(item.name)}</div>
+              <div class="paket-details">
                 <span class="paket-name">${item.name}</span>
                 <span class="paket-value">${item.value}</span>
-                <span class="paket-expiry">⏱ Exp: ${item.expiry}</span>
+                <span class="paket-expiry">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                  Exp: ${item.expiry}
+                </span>
               </div>
             </div>
           `).join('');
         }
       } else {
-        throw new Error(resData.data.keteranganError || 'Gagal mengambil data');
+        paketList.innerHTML = `<p style="color:red; text-align:center; font-size:0.8rem;">${json.message || 'Gagal memuat data'}</p>`;
       }
-
-    } catch (err) {
-      paketList.innerHTML = `
-        <div class="error-box">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          ${err.message}
-        </div>`;
+    } catch (e) {
+      paketList.innerHTML = `<p style="color:red; text-align:center; font-size:0.8rem;">Terjadi kesalahan koneksi.</p>`;
     } finally {
       btnCek.disabled = false;
-      btnCek.innerHTML = '<span>Periksa Kuota</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+      btnCek.innerHTML = '<span>Cek Sekarang</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
     }
   }
 
   btnCek.addEventListener('click', cekKuota);
-  inputPhone.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') cekKuota();
-  });
 </script>
+
 </body>
 </html>
