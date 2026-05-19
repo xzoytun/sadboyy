@@ -3,39 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>URL to QR Code Generator</title>
+    <title>LinkToQR - Direct Photo QR</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between">
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between font-sans">
 
-    <header class="bg-emerald-600 text-white py-6 shadow-md text-center">
+    <header class="bg-emerald-600 text-white py-8 shadow-md text-center">
         <h1 class="text-3xl font-bold">LinkToQR Generator 🔗</h1>
-        <p class="text-sm text-emerald-100 mt-1">Ubah Link Google Drive / Foto Menjadi QR Code HD</p>
+        <p class="text-sm text-emerald-100 mt-2">Scan Langsung Terbuka Foto (Google Drive Direct)</p>
     </header>
 
-    <main class="max-w-md w-full mx-auto p-6 bg-white rounded-2xl shadow-lg my-10 space-y-6">
-        <div class="space-y-2">
-            <label for="linkInput" class="block text-sm font-semibold text-slate-700">Paste Link Google Drive di Sini:</label>
-            <input type="text" id="linkInput" placeholder="https://drive.google.com/file/d/..." class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm">
+    <main class="max-w-md w-full mx-auto p-6 bg-white rounded-2xl shadow-xl my-10 space-y-6 border border-slate-100">
+        <div class="space-y-3">
+            <label for="linkInput" class="block text-sm font-bold text-slate-700">Paste Link Google Drive:</label>
+            <input type="text" id="linkInput" placeholder="https://drive.google.com/file/d/xxxxxx/view?usp=sharing" 
+                   class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm transition-all">
+            <p class="text-[10px] text-amber-600 font-medium">*Pastikan akses file di Drive sudah diatur ke "Siapa saja yang memiliki link"</p>
         </div>
 
-        <button id="generateBtn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl shadow-md transition transform active:scale-95 cursor-pointer">
-            Buat QR Code ⚡
+        <button id="generateBtn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-xl shadow-lg transition transform active:scale-95 cursor-pointer flex items-center justify-center gap-2">
+            Buat QR Code Direct ⚡
         </button>
 
-        <div id="qrcodeContainer" class="flex flex-col items-center justify-center p-4 bg-slate-50 rounded-xl border border-dashed border-slate-300 min-h-[200px]">
-            <div id="qrcode" class="hidden bg-white p-2 rounded-lg shadow-sm"></div>
-            <p id="placeholderText" class="text-slate-400 text-sm text-center">QR Code buatanmu akan muncul di sini</p>
+        <div id="qrcodeContainer" class="flex flex-col items-center justify-center p-6 bg-slate-50 rounded-2xl border-2 border-dashed border-slate-200 min-h-[250px]">
+            <div id="qrcode" class="hidden bg-white p-4 rounded-lg shadow-md mb-4"></div>
+            <p id="placeholderText" class="text-slate-400 text-sm text-center px-4">QR Code foto langsung akan muncul di sini setelah kamu klik tombol di atas.</p>
+            
+            <button id="downloadBtn" class="mt-4 w-full bg-slate-800 hover:bg-black text-white font-semibold py-3 rounded-xl text-sm hidden flex items-center justify-center gap-2 transition-all">
+                Download Gambar QR (PNG) 📥
+            </button>
         </div>
-
-        <button id="downloadBtn" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-semibold py-2 rounded-xl text-sm hidden cursor-pointer">
-            Download Gambar QR (PNG) 📥
-        </button>
     </main>
 
-    <footer class="bg-slate-800 text-slate-400 text-center py-4 text-xs">
-        &copy; 2026 LinkToQR. Solusi barcode foto kualitas HD.
+    <footer class="bg-slate-800 text-slate-400 text-center py-6 text-xs mt-auto">
+        &copy; 2026 LinkToQR. Solusi buka foto tanpa ribet.
     </footer>
 
     <script>
@@ -45,55 +47,64 @@
         const qrcodeDiv = document.getElementById('qrcode');
         const placeholderText = document.getElementById('placeholderText');
 
-        // Fungsi ajaib untuk mengubah link Google Drive biasa menjadi Direct Link Foto
-        function konversiKeLinkFoto(url) {
-            const regExp = /\/file\/d\/([a-zA-Z0-9_-]+)\//;
-            const match = url.match(regExp);
-            
-            if (match && match[1]) {
-                const fileId = match[1];
-                // Mengubah format ke uc?export=view agar langsung nampilin file aslinya (foto)
-                return `https://docs.google.com/uc?export=view&id=${fileId}`;
-            }
-            return url; // Kembalikan url asli kalau bukan link Google Drive
+        // Fungsi Super untuk mengambil ID file dari berbagai format link Google Drive
+        function ambilFileId(url) {
+            const regex = /[-\w]{25,}/; // Mencari string panjang yang merupakan ID Drive
+            const match = url.match(regex);
+            return match ? match[0] : null;
         }
 
         generateBtn.addEventListener('click', function() {
-            let url = linkInput.value.trim();
-            if(!url) {
-                alert("Isi dulu link Google Drive-nya, bro!");
+            const inputVal = linkInput.value.trim();
+            const fileId = ambilFileId(inputVal);
+
+            if(!fileId) {
+                alert("Waduh! Link Google Drive tidak valid. Coba cek lagi ya.");
                 return;
             }
 
-            // Proses konversi link di sini sebelum dijadikan QR
-            const linkFotoLangsung = konversiKeLinkFoto(url);
+            // LINK SAKTI: Ini akan memaksa browser membuka file sebagai gambar langsung (Direct Link)
+            // Menggunakan format thumbnail dengan size besar (s0) atau format uc?id
+            const directLink = `https://drive.google.com/uc?export=view&id=${fileId}`;
 
+            // Reset container
             qrcodeDiv.innerHTML = "";
             qrcodeDiv.classList.remove('hidden');
             placeholderText.classList.add('hidden');
 
+            // Generate QR Code
             new QRCode(qrcodeDiv, {
-                text: linkFotoLangsung, // Menggunakan link yang sudah dimodifikasi
-                width: 200,
-                height: 200,
-                colorDark : "#022c22",
+                text: directLink,
+                width: 256,
+                height: 256,
+                colorDark : "#000000",
                 colorLight : "#ffffff",
-                correctLevel : QRCode.CorrectLevel.M
+                correctLevel : QRCode.CorrectLevel.H // High error correction agar tetap terbaca meski kecil
             });
 
+            // Tampilkan tombol download
             downloadBtn.classList.remove('hidden');
+            
+            // Scroll otomatis ke QR
+            qrcodeDiv.scrollIntoView({ behavior: 'smooth' });
         });
 
+        // Fungsi Download yang lebih stabil
         downloadBtn.addEventListener('click', function() {
             const qrImg = qrcodeDiv.querySelector('img');
-            if (qrImg) {
-                const a = document.createElement('a');
-                a.href = qrImg.src;
-                a.download = 'qrcode-foto-drive.png';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
+            const qrCanvas = qrcodeDiv.querySelector('canvas');
+            
+            const link = document.createElement('a');
+            link.download = 'QR_Foto_Drive.png';
+            
+            // Mengambil data gambar dari canvas agar lebih tajam
+            if (qrCanvas) {
+                link.href = qrCanvas.toDataURL("image/png");
+            } else if (qrImg) {
+                link.href = qrImg.src;
             }
+            
+            link.click();
         });
     </script>
 </body>
