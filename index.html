@@ -45,19 +45,35 @@
         const qrcodeDiv = document.getElementById('qrcode');
         const placeholderText = document.getElementById('placeholderText');
 
+        // Fungsi ajaib untuk mengubah link Google Drive biasa menjadi Direct Link Foto
+        function konversiKeLinkFoto(url) {
+            const regExp = /\/file\/d\/([a-zA-Z0-9_-]+)\//;
+            const match = url.match(regExp);
+            
+            if (match && match[1]) {
+                const fileId = match[1];
+                // Mengubah format ke uc?export=view agar langsung nampilin file aslinya (foto)
+                return `https://docs.google.com/uc?export=view&id=${fileId}`;
+            }
+            return url; // Kembalikan url asli kalau bukan link Google Drive
+        }
+
         generateBtn.addEventListener('click', function() {
-            const url = linkInput.value.trim();
+            let url = linkInput.value.trim();
             if(!url) {
                 alert("Isi dulu link Google Drive-nya, bro!");
                 return;
             }
+
+            // Proses konversi link di sini sebelum dijadikan QR
+            const linkFotoLangsung = konversiKeLinkFoto(url);
 
             qrcodeDiv.innerHTML = "";
             qrcodeDiv.classList.remove('hidden');
             placeholderText.classList.add('hidden');
 
             new QRCode(qrcodeDiv, {
-                text: url,
+                text: linkFotoLangsung, // Menggunakan link yang sudah dimodifikasi
                 width: 200,
                 height: 200,
                 colorDark : "#022c22",
