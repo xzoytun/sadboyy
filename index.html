@@ -1,195 +1,671 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image/Text to Barcode Generator</title>
-    <!-- Tailwind CSS untuk Styling Modern -->
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <!-- JsBarcode Library untuk Generate Barcode -->
-    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
-    <!-- Tesseract.js untuk Membaca Teks dari Gambar (OCR) -->
-    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5.0.5/dist/tesseract.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QR Generator – Free & Offline</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #13131a;
+    --surface2: #1c1c27;
+    --border: #2a2a3d;
+    --accent: #6c63ff;
+    --accent2: #ff6584;
+    --accent3: #43e97b;
+    --text: #f0f0ff;
+    --muted: #6b6b8a;
+    --radius: 16px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Ambient background blobs */
+  body::before {
+    content: '';
+    position: fixed;
+    top: -200px; left: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(108,99,255,0.15) 0%, transparent 70%);
+    pointer-events: none; z-index: 0;
+    animation: floatBlob 8s ease-in-out infinite;
+  }
+  body::after {
+    content: '';
+    position: fixed;
+    bottom: -200px; right: -200px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(255,101,132,0.12) 0%, transparent 70%);
+    pointer-events: none; z-index: 0;
+    animation: floatBlob 10s ease-in-out infinite reverse;
+  }
+  @keyframes floatBlob {
+    0%,100% { transform: translate(0,0) scale(1); }
+    50% { transform: translate(30px,20px) scale(1.05); }
+  }
+
+  /* Header */
+  header {
+    position: relative; z-index: 10;
+    text-align: center;
+    padding: 48px 20px 32px;
+  }
+  .logo-tag {
+    display: inline-block;
+    font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--accent); border: 1px solid rgba(108,99,255,0.4);
+    padding: 4px 14px; border-radius: 999px; margin-bottom: 16px;
+    animation: fadeDown 0.6s ease both;
+  }
+  header h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(32px, 5vw, 56px);
+    font-weight: 800;
+    line-height: 1.1;
+    background: linear-gradient(135deg, #fff 30%, var(--accent) 80%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: fadeDown 0.7s ease 0.1s both;
+  }
+  header p {
+    color: var(--muted); font-size: 14px; margin-top: 10px;
+    animation: fadeDown 0.7s ease 0.2s both;
+  }
+  @keyframes fadeDown {
+    from { opacity:0; transform:translateY(-16px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+
+  /* Main layout */
+  .container {
+    position: relative; z-index: 10;
+    max-width: 960px; margin: 0 auto;
+    padding: 0 20px 60px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+  @media (max-width: 680px) {
+    .container { grid-template-columns: 1fr; }
+  }
+
+  /* Card */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    animation: fadeUp 0.6s ease both;
+  }
+  .card:nth-child(2) { animation-delay: 0.1s; }
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(20px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+
+  /* Tab bar */
+  .tabs {
+    display: flex; gap: 6px; flex-wrap: wrap;
+    margin-bottom: 24px;
+    background: var(--surface2);
+    padding: 6px; border-radius: 12px;
+  }
+  .tab-btn {
+    flex: 1; min-width: fit-content;
+    padding: 8px 12px; border: none; border-radius: 8px;
+    background: transparent; color: var(--muted);
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    letter-spacing: 1px; text-transform: uppercase;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active {
+    background: var(--accent); color: #fff;
+    box-shadow: 0 2px 12px rgba(108,99,255,0.4);
+  }
+
+  /* Form elements */
+  .field-group { margin-bottom: 18px; }
+  label {
+    display: block; font-size: 11px; letter-spacing: 1.5px;
+    text-transform: uppercase; color: var(--muted);
+    margin-bottom: 8px;
+  }
+  input[type="text"], input[type="url"], input[type="email"],
+  input[type="tel"], textarea, select {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+    font-family: 'DM Mono', monospace; font-size: 13px;
+    padding: 12px 14px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    -webkit-appearance: none;
+  }
+  input:focus, textarea:focus, select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(108,99,255,0.15);
+  }
+  textarea { resize: vertical; min-height: 90px; }
+  select option { background: var(--surface2); }
+
+  /* Color row */
+  .color-row {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  }
+  .color-pick {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 10px 14px;
+  }
+  .color-pick input[type="color"] {
+    width: 28px; height: 28px; border: none; border-radius: 50%;
+    padding: 0; background: none; cursor: pointer;
+  }
+  .color-pick span { font-size: 11px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
+
+  /* Range */
+  .range-row { display: flex; align-items: center; gap: 12px; }
+  input[type="range"] {
+    flex: 1; -webkit-appearance: none; height: 4px;
+    background: var(--border); border-radius: 2px; outline: none;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 16px; height: 16px;
+    background: var(--accent); border-radius: 50%; cursor: pointer;
+  }
+  .range-val {
+    font-size: 12px; color: var(--accent); min-width: 36px; text-align: right;
+  }
+
+  /* Generate button */
+  .btn-generate {
+    width: 100%; padding: 14px;
+    background: linear-gradient(135deg, var(--accent), #9b59f5);
+    border: none; border-radius: 12px;
+    color: #fff; font-family: 'Syne', sans-serif;
+    font-size: 15px; font-weight: 700; letter-spacing: 1px;
+    cursor: pointer; transition: all 0.2s;
+    box-shadow: 0 4px 20px rgba(108,99,255,0.4);
+    margin-top: 8px;
+  }
+  .btn-generate:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(108,99,255,0.55);
+  }
+  .btn-generate:active { transform: translateY(0); }
+
+  /* QR Preview panel */
+  .preview-card {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 20px; text-align: center;
+  }
+  .qr-wrap {
+    background: #fff;
+    border-radius: 16px;
+    padding: 20px;
+    width: 220px; height: 220px;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.1), 0 20px 60px rgba(0,0,0,0.5);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .qr-wrap:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 0 1px rgba(108,99,255,0.4), 0 24px 70px rgba(108,99,255,0.2);
+  }
+  #qrcode { display: flex; align-items: center; justify-content: center; }
+  #qrcode canvas, #qrcode img { max-width: 180px; max-height: 180px; }
+
+  .placeholder-msg {
+    text-align: center; color: var(--muted);
+    font-size: 12px; line-height: 1.7;
+    padding: 20px;
+  }
+  .placeholder-msg .icon { font-size: 36px; margin-bottom: 10px; }
+
+  /* Download buttons */
+  .dl-row { display: flex; gap: 10px; width: 100%; flex-wrap: wrap; }
+  .btn-dl {
+    flex: 1; padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 10px; background: var(--surface2);
+    color: var(--text); font-family: 'DM Mono', monospace;
+    font-size: 12px; cursor: pointer; transition: all 0.2s;
+    letter-spacing: 0.5px;
+  }
+  .btn-dl:hover {
+    border-color: var(--accent); color: var(--accent);
+    background: rgba(108,99,255,0.08);
+  }
+  .btn-dl:disabled { opacity: 0.3; cursor: not-allowed; }
+
+  /* Stats badges */
+  .stat-row {
+    display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;
+  }
+  .stat-badge {
+    padding: 5px 12px; border-radius: 999px;
+    font-size: 11px; letter-spacing: 1px;
+    background: rgba(67,233,123,0.1);
+    border: 1px solid rgba(67,233,123,0.3);
+    color: var(--accent3);
+  }
+
+  /* Tab content */
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* Section title inside card */
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px; font-weight: 700;
+    margin-bottom: 20px; color: var(--text);
+  }
+
+  /* WiFi security toggle */
+  .toggle-row {
+    display: flex; gap: 8px;
+  }
+  .toggle-opt {
+    flex: 1; padding: 8px;
+    border: 1px solid var(--border); border-radius: 8px;
+    background: transparent; color: var(--muted);
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    cursor: pointer; transition: all 0.15s; text-align: center;
+  }
+  .toggle-opt.active {
+    border-color: var(--accent); color: var(--accent);
+    background: rgba(108,99,255,0.1);
+  }
+
+  /* Success flash */
+  .flash {
+    position: fixed; bottom: 30px; right: 30px; z-index: 999;
+    background: var(--accent3); color: #0a0a0f;
+    padding: 12px 22px; border-radius: 999px;
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 13px;
+    box-shadow: 0 8px 30px rgba(67,233,123,0.4);
+    transform: translateY(80px); opacity: 0;
+    transition: all 0.35s cubic-bezier(.34,1.56,.64,1);
+    pointer-events: none;
+  }
+  .flash.show { transform: translateY(0); opacity: 1; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+</style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col justify-between">
+<body>
 
-    <!-- Header -->
-    <header class="bg-blue-600 text-white py-6 shadow-md text-center">
-        <h1 class="text-3xl font-bold tracking-wide">PicToBarcode 🚀</h1>
-        <p class="text-sm text-blue-100 mt-1">Ubah Gambar atau Teks Menjadi Barcode dengan Mudah</p>
-    </header>
+<header>
+  <div class="logo-tag">✦ 100% Free · No Login · Offline</div>
+  <h1>QR Generator</h1>
+  <p>Generate QR codes instantly — no account, no tracking, no bullsh*t.</p>
+</header>
 
-    <!-- Main Content -->
-    <main class="max-w-4xl w-full mx-auto p-4 flex-grow grid md:grid-cols-2 gap-6 items-start my-6">
-        
-        <!-- Kiri: Input Area -->
-        <section class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 space-y-6">
-            <h2 class="text-xl font-semibold text-slate-700 border-b pb-2">1. Input Data</h2>
-            
-            <!-- Upload Gambar -->
-            <div class="space-y-2">
-                <label class="block text-sm font-medium text-slate-600">Upload Foto/Gambar (Ekstrak Teks):</label>
-                <div class="flex items-center justify-center w-full">
-                    <label class="flex flex-col items-center justify-center w-full h-32 border-2 border-slate-300 border-dashed rounded-xl cursor-pointer bg-slate-50 hover:bg-slate-100 transition">
-                        <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                            <svg class="w-8 h-8 mb-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
-                            <p class="text-xs text-slate-500"><span class="font-semibold">Klik untuk upload</span> atau drag and drop</p>
-                            <p class="text-xs text-slate-400 mt-1">PNG, JPG, JPEG</p>
-                        </div>
-                        <input id="imageInput" type="file" accept="image/*" class="hidden" />
-                    </label>
-                </div>
-                <!-- Indikator Loading OCR -->
-                <div id="ocrStatus" class="text-xs text-blue-600 font-medium hidden animate-pulse">Sedang membaca teks dari gambar... Membutuhkan waktu beberapa detik.</div>
-            </div>
+<div class="container">
 
-            <!-- Separator -->
-            <div class="relative flex py-2 items-center">
-                <div class="flex-grow border-t border-slate-200"></div>
-                <span class="flex-shrink mx-4 text-slate-400 text-xs uppercase font-bold">Atau isi manual</span>
-                <div class="flex-grow border-t border-slate-200"></div>
-            </div>
+  <!-- LEFT: Input Panel -->
+  <div class="card">
+    <div class="card-title">⚡ Content</div>
 
-            <!-- Input Teks -->
-            <div class="space-y-2">
-                <label for="textInput" class="block text-sm font-medium text-slate-600">Teks / Kode Barcode:</label>
-                <input type="text" id="textInput" placeholder="Contoh: KODE123456" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition text-base">
-            </div>
+    <!-- Type Tabs -->
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('url',this)">URL</button>
+      <button class="tab-btn" onclick="switchTab('text',this)">Text</button>
+      <button class="tab-btn" onclick="switchTab('wifi',this)">WiFi</button>
+      <button class="tab-btn" onclick="switchTab('vcard',this)">vCard</button>
+      <button class="tab-btn" onclick="switchTab('email',this)">Email</button>
+      <button class="tab-btn" onclick="switchTab('sms',this)">SMS</button>
+    </div>
 
-            <!-- Tombol Generate -->
-            <button id="generateBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-xl shadow-md transition transform active:scale-95 cursor-pointer">
-                Generate Barcode ⚡
-            </button>
-        </section>
+    <!-- URL -->
+    <div class="tab-content active" id="tab-url">
+      <div class="field-group">
+        <label>Website URL</label>
+        <input type="url" id="url-input" placeholder="https://example.com" />
+      </div>
+    </div>
 
-        <!-- Kanan: Output Area -->
-        <section class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center justify-center min-h-[350px] text-center space-y-6">
-            <h2 class="text-xl font-semibold text-slate-700 border-b pb-2 w-full text-left">2. Hasil Barcode</h2>
-            
-            <!-- Tempat Barcode Muncul -->
-            <div id="barcodeContainer" class="flex flex-col items-center justify-center p-4 bg-slate-50 rounded-xl border border-slate-200 w-full min-h-[180px]">
-                <p id="placeholderText" class="text-slate-400 text-sm">Barcode Anda akan muncul di sini</p>
-                <svg id="barcode" class="hidden max-w-full"></svg>
-            </div>
+    <!-- TEXT -->
+    <div class="tab-content" id="tab-text">
+      <div class="field-group">
+        <label>Plain Text</label>
+        <textarea id="text-input" placeholder="Type anything here..."></textarea>
+      </div>
+    </div>
 
-            <!-- Tombol Download -->
-            <button id="downloadBtn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 px-4 rounded-xl shadow-md transition transform active:scale-95 hidden cursor-pointer">
-                Download Barcode (PNG) 📥
-            </button>
-        </section>
+    <!-- WIFI -->
+    <div class="tab-content" id="tab-wifi">
+      <div class="field-group">
+        <label>Network Name (SSID)</label>
+        <input type="text" id="wifi-ssid" placeholder="MyWiFi" />
+      </div>
+      <div class="field-group">
+        <label>Password</label>
+        <input type="text" id="wifi-pass" placeholder="password123" />
+      </div>
+      <div class="field-group">
+        <label>Security</label>
+        <div class="toggle-row">
+          <button class="toggle-opt active" onclick="setWifi('WPA',this)">WPA/WPA2</button>
+          <button class="toggle-opt" onclick="setWifi('WEP',this)">WEP</button>
+          <button class="toggle-opt" onclick="setWifi('',this)">None</button>
+        </div>
+      </div>
+    </div>
 
-    </main>
+    <!-- VCARD -->
+    <div class="tab-content" id="tab-vcard">
+      <div class="field-group">
+        <label>Full Name</label>
+        <input type="text" id="vc-name" placeholder="John Doe" />
+      </div>
+      <div class="field-group">
+        <label>Phone</label>
+        <input type="tel" id="vc-phone" placeholder="+1234567890" />
+      </div>
+      <div class="field-group">
+        <label>Email</label>
+        <input type="email" id="vc-email" placeholder="john@email.com" />
+      </div>
+      <div class="field-group">
+        <label>Company</label>
+        <input type="text" id="vc-org" placeholder="Acme Corp" />
+      </div>
+      <div class="field-group">
+        <label>Website</label>
+        <input type="url" id="vc-url" placeholder="https://johndoe.com" />
+      </div>
+    </div>
 
-    <!-- Footer -->
-    <footer class="bg-slate-800 text-slate-400 text-center py-4 text-xs border-t border-slate-700">
-        &copy; 2026 PicToBarcode. Dibuat dengan menggunakan JsBarcode & Tesseract.js.
-    </footer>
+    <!-- EMAIL -->
+    <div class="tab-content" id="tab-email">
+      <div class="field-group">
+        <label>To</label>
+        <input type="email" id="em-to" placeholder="recipient@email.com" />
+      </div>
+      <div class="field-group">
+        <label>Subject</label>
+        <input type="text" id="em-subject" placeholder="Hello!" />
+      </div>
+      <div class="field-group">
+        <label>Body</label>
+        <textarea id="em-body" placeholder="Your message..."></textarea>
+      </div>
+    </div>
 
-    <!-- JavaScript Logic -->
-    <script>
-        const imageInput = document.getElementById('imageInput');
-        const textInput = document.getElementById('textInput');
-        const generateBtn = document.getElementById('generateBtn');
-        const downloadBtn = document.getElementById('downloadBtn');
-        const barcodeSvg = document.getElementById('barcode');
-        const placeholderText = document.getElementById('placeholderText');
-        const ocrStatus = document.getElementById('ocrStatus');
+    <!-- SMS -->
+    <div class="tab-content" id="tab-sms">
+      <div class="field-group">
+        <label>Phone Number</label>
+        <input type="tel" id="sms-num" placeholder="+6281234567890" />
+      </div>
+      <div class="field-group">
+        <label>Message</label>
+        <textarea id="sms-msg" placeholder="Your message..."></textarea>
+      </div>
+    </div>
 
-        // 1. Logika untuk Membaca Teks dari Gambar (OCR)
-        imageInput.addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (!file) return;
+    <!-- Customization -->
+    <div class="card-title" style="margin-top:24px;">🎨 Customize</div>
 
-            ocrStatus.classList.remove('hidden');
-            textInput.value = "Mengekstrak...";
+    <div class="field-group">
+      <label>Error Correction</label>
+      <select id="ec-level">
+        <option value="L">Low (L) — 7%</option>
+        <option value="M" selected>Medium (M) — 15%</option>
+        <option value="Q">Quartile (Q) — 25%</option>
+        <option value="H">High (H) — 30%</option>
+      </select>
+    </div>
 
-            Tesseract.recognize(
-                file,
-                'eng', // Menggunakan bahasa inggris/angka standard
-                { logger: m => console.log(m) }
-            ).then(({ data: { text } }) => {
-                ocrStatus.classList.add('hidden');
-                // Membersihkan spasi berlebih atau baris baru agar aman jadi barcode
-                const cleanText = text.trim().replace(/\s+/g, ' ');
-                if (cleanText) {
-                    textInput.value = cleanText;
-                } else {
-                    alert("Teks tidak terdeteksi di gambar. Coba ketik manual.");
-                    textInput.value = "";
-                }
-            }).catch(err => {
-                console.error(err);
-                ocrStatus.classList.add('hidden');
-                alert("Gagal membaca gambar. Silakan masukkan teks secara manual.");
-                textInput.value = "";
-            });
-        });
+    <div class="field-group">
+      <label>Size (px)</label>
+      <div class="range-row">
+        <input type="range" id="qr-size" min="128" max="512" value="256" step="32"
+          oninput="document.getElementById('size-val').textContent=this.value+'px'">
+        <span class="range-val" id="size-val">256px</span>
+      </div>
+    </div>
 
-        // 2. Logika untuk Generate Barcode
-        generateBtn.addEventListener('click', function() {
-            const value = textInput.value.trim();
+    <div class="field-group">
+      <label>Colors</label>
+      <div class="color-row">
+        <div class="color-pick">
+          <input type="color" id="qr-dark" value="#000000">
+          <span>Dark</span>
+        </div>
+        <div class="color-pick">
+          <input type="color" id="qr-light" value="#ffffff">
+          <span>Light</span>
+        </div>
+      </div>
+    </div>
 
-            if (!value || value === "Mengekstrak...") {
-                alert("Silakan masukkan teks atau upload gambar terlebih dahulu!");
-                return;
-            }
+    <button class="btn-generate" onclick="generateQR()">Generate QR Code →</button>
+  </div>
 
-            try {
-                // Tampilkan SVG barcode, sembunyikan placeholder
-                barcodeSvg.classList.remove('hidden');
-                placeholderText.classList.add('hidden');
+  <!-- RIGHT: Preview Panel -->
+  <div class="card preview-card">
+    <div class="card-title">👁 Preview</div>
 
-                // Generate menggunakan standard CODE128 (bisa huruf + angka)
-                JsBarcode("#barcode", value, {
-                    format: "CODE128",
-                    lineColor: "#0f172a", // warna Slate 900
-                    width: 2,
-                    height: 80,
-                    displayValue: true // Menampilkan teks di bawah barcode
-                });
+    <div class="qr-wrap">
+      <div id="qrcode">
+        <div class="placeholder-msg">
+          <div class="icon">◻</div>
+          <div>Fill in the form<br>and hit Generate</div>
+        </div>
+      </div>
+    </div>
 
-                // Tampilkan tombol download setelah berhasil generate
-                downloadBtn.classList.remove('hidden');
-            } catch (error) {
-                alert("Gagal membuat barcode. Pastikan karakter didukung oleh standar CODE128.");
-                console.error(error);
-            }
-        });
+    <div class="stat-row" id="stat-row" style="display:none!important;">
+      <span class="stat-badge" id="stat-type">URL</span>
+      <span class="stat-badge" id="stat-size">256×256</span>
+      <span class="stat-badge" id="stat-ec">EC: M</span>
+    </div>
 
-        // 3. Logika untuk Download Barcode sebagai PNG
-        downloadBtn.addEventListener('click', function() {
-            const svg = document.getElementById('barcode');
-            const svgString = new XMLSerializer().serializeToString(svg);
-            const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
-            
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            const img = new Image();
+    <div class="dl-row">
+      <button class="btn-dl" id="btn-png" onclick="downloadPNG()" disabled>⬇ PNG</button>
+      <button class="btn-dl" id="btn-svg" onclick="downloadSVG()" disabled>⬇ SVG</button>
+      <button class="btn-dl" id="btn-copy" onclick="copyData()" disabled>⧉ Copy Data</button>
+    </div>
 
-            img.onload = function() {
-                // Beri sedikit padding pada canvas agar tidak terlalu mepet
-                canvas.width = img.width + 40;
-                canvas.height = img.height + 40;
-                
-                // Set background putih
-                ctx.fillStyle = '#ffffff';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                
-                // Gambar barcode ke canvas
-                ctx.drawImage(img, 20, 20);
-                
-                // Trigger download PNG
-                const pngUrl = canvas.toDataURL('image/png');
-                const downloadLink = document.createElement('a');
-                downloadLink.href = pngUrl;
-                downloadLink.download = `barcode-${textInput.value.trim()}.png`;
-                document.body.appendChild(downloadLink);
-                downloadLink.click();
-                document.body.removeChild(downloadLink);
-            };
+    <div style="font-size:11px; color:var(--muted); text-align:center; line-height:1.8;">
+      No data is sent to any server.<br>
+      Everything runs in your browser. 🔒
+    </div>
+  </div>
 
-            img.src = URL.createObjectURL(svgBlob);
-        });
-    </script>
+</div>
+
+<div class="flash" id="flash-msg">✓ Done!</div>
+
+<script>
+  let currentTab = 'url';
+  let wifiSec = 'WPA';
+  let lastQRData = '';
+
+  function switchTab(tab, el) {
+    currentTab = tab;
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-' + tab).classList.add('active');
+    el.classList.add('active');
+  }
+
+  function setWifi(sec, el) {
+    wifiSec = sec;
+    document.querySelectorAll('.toggle-opt').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  function buildQRData() {
+    switch(currentTab) {
+      case 'url': {
+        const v = document.getElementById('url-input').value.trim();
+        if (!v) throw 'Please enter a URL';
+        return v;
+      }
+      case 'text': {
+        const v = document.getElementById('text-input').value.trim();
+        if (!v) throw 'Please enter some text';
+        return v;
+      }
+      case 'wifi': {
+        const ssid = document.getElementById('wifi-ssid').value.trim();
+        const pass = document.getElementById('wifi-pass').value.trim();
+        if (!ssid) throw 'Please enter WiFi name';
+        const sec = wifiSec ? `;T:${wifiSec}` : ';T:nopass';
+        return `WIFI:S:${ssid}${sec};P:${pass};;`;
+      }
+      case 'vcard': {
+        const name = document.getElementById('vc-name').value.trim();
+        if (!name) throw 'Please enter a name';
+        const phone = document.getElementById('vc-phone').value.trim();
+        const email = document.getElementById('vc-email').value.trim();
+        const org = document.getElementById('vc-org').value.trim();
+        const url = document.getElementById('vc-url').value.trim();
+        let vc = `BEGIN:VCARD\nVERSION:3.0\nFN:${name}\n`;
+        if (phone) vc += `TEL:${phone}\n`;
+        if (email) vc += `EMAIL:${email}\n`;
+        if (org) vc += `ORG:${org}\n`;
+        if (url) vc += `URL:${url}\n`;
+        vc += `END:VCARD`;
+        return vc;
+      }
+      case 'email': {
+        const to = document.getElementById('em-to').value.trim();
+        if (!to) throw 'Please enter an email address';
+        const sub = encodeURIComponent(document.getElementById('em-subject').value.trim());
+        const body = encodeURIComponent(document.getElementById('em-body').value.trim());
+        return `mailto:${to}?subject=${sub}&body=${body}`;
+      }
+      case 'sms': {
+        const num = document.getElementById('sms-num').value.trim();
+        if (!num) throw 'Please enter a phone number';
+        const msg = encodeURIComponent(document.getElementById('sms-msg').value.trim());
+        return `sms:${num}?body=${msg}`;
+      }
+    }
+  }
+
+  function generateQR() {
+    let data;
+    try { data = buildQRData(); }
+    catch(e) { showFlash('⚠ ' + e, '#ff6584'); return; }
+
+    lastQRData = data;
+
+    const size = parseInt(document.getElementById('qr-size').value);
+    const ec = document.getElementById('ec-level').value;
+    const dark = document.getElementById('qr-dark').value;
+    const light = document.getElementById('qr-light').value;
+
+    const container = document.getElementById('qrcode');
+    container.innerHTML = '';
+
+    new QRCode(container, {
+      text: data,
+      width: 180,
+      height: 180,
+      colorDark: dark,
+      colorLight: light,
+      correctLevel: QRCode.CorrectLevel[ec]
+    });
+
+    // Show stats
+    document.getElementById('stat-type').textContent = currentTab.toUpperCase();
+    document.getElementById('stat-size').textContent = size + '×' + size;
+    document.getElementById('stat-ec').textContent = 'EC: ' + ec;
+    document.getElementById('stat-row').style.setProperty('display', 'flex', 'important');
+
+    // Enable buttons
+    ['btn-png','btn-svg','btn-copy'].forEach(id => {
+      document.getElementById(id).disabled = false;
+    });
+
+    showFlash('✓ QR Generated!');
+  }
+
+  function getCanvas() {
+    return document.querySelector('#qrcode canvas');
+  }
+
+  function downloadPNG() {
+    const canvas = getCanvas();
+    if (!canvas) return;
+
+    const size = parseInt(document.getElementById('qr-size').value);
+    const dark = document.getElementById('qr-dark').value;
+    const light = document.getElementById('qr-light').value;
+
+    // Re-render at full size
+    const offscreen = document.createElement('canvas');
+    offscreen.width = size; offscreen.height = size;
+    const ctx = offscreen.getContext('2d');
+    ctx.drawImage(canvas, 0, 0, size, size);
+
+    const link = document.createElement('a');
+    link.download = 'qrcode.png';
+    link.href = offscreen.toDataURL('image/png');
+    link.click();
+    showFlash('⬇ PNG Downloaded!');
+  }
+
+  function downloadSVG() {
+    const canvas = getCanvas();
+    if (!canvas) return;
+    const size = parseInt(document.getElementById('qr-size').value);
+    const dataURL = canvas.toDataURL('image/png');
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}">
+  <image href="${dataURL}" width="${size}" height="${size}"/>
+</svg>`;
+    const blob = new Blob([svg], {type:'image/svg+xml'});
+    const link = document.createElement('a');
+    link.download = 'qrcode.svg';
+    link.href = URL.createObjectURL(blob);
+    link.click();
+    showFlash('⬇ SVG Downloaded!');
+  }
+
+  function copyData() {
+    if (!lastQRData) return;
+    navigator.clipboard.writeText(lastQRData).then(() => {
+      showFlash('⧉ Data Copied!');
+    });
+  }
+
+  function showFlash(msg, color) {
+    const el = document.getElementById('flash-msg');
+    el.textContent = msg;
+    el.style.background = color || 'var(--accent3)';
+    el.style.color = color ? '#fff' : '#0a0a0f';
+    el.classList.add('show');
+    setTimeout(() => el.classList.remove('show'), 2500);
+  }
+
+  // Enter key trigger
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && e.ctrlKey) generateQR();
+  });
+</script>
 </body>
 </html>
