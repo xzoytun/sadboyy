@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Xtrimer Tunnel â€” Cek Kuota</title>
+<title>Xtrimer Tunnel – Cek Kuota</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
@@ -152,7 +152,7 @@
 <div class="container">
   <div class="header-text">
     <h1>Cek Kuota</h1>
-    <p>Pantau sisa paket data XL & AXIS kamu</p>
+    <p>Pantau sisa paket data XL &amp; AXIS kamu</p>
   </div>
 
   <div class="main-card">
@@ -183,7 +183,6 @@
   const paketList = document.getElementById('paket-list');
   const displayNum = document.getElementById('display-num');
 
-  // Fungsi hapus emoji bawaan teks API agar bersih
   function stripEmojis(str) {
     return str.replace(/[\u1000-\uFFFF]|[^\x00-\x7F]/g, "").trim();
   }
@@ -198,7 +197,6 @@
         const expMatch = line.match(/exp\s*([\d\-\/\s:]+)/i);
         
         let value = quotaMatch ? quotaMatch[0] : "Aktif";
-        // Bersihkan nama dari sisa kuota, teks exp, dan emoji bawaan API
         let name = line.replace(value, '').replace(/exp.*$/i, '').replace(/^-/, '').trim();
         name = stripEmojis(name); 
 
@@ -207,17 +205,16 @@
       });
   }
 
-  // Emoji Box yang dicocokkan otomatis
   function getIcon(name) {
     const n = name.toLowerCase();
-    if (n.includes('youtube') || n.includes('video')) return 'ðŸŽ¬';
-    if (n.includes('whatsapp') || n.includes('chat') || n.includes('wa ')) return 'ðŸ’¬';
-    if (n.includes('facebook') || n.includes('ig') || n.includes('sosmed') || n.includes('tiktok')) return 'ðŸ“±';
-    if (n.includes('game') || n.includes('mlbb') || n.includes('pubg')) return 'ðŸŽ®';
-    if (n.includes('malam') || n.includes('night')) return 'ðŸŒ™';
-    if (n.includes('telepon') || n.includes('nelpon') || n.includes('menit')) return 'ðŸ“ž';
-    if (n.includes('sms')) return 'âœ‰ï¸';
-    return 'ðŸŒ'; // Ikon default internet
+    if (n.includes('youtube') || n.includes('video')) return '🎬';
+    if (n.includes('whatsapp') || n.includes('chat') || n.includes('wa ')) return '💬';
+    if (n.includes('facebook') || n.includes('ig') || n.includes('sosmed') || n.includes('tiktok')) return '📱';
+    if (n.includes('game') || n.includes('mlbb') || n.includes('pubg')) return '🎮';
+    if (n.includes('malam') || n.includes('night')) return '🌙';
+    if (n.includes('telepon') || n.includes('nelpon') || n.includes('menit')) return '📞';
+    if (n.includes('sms')) return '✉️';
+    return '🌐';
   }
 
   async function cekKuota() {
