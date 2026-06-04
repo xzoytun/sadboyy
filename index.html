@@ -6,40 +6,103 @@
   <title>Xtrimer Pay System</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
-    body {
-      background-color: #182533; /* Warna dark mode Telegram */
-      color: white;
-      font-family: sans-serif;
-      margin: 0;
-      padding: 15px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+    *, *::before, *::after {
+      box-sizing: border-box;
     }
     
-    /* Baris tombol Kurangi, Angka, Tambah */
+    body {
+      background-color: #17212b; /* Warna latar gelap khas Telegram */
+      color: #f5f6f7;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      justify-content: center;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 400px;
+      margin: 0 auto;
+      background: #242f3d;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      text-align: center;
+    }
+
+    .product-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: #5288c1;
+    }
+
+    .divider {
+      height: 1px;
+      background: #2f3e4e;
+      margin: 15px 0;
+    }
+
+    /* Info detail item */
+    .detail-box {
+      background: #1c2834;
+      border-radius: 8px;
+      padding: 12px;
+      text-align: left;
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+
+    .detail-row span:first-child {
+      color: #7a8c9d;
+    }
+
+    .detail-row span:last-child {
+      font-weight: 500;
+      color: #ffffff;
+    }
+
+    /* Baris kontrol kuantitas (Biru Solid) */
     .row-qty {
       display: flex;
-      gap: 5px;
+      gap: 8px;
+      margin-bottom: 12px;
     }
+
     .btn-blue {
       flex: 1;
-      background-color: #2481cc; /* Biru Solid */
+      background-color: #2f6ea5; /* Biru Solid Telegram */
       color: white;
       border: none;
-      padding: 12px;
+      padding: 14px;
       border-radius: 8px;
       font-weight: bold;
       font-size: 16px;
       cursor: pointer;
+      transition: background 0.2s;
     }
+
+    .btn-blue:active {
+      background-color: #245885;
+    }
+
     .qty-display {
       flex: 1;
-      background-color: #2b394a;
+      background-color: #1c2834;
       color: white;
-      border: none;
+      border: 1px solid #2f3e4e;
       text-align: center;
-      padding: 12px;
+      padding: 14px;
       border-radius: 8px;
       font-weight: bold;
       font-size: 16px;
@@ -48,7 +111,7 @@
     /* Tombol Bayar Saldo (Hijau Solid) */
     .btn-green {
       width: 100%;
-      background-color: #31b54a; /* Hijau Solid */
+      background-color: #33a852; /* Hijau Solid */
       color: white;
       border: none;
       padding: 14px;
@@ -56,12 +119,18 @@
       font-weight: bold;
       font-size: 16px;
       cursor: pointer;
+      margin-bottom: 12px;
+      transition: background 0.2s;
+    }
+
+    .btn-green:active {
+      background-color: #278b3e;
     }
 
     /* Tombol Kembali (Merah Solid) */
     .btn-red {
       width: 100%;
-      background-color: #e53935; /* Merah Solid */
+      background-color: #ea4335; /* Merah Solid */
       color: white;
       border: none;
       padding: 14px;
@@ -69,42 +138,79 @@
       font-weight: bold;
       font-size: 16px;
       cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-red:active {
+      background-color: #c53126;
     }
   </style>
 </head>
 <body>
 
-  <div class="row-qty">
-    <button class="btn-blue" onclick="changeQty(-1)">- Kurangi</button>
-    <div class="qty-display" id="qty">1</div>
-    <button class="btn-blue" onclick="changeQty(1)">Tambah +</button>
+  <div class="container">
+    <div class="product-title">🛒 DETAIL TRANSAKSI SYSTEM</div>
+    <div class="divider"></div>
+
+    <div class="detail-box">
+      <div class="detail-row"><span>Layanan:</span> <span id="prod-name">Kiro Ai - Kiro Pro</span></div>
+      <div class="detail-row"><span>Paket:</span> <span>$20 1000 credit</span></div>
+      <div class="detail-row"><span>Harga Satuan:</span> <span>Rp 25.000</span></div>
+      <div class="detail-row"><span>Status Stok:</span> <span style="color: #33a852;">Tersedia (1)</span></div>
+      <div class="divider" style="margin: 8px 0;"></div>
+      <div class="detail-row"><span>Jumlah Beli:</span> <span id="summary-qty">1</span></div>
+      <div class="detail-row"><span>Total Bayar:</span> <span style="color: #f4b400; font-weight: bold;" id="total-price">Rp 25.000</span></div>
+    </div>
+
+    <div class="row-qty">
+      <button class="btn-blue" onclick="changeQty(-1)">- Kurangi</button>
+      <div class="qty-display" id="qty">1</div>
+      <button class="btn-blue" onclick="changeQty(1)">Tambah +</button>
+    </div>
+
+    <button class="btn-green" onclick="prosesBayar()">🟩 Bayar Saldo</button>
+    
+    <button class="btn-red" onclick="tutupApp()">🟥 Kembali</button>
   </div>
 
-  <button class="btn-green" onclick="prosesBayar()">Bayar Saldo</button>
-  <button class="btn-red" onclick="tutupApp()">Kembali</button>
-
   <script>
-    // Inisialisasi Telegram Web App
+    // Inisialisasi SDK Telegram Web App
     const tg = window.Telegram.WebApp;
-    tg.expand(); // Biar langsung kebuka full screen layarnya
+    tg.expand(); // Membuka tampilan web app secara penuh (Full Screen)
 
     let currentQty = 1;
+    const hargaSatuan = 25000;
+
+    function updateDisplay() {
+      document.getElementById('qty').innerText = currentQty;
+      document.getElementById('summary-qty').innerText = currentQty;
+      
+      const total = currentQty * hargaSatuan;
+      document.getElementById('total-price').innerText = 'Rp ' + total.toLocaleString('id-ID');
+    }
 
     function changeQty(amount) {
       if (currentQty + amount >= 1) {
         currentQty += amount;
-        document.getElementById('qty').innerText = currentQty;
+        updateDisplay();
       }
     }
 
     function prosesBayar() {
-      // Kirim data kembali ke bot Node.js lo saat tombol hijau diklik
-      tg.sendData(JSON.stringify({ action: 'bayar', qty: currentQty }));
-      tg.close();
+      // Mengirimkan payload JSON kembali ke bot Node.js
+      const payload = {
+        action: 'process_payment',
+        qty: currentQty,
+        total_price: currentQty * hargaSatuan,
+        timestamp: new Date().getTime()
+      };
+      
+      tg.sendData(JSON.stringify(payload));
+      tg.close(); // Otomatis menutup web app setelah data terkirim
     }
 
     function tutupApp() {
-      tg.close();
+      tg.close(); // Menutup web app tanpa mengirim data (Kembali)
     }
   </script>
 </body>
