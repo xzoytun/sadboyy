@@ -1,426 +1,217 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Core Dashboard System</title>
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg:       #080c14;
-    --surface:  #0d1424;
-    --card:     #111a2e;
-    --border:   #1e2d4a;
-    --text:     #e2eaff;
-    --muted:    #5a6a8a;
-    --accent:   #00d4ff;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Xtrimer Pay System</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    
+    body {
+      background-color: #17212b; /* Warna latar gelap khas Telegram */
+      color: #f5f6f7;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      justify-content: center;
+    }
 
-    --btn-create:  linear-gradient(135deg,#00c6a7,#00896e);
-    --btn-trial:   linear-gradient(135deg,#7b61ff,#4f35cc);
-    --btn-renew:   linear-gradient(135deg,#ff9f43,#e05e00);
-    --btn-detail:  linear-gradient(135deg,#4dabf7,#1971c2);
-    --btn-ppob:    linear-gradient(135deg,#f783ac,#c2255c);
-    --btn-topup:   linear-gradient(135deg,#69db7c,#2f9e44);
-    --btn-admin:   linear-gradient(135deg,#ffd43b,#e67700);
-    --btn-reseller:linear-gradient(135deg,#da77f2,#9c36b5);
-    --btn-upgrade: linear-gradient(135deg,#ffa94d,#d9480f);
-  }
+    .container {
+      width: 100%;
+      max-width: 400px;
+      margin: 0 auto;
+      background: #242f3d;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      text-align: center;
+    }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    .product-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: #5288c1;
+    }
 
-  body {
-    font-family: 'Sora', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+    .divider {
+      height: 1px;
+      background: #2f3e4e;
+      margin: 15px 0;
+    }
 
-  /* ── Grid bg ── */
-  body::before {
-    content: '';
-    position: fixed; inset: 0;
-    background-image:
-      linear-gradient(rgba(0,212,255,.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,212,255,.04) 1px, transparent 1px);
-    background-size: 32px 32px;
-    pointer-events: none;
-  }
+    /* Info detail item */
+    .detail-box {
+      background: #1c2834;
+      border-radius: 8px;
+      padding: 12px;
+      text-align: left;
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
 
-  /* ── Glow orbs ── */
-  .orb {
-    position: fixed; border-radius: 50%;
-    filter: blur(80px); pointer-events: none; z-index: 0;
-  }
-  .orb-1 { width:260px;height:260px; background:rgba(0,212,255,.08); top:-60px;right:-60px; }
-  .orb-2 { width:200px;height:200px; background:rgba(123,97,255,.08); bottom:80px;left:-60px; }
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
 
-  .wrap {
-    position: relative; z-index: 1;
-    max-width: 460px; margin: 0 auto;
-    padding: 16px 14px 32px;
-  }
+    .detail-row span:first-child {
+      color: #7a8c9d;
+    }
 
-  /* ── Header ── */
-  .header {
-    text-align: center; margin-bottom: 18px;
-    animation: fadeDown .5s ease both;
-  }
-  .header-badge {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: rgba(0,212,255,.1); border: 1px solid rgba(0,212,255,.25);
-    border-radius: 20px; padding: 4px 14px; font-size: 11px;
-    color: var(--accent); letter-spacing: .06em; font-weight: 600;
-    margin-bottom: 10px;
-  }
-  .header h1 {
-    font-size: 20px; font-weight: 800; letter-spacing: .03em;
-    background: linear-gradient(135deg, #fff 30%, var(--accent));
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
+    .detail-row span:last-child {
+      font-weight: 500;
+      color: #ffffff;
+    }
 
-  /* ── Stats card ── */
-  .stats-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 16px; padding: 16px;
-    margin-bottom: 18px;
-    animation: fadeUp .5s .1s ease both;
-    position: relative; overflow: hidden;
-  }
-  .stats-card::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0; height: 2px;
-    background: linear-gradient(90deg, var(--accent), #7b61ff, transparent);
-  }
-  .stats-grid {
-    display: grid; grid-template-columns: 1fr 1fr 1fr;
-    gap: 12px;
-  }
-  .stat-item { text-align: center; }
-  .stat-label {
-    font-size: 10px; color: var(--muted); text-transform: uppercase;
-    letter-spacing: .08em; margin-bottom: 4px;
-  }
-  .stat-value {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 13px; font-weight: 700; color: var(--text);
-  }
-  .stat-value.highlight { color: var(--accent); }
-  .stat-value.gold { color: #ffd43b; }
-  .stat-divider {
-    width: 1px; background: var(--border); margin: 0 auto;
-  }
+    /* Baris kontrol kuantitas (Biru Solid) */
+    .row-qty {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
 
-  /* ── Warning bar ── */
-  .warn-bar {
-    background: rgba(255,159,67,.08);
-    border: 1px solid rgba(255,159,67,.2);
-    border-radius: 10px; padding: 9px 13px;
-    font-size: 11.5px; color: #ffa94d;
-    display: flex; align-items: center; gap: 7px;
-    margin-bottom: 18px;
-    animation: fadeUp .5s .15s ease both;
-  }
+    .btn-blue {
+      flex: 1;
+      background-color: #2f6ea5; /* Biru Solid Telegram */
+      color: white;
+      border: none;
+      padding: 14px;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
 
-  /* ── Section label ── */
-  .section-label {
-    font-size: 10px; font-weight: 700; letter-spacing: .1em;
-    color: var(--muted); text-transform: uppercase;
-    margin-bottom: 10px; padding-left: 2px;
-  }
+    .btn-blue:active {
+      background-color: #245885;
+    }
 
-  /* ── Button grid ── */
-  .btn-grid {
-    display: grid; gap: 10px;
-    margin-bottom: 10px;
-  }
-  .btn-grid.cols-2 { grid-template-columns: 1fr 1fr; }
-  .btn-grid.cols-1 { grid-template-columns: 1fr; }
+    .qty-display {
+      flex: 1;
+      background-color: #1c2834;
+      color: white;
+      border: 1px solid #2f3e4e;
+      text-align: center;
+      padding: 14px;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 16px;
+    }
 
-  .btn {
-    display: flex; align-items: center; justify-content: center;
-    gap: 8px; padding: 13px 10px;
-    border: none; border-radius: 12px; cursor: pointer;
-    font-family: 'Sora', sans-serif;
-    font-size: 13px; font-weight: 600; color: #fff;
-    text-shadow: 0 1px 3px rgba(0,0,0,.4);
-    transition: transform .15s, box-shadow .15s, filter .15s;
-    position: relative; overflow: hidden;
-    user-select: none; -webkit-user-select: none;
-  }
-  .btn::after {
-    content: '';
-    position: absolute; inset: 0;
-    background: rgba(255,255,255,0);
-    transition: background .15s;
-  }
-  .btn:active { transform: scale(.96); filter: brightness(.9); }
-  .btn:active::after { background: rgba(255,255,255,.08); }
+    /* Tombol Bayar Saldo (Hijau Solid) */
+    .btn-green {
+      width: 100%;
+      background-color: #33a852; /* Hijau Solid */
+      color: white;
+      border: none;
+      padding: 14px;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      margin-bottom: 12px;
+      transition: background 0.2s;
+    }
 
-  .btn-emoji { font-size: 16px; line-height: 1; }
+    .btn-green:active {
+      background-color: #278b3e;
+    }
 
-  .btn-create   { background: var(--btn-create);  box-shadow: 0 4px 16px rgba(0,198,167,.25); }
-  .btn-trial    { background: var(--btn-trial);   box-shadow: 0 4px 16px rgba(123,97,255,.25); }
-  .btn-renew    { background: var(--btn-renew);   box-shadow: 0 4px 16px rgba(255,159,67,.25); }
-  .btn-detail   { background: var(--btn-detail);  box-shadow: 0 4px 16px rgba(77,171,247,.25); }
-  .btn-ppob     { background: var(--btn-ppob);    box-shadow: 0 4px 16px rgba(247,131,172,.25); }
-  .btn-topup    { background: var(--btn-topup);   box-shadow: 0 4px 16px rgba(105,219,124,.25); }
-  .btn-admin    { background: var(--btn-admin);   box-shadow: 0 4px 16px rgba(255,212,59,.3); }
-  .btn-reseller { background: var(--btn-reseller);box-shadow: 0 4px 16px rgba(218,119,242,.25); }
-  .btn-upgrade  { background: var(--btn-upgrade); box-shadow: 0 4px 16px rgba(255,169,77,.25); }
+    /* Tombol Kembali (Merah Solid) */
+    .btn-red {
+      width: 100%;
+      background-color: #ea4335; /* Merah Solid */
+      color: white;
+      border: none;
+      padding: 14px;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
 
-  /* stagger animation */
-  .btn-grid .btn:nth-child(1) { animation: fadeUp .4s .2s ease both; }
-  .btn-grid .btn:nth-child(2) { animation: fadeUp .4s .25s ease both; }
-  .btn-grid-admin .btn        { animation: fadeUp .4s .17s ease both; }
-
-  .section-wrap { margin-bottom: 18px; }
-
-  /* ── Footer ── */
-  .footer {
-    text-align: center; padding-top: 10px;
-    font-size: 11px; color: var(--muted);
-    animation: fadeUp .5s .5s ease both;
-  }
-  .footer a { color: var(--accent); text-decoration: none; }
-
-  /* ── Clock ── */
-  #clock {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px; color: var(--accent);
-  }
-
-  /* ── Loader ── */
-  #loader {
-    position: fixed; inset: 0; z-index: 999;
-    background: var(--bg);
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center; gap: 14px;
-    transition: opacity .4s;
-  }
-  #loader.hidden { opacity: 0; pointer-events: none; }
-  .loader-ring {
-    width: 44px; height: 44px;
-    border: 3px solid var(--border);
-    border-top-color: var(--accent);
-    border-radius: 50%;
-    animation: spin .8s linear infinite;
-  }
-  .loader-text { font-size: 12px; color: var(--muted); letter-spacing: .08em; }
-
-  /* ── Toast ── */
-  #toast {
-    position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%) translateY(20px);
-    background: rgba(0,212,255,.15); border: 1px solid rgba(0,212,255,.3);
-    color: var(--accent); font-size: 12px; font-weight: 600;
-    padding: 9px 18px; border-radius: 20px;
-    opacity: 0; transition: all .3s; z-index: 100; white-space: nowrap;
-    backdrop-filter: blur(8px);
-  }
-  #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-  @keyframes fadeDown { from { opacity:0; transform:translateY(-14px); } to { opacity:1; transform:none; } }
-  @keyframes fadeUp   { from { opacity:0; transform:translateY(14px);  } to { opacity:1; transform:none; } }
-  @keyframes spin     { to { transform: rotate(360deg); } }
-</style>
+    .btn-red:active {
+      background-color: #c53126;
+    }
+  </style>
 </head>
 <body>
 
-<!-- Loader -->
-<div id="loader">
-  <div class="loader-ring"></div>
-  <div class="loader-text">MEMUAT DASHBOARD…</div>
-</div>
+  <div class="container">
+    <div class="product-title">🛒 DETAIL TRANSAKSI SYSTEM</div>
+    <div class="divider"></div>
 
-<!-- Toast -->
-<div id="toast"></div>
-
-<div class="wrap" id="app" style="display:none">
-
-  <!-- Orbs -->
-  <div class="orb orb-1"></div>
-  <div class="orb orb-2"></div>
-
-  <!-- Header -->
-  <div class="header">
-    <div class="header-badge">
-      <span>🖥</span>
-      <span>CORE DASHBOARD SYSTEM</span>
+    <div class="detail-box">
+      <div class="detail-row"><span>Layanan:</span> <span id="prod-name">Kiro Ai - Kiro Pro</span></div>
+      <div class="detail-row"><span>Paket:</span> <span>$20 1000 credit</span></div>
+      <div class="detail-row"><span>Harga Satuan:</span> <span>Rp 25.000</span></div>
+      <div class="detail-row"><span>Status Stok:</span> <span style="color: #33a852;">Tersedia (1)</span></div>
+      <div class="divider" style="margin: 8px 0;"></div>
+      <div class="detail-row"><span>Jumlah Beli:</span> <span id="summary-qty">1</span></div>
+      <div class="detail-row"><span>Total Bayar:</span> <span style="color: #f4b400; font-weight: bold;" id="total-price">Rp 25.000</span></div>
     </div>
-    <h1 id="headerTitle">Loading…</h1>
-  </div>
 
-  <!-- Stats -->
-  <div class="stats-card">
-    <div class="stats-grid">
-      <div class="stat-item">
-        <div class="stat-label">Saldo</div>
-        <div class="stat-value highlight" id="saldo">Rp 0</div>
-      </div>
-      <div class="stat-item stat-divider-wrap">
-        <div class="stat-label">Transaksi</div>
-        <div class="stat-value gold" id="trx">0</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-label">Waktu</div>
-        <div class="stat-value" id="clock">--:--:--</div>
-      </div>
+    <div class="row-qty">
+      <button class="btn-blue" onclick="changeQty(-1)">- Kurangi</button>
+      <div class="qty-display" id="qty">1</div>
+      <button class="btn-blue" onclick="changeQty(1)">Tambah +</button>
     </div>
+
+    <button class="btn-green" onclick="prosesBayar()">🟩 Bayar Saldo</button>
+    
+    <button class="btn-red" onclick="tutupApp()">🟥 Kembali</button>
   </div>
 
-  <!-- Warning -->
-  <div class="warn-bar">
-    ⚠️ <span>Hindari Top Up jam <b>00:00 – 00:10</b> WIB</span>
-  </div>
+  <script>
+    // Inisialisasi SDK Telegram Web App
+    const tg = window.Telegram.WebApp;
+    tg.expand(); // Membuka tampilan web app secara penuh (Full Screen)
 
-  <!-- Admin button (hidden by default) -->
-  <div class="section-wrap btn-grid cols-1 btn-grid-admin" id="adminRow" style="display:none">
-    <button class="btn btn-admin" onclick="sendAction('menu_adminreseller')">
-      <span class="btn-emoji">👑</span> Menu System Admin
-    </button>
-  </div>
+    let currentQty = 1;
+    const hargaSatuan = 25000;
 
-  <!-- Main buttons -->
-  <div class="section-wrap">
-    <div class="section-label">Layanan VPN</div>
-    <div class="btn-grid cols-2">
-      <button class="btn btn-create" onclick="sendAction('service_create')">
-        <span class="btn-emoji">➕</span> Buat Akun
-      </button>
-      <button class="btn btn-trial" onclick="sendAction('service_trial')">
-        <span class="btn-emoji">⌛</span> Trial Akun
-      </button>
-    </div>
-  </div>
+    function updateDisplay() {
+      document.getElementById('qty').innerText = currentQty;
+      document.getElementById('summary-qty').innerText = currentQty;
+      
+      const total = currentQty * hargaSatuan;
+      document.getElementById('total-price').innerText = 'Rp ' + total.toLocaleString('id-ID');
+    }
 
-  <div class="section-wrap">
-    <div class="section-label">Manajemen Akun</div>
-    <div class="btn-grid cols-2">
-      <button class="btn btn-renew" onclick="sendAction('renew_select')">
-        <span class="btn-emoji">♻️</span> Perpanjang
-      </button>
-      <button class="btn btn-detail" onclick="sendAction('menu_daftar_akun')">
-        <span class="btn-emoji">📋</span> Detail Akun
-      </button>
-    </div>
-  </div>
+    function changeQty(amount) {
+      if (currentQty + amount >= 1) {
+        currentQty += amount;
+        updateDisplay();
+      }
+    }
 
-  <div class="section-wrap">
-    <div class="section-label">Transaksi</div>
-    <div class="btn-grid cols-2">
-      <button class="btn btn-ppob" onclick="sendAction('menu_ppob')">
-        <span class="btn-emoji">🛍️</span> Menu PPOB
-      </button>
-      <button class="btn btn-topup" onclick="sendAction('topup_saldo_orderkuota')">
-        <span class="btn-emoji">💳</span> Top Up Saldo
-      </button>
-    </div>
-  </div>
+    function prosesBayar() {
+      // Mengirimkan payload JSON kembali ke bot Node.js
+      const payload = {
+        action: 'process_payment',
+        qty: currentQty,
+        total_price: currentQty * hargaSatuan,
+        timestamp: new Date().getTime()
+      };
+      
+      tg.sendData(JSON.stringify(payload));
+      tg.close(); // Otomatis menutup web app setelah data terkirim
+    }
 
-  <!-- Reseller/Upgrade row -->
-  <div class="section-wrap btn-grid cols-1" id="resellerRow" style="display:none">
-    <button class="btn btn-reseller" onclick="sendAction('menu_reseller')">
-      <span class="btn-emoji">📊</span> Dashboard Reseller
-    </button>
-  </div>
-  <div class="section-wrap btn-grid cols-1" id="upgradeRow" style="display:none">
-    <button class="btn btn-upgrade" onclick="sendAction('upgrade_to_reseller')">
-      <span class="btn-emoji">⭐</span> Upgrade To Reseller
-    </button>
-  </div>
-
-  <div class="footer">
-    Powered by <a href="#">love.sshgreen.cloud</a> &nbsp;·&nbsp; CS: @joyhayabuse
-  </div>
-</div>
-
-<script>
-// ── Telegram WebApp init ──────────────────────────────────────────
-const tg = window.Telegram?.WebApp;
-if (tg) {
-  tg.ready();
-  tg.expand();
-  tg.setHeaderColor('#080c14');
-  tg.setBackgroundColor('#080c14');
-}
-
-// ── Parse initData ────────────────────────────────────────────────
-function getInitData() {
-  try {
-    if (!tg?.initDataUnsafe) return {};
-    return tg.initDataUnsafe;
-  } catch { return {}; }
-}
-
-// ── Send action back to bot ───────────────────────────────────────
-function sendAction(action) {
-  showToast('Memproses…');
-  if (tg) {
-    tg.sendData(action);
-  }
-}
-
-function showToast(msg) {
-  const el = document.getElementById('toast');
-  el.textContent = msg;
-  el.classList.add('show');
-  setTimeout(() => el.classList.remove('show'), 2000);
-}
-
-// ── Clock ─────────────────────────────────────────────────────────
-function updateClock() {
-  const now = new Date();
-  document.getElementById('clock').textContent =
-    now.toLocaleTimeString('id-ID', { hour:'2-digit', minute:'2-digit', second:'2-digit', timeZone:'Asia/Jakarta' });
-}
-setInterval(updateClock, 1000);
-updateClock();
-
-// ── Load user data from URL params / initData ─────────────────────
-function loadDashboard() {
-  const params = new URLSearchParams(window.location.search);
-  const initData = getInitData();
-  const user = initData?.user || {};
-
-  // Support passing data via URL query (bot sends ?saldo=xxx&role=xxx&trx=xxx)
-  const saldo  = params.get('saldo')  ?? '0';
-  const role   = params.get('role')   ?? 'user';
-  const trx    = params.get('trx')    ?? '0';
-  const name   = params.get('name')   ?? user.first_name ?? 'Member';
-  const userId = params.get('uid')    ?? user.id ?? '';
-
-  const roleLabel = role === 'admin'    ? 'Administrator' :
-                    role === 'reseller' ? 'Reseller Official' : 'Member';
-
-  document.getElementById('headerTitle').textContent = `${roleLabel} · ${name}`;
-  document.getElementById('saldo').textContent = 'Rp ' + Number(saldo).toLocaleString('id-ID');
-  document.getElementById('trx').textContent   = trx + ' Proses';
-
-  if (role === 'admin') {
-    document.getElementById('adminRow').style.display = 'grid';
-  }
-  if (role === 'reseller') {
-    document.getElementById('resellerRow').style.display = 'grid';
-  } else if (role !== 'admin') {
-    document.getElementById('upgradeRow').style.display = 'grid';
-  }
-}
-
-// ── Boot ──────────────────────────────────────────────────────────
-window.addEventListener('load', () => {
-  setTimeout(() => {
-    loadDashboard();
-    const loader = document.getElementById('loader');
-    const app    = document.getElementById('app');
-    loader.classList.add('hidden');
-    app.style.display = 'block';
-    setTimeout(() => loader.remove(), 500);
-  }, 600);
-});
-</script>
+    function tutupApp() {
+      tg.close(); // Menutup web app tanpa mengirim data (Kembali)
+    }
+  </script>
 </body>
 </html>
