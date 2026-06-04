@@ -1,217 +1,418 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Xtrimer Pay System</title>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <style>
-    *, *::before, *::after {
-      box-sizing: border-box;
-    }
-    
-    body {
-      background-color: #17212b; /* Warna latar gelap khas Telegram */
-      color: #f5f6f7;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      margin: 0;
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-      justify-content: center;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Dashboard</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
-    .container {
-      width: 100%;
-      max-width: 400px;
-      margin: 0 auto;
-      background: #242f3d;
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-      text-align: center;
-    }
+:root {
+  --bg: #0a0f1e;
+  --surface: #111827;
+  --card: #161f35;
+  --border: #1e2d4d;
+  --text: #e8f0ff;
+  --muted: #4a5a7a;
+  --accent: #3b82f6;
+  --accent2: #06b6d4;
+}
 
-    .product-title {
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 8px;
-      color: #5288c1;
-    }
+html, body {
+  height: 100%;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+}
 
-    .divider {
-      height: 1px;
-      background: #2f3e4e;
-      margin: 15px 0;
-    }
+/* scanline texture */
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,.03) 2px,
+    rgba(0,0,0,.03) 4px
+  );
+  pointer-events: none; z-index: 0;
+}
 
-    /* Info detail item */
-    .detail-box {
-      background: #1c2834;
-      border-radius: 8px;
-      padding: 12px;
-      text-align: left;
-      font-size: 14px;
-      line-height: 1.6;
-      margin-bottom: 20px;
-    }
+.container {
+  position: relative; z-index: 1;
+  max-width: 480px; margin: 0 auto;
+  padding: 0 0 24px;
+  min-height: 100vh;
+}
 
-    .detail-row {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 4px;
-    }
+/* ── TOP BANNER ── */
+.banner {
+  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+  padding: 20px 18px 16px;
+  border-bottom: 1px solid var(--border);
+  position: relative; overflow: hidden;
+  animation: fadeDown .4s ease both;
+}
+.banner::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 70% 50%, rgba(59,130,246,.15) 0%, transparent 60%);
+}
+.banner-inner { position: relative; z-index: 1; }
+.banner-top {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 14px;
+}
+.brand {
+  display: flex; align-items: center; gap: 8px;
+}
+.brand-icon {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: linear-gradient(135deg, #3b82f6, #06b6d4);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+}
+.brand-name {
+  font-size: 13px; font-weight: 800; letter-spacing: .04em;
+  background: linear-gradient(90deg, #fff, #93c5fd);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.brand-sub { font-size: 10px; color: var(--muted); letter-spacing: .06em; margin-top: 1px; }
+.clock-badge {
+  background: rgba(59,130,246,.12);
+  border: 1px solid rgba(59,130,246,.25);
+  border-radius: 8px; padding: 5px 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px; color: #93c5fd; font-weight: 700;
+}
 
-    .detail-row span:first-child {
-      color: #7a8c9d;
-    }
+/* stats row */
+.stats-row {
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+}
+.stat-box {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 10px; padding: 10px 8px; text-align: center;
+}
+.stat-box .lbl { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 4px; }
+.stat-box .val { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; }
+.val.blue  { color: #60a5fa; }
+.val.cyan  { color: #22d3ee; }
+.val.green { color: #4ade80; }
 
-    .detail-row span:last-child {
-      font-weight: 500;
-      color: #ffffff;
-    }
+/* role pill */
+.role-pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: rgba(59,130,246,.15); border: 1px solid rgba(59,130,246,.3);
+  border-radius: 20px; padding: 3px 10px;
+  font-size: 10px; color: #93c5fd; font-weight: 700;
+  letter-spacing: .05em; margin-bottom: 10px;
+}
 
-    /* Baris kontrol kuantitas (Biru Solid) */
-    .row-qty {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 12px;
-    }
+/* ── CONTENT ── */
+.content { padding: 16px 14px 0; }
 
-    .btn-blue {
-      flex: 1;
-      background-color: #2f6ea5; /* Biru Solid Telegram */
-      color: white;
-      border: none;
-      padding: 14px;
-      border-radius: 8px;
-      font-weight: bold;
-      font-size: 16px;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
+/* section */
+.sec-label {
+  font-size: 9px; font-weight: 700; letter-spacing: .12em;
+  color: var(--muted); text-transform: uppercase;
+  margin-bottom: 8px; padding-left: 2px;
+  display: flex; align-items: center; gap: 6px;
+}
+.sec-label::after {
+  content: ''; flex: 1; height: 1px; background: var(--border);
+}
+.sec-wrap { margin-bottom: 14px; animation: fadeUp .4s ease both; }
 
-    .btn-blue:active {
-      background-color: #245885;
-    }
+/* button grid */
+.btn-row { display: grid; gap: 9px; margin-bottom: 0; }
+.btn-row.c2 { grid-template-columns: 1fr 1fr; }
+.btn-row.c1 { grid-template-columns: 1fr; }
 
-    .qty-display {
-      flex: 1;
-      background-color: #1c2834;
-      color: white;
-      border: 1px solid #2f3e4e;
-      text-align: center;
-      padding: 14px;
-      border-radius: 8px;
-      font-weight: bold;
-      font-size: 16px;
-    }
+/* base button */
+.btn {
+  display: flex; align-items: center; justify-content: center;
+  gap: 7px; padding: 14px 10px;
+  border: none; border-radius: 13px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 13px; font-weight: 700; color: #fff;
+  cursor: pointer; user-select: none; -webkit-user-select: none;
+  position: relative; overflow: hidden;
+  transition: transform .12s, filter .12s;
+  letter-spacing: .01em;
+  text-shadow: 0 1px 4px rgba(0,0,0,.5);
+}
+.btn .ico { font-size: 17px; line-height: 1; flex-shrink: 0; }
+.btn::before {
+  content: '';
+  position: absolute; top: 0; left: -100%;
+  width: 60%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.12), transparent);
+  transition: left .35s;
+}
+.btn:hover::before { left: 160%; }
+.btn:active { transform: scale(.95); filter: brightness(.88); }
 
-    /* Tombol Bayar Saldo (Hijau Solid) */
-    .btn-green {
-      width: 100%;
-      background-color: #33a852; /* Hijau Solid */
-      color: white;
-      border: none;
-      padding: 14px;
-      border-radius: 8px;
-      font-weight: bold;
-      font-size: 16px;
-      cursor: pointer;
-      margin-bottom: 12px;
-      transition: background 0.2s;
-    }
+/* color variants */
+.btn-green  { background: linear-gradient(135deg,#059669,#10b981); box-shadow: 0 4px 18px rgba(16,185,129,.3); }
+.btn-purple { background: linear-gradient(135deg,#7c3aed,#a855f7); box-shadow: 0 4px 18px rgba(168,85,247,.3); }
+.btn-orange { background: linear-gradient(135deg,#d97706,#f59e0b); box-shadow: 0 4px 18px rgba(245,158,11,.3); }
+.btn-blue   { background: linear-gradient(135deg,#1d4ed8,#3b82f6); box-shadow: 0 4px 18px rgba(59,130,246,.3); }
+.btn-pink   { background: linear-gradient(135deg,#be185d,#ec4899); box-shadow: 0 4px 18px rgba(236,72,153,.3); }
+.btn-teal   { background: linear-gradient(135deg,#0f766e,#14b8a6); box-shadow: 0 4px 18px rgba(20,184,166,.3); }
+.btn-gold   { background: linear-gradient(135deg,#b45309,#f59e0b); box-shadow: 0 4px 18px rgba(251,191,36,.35); }
+.btn-violet { background: linear-gradient(135deg,#6d28d9,#8b5cf6); box-shadow: 0 4px 18px rgba(139,92,246,.3); }
+.btn-red    { background: linear-gradient(135deg,#991b1b,#ef4444); box-shadow: 0 4px 18px rgba(239,68,68,.3); }
 
-    .btn-green:active {
-      background-color: #278b3e;
-    }
+/* stagger */
+.sec-wrap:nth-child(1) .btn { animation: fadeUp .35s .10s ease both; }
+.sec-wrap:nth-child(2) .btn:nth-child(1) { animation: fadeUp .35s .15s ease both; }
+.sec-wrap:nth-child(2) .btn:nth-child(2) { animation: fadeUp .35s .20s ease both; }
+.sec-wrap:nth-child(3) .btn:nth-child(1) { animation: fadeUp .35s .22s ease both; }
+.sec-wrap:nth-child(3) .btn:nth-child(2) { animation: fadeUp .35s .27s ease both; }
+.sec-wrap:nth-child(4) .btn:nth-child(1) { animation: fadeUp .35s .29s ease both; }
+.sec-wrap:nth-child(4) .btn:nth-child(2) { animation: fadeUp .35s .34s ease both; }
+.sec-wrap:nth-child(5) .btn { animation: fadeUp .35s .36s ease both; }
 
-    /* Tombol Kembali (Merah Solid) */
-    .btn-red {
-      width: 100%;
-      background-color: #ea4335; /* Merah Solid */
-      color: white;
-      border: none;
-      padding: 14px;
-      border-radius: 8px;
-      font-weight: bold;
-      font-size: 16px;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
+/* warn */
+.warn {
+  margin: 0 14px 14px;
+  background: rgba(245,158,11,.08);
+  border: 1px solid rgba(245,158,11,.2);
+  border-radius: 10px; padding: 10px 13px;
+  font-size: 11.5px; color: #fbbf24;
+  display: flex; align-items: center; gap: 7px;
+  animation: fadeUp .4s .4s ease both;
+}
 
-    .btn-red:active {
-      background-color: #c53126;
-    }
-  </style>
+/* footer */
+.footer {
+  text-align: center; padding: 4px 14px 0;
+  font-size: 10px; color: var(--muted);
+  animation: fadeUp .4s .45s ease both;
+}
+.footer span { color: #60a5fa; }
+
+/* loader */
+#loader {
+  position: fixed; inset: 0; z-index: 999;
+  background: var(--bg);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 16px;
+  transition: opacity .35s;
+}
+#loader.out { opacity: 0; pointer-events: none; }
+.spin {
+  width: 40px; height: 40px;
+  border: 3px solid var(--border);
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+}
+.spin-txt { font-size: 11px; color: var(--muted); letter-spacing: .1em; font-weight: 600; }
+
+/* toast */
+#toast {
+  position: fixed; bottom: 24px; left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: rgba(16,185,129,.15);
+  border: 1px solid rgba(16,185,129,.35);
+  color: #4ade80; font-size: 12px; font-weight: 700;
+  padding: 9px 20px; border-radius: 24px;
+  opacity: 0; transition: all .25s; z-index: 500;
+  white-space: nowrap; backdrop-filter: blur(10px);
+  letter-spacing: .03em;
+}
+#toast.on { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+@keyframes fadeDown { from{opacity:0;transform:translateY(-12px)} to{opacity:1;transform:none} }
+@keyframes fadeUp   { from{opacity:0;transform:translateY(12px)}  to{opacity:1;transform:none} }
+@keyframes spin     { to{transform:rotate(360deg)} }
+</style>
 </head>
 <body>
 
-  <div class="container">
-    <div class="product-title">🛒 DETAIL TRANSAKSI SYSTEM</div>
-    <div class="divider"></div>
+<div id="loader"><div class="spin"></div><div class="spin-txt">LOADING…</div></div>
+<div id="toast"></div>
 
-    <div class="detail-box">
-      <div class="detail-row"><span>Layanan:</span> <span id="prod-name">Kiro Ai - Kiro Pro</span></div>
-      <div class="detail-row"><span>Paket:</span> <span>$20 1000 credit</span></div>
-      <div class="detail-row"><span>Harga Satuan:</span> <span>Rp 25.000</span></div>
-      <div class="detail-row"><span>Status Stok:</span> <span style="color: #33a852;">Tersedia (1)</span></div>
-      <div class="divider" style="margin: 8px 0;"></div>
-      <div class="detail-row"><span>Jumlah Beli:</span> <span id="summary-qty">1</span></div>
-      <div class="detail-row"><span>Total Bayar:</span> <span style="color: #f4b400; font-weight: bold;" id="total-price">Rp 25.000</span></div>
+<div class="container" id="app" style="display:none">
+
+  <!-- BANNER -->
+  <div class="banner">
+    <div class="banner-inner">
+      <div class="banner-top">
+        <div class="brand">
+          <div class="brand-icon">🖥</div>
+          <div>
+            <div class="brand-name">CORE DASHBOARD</div>
+            <div class="brand-sub">SYSTEM PANEL</div>
+          </div>
+        </div>
+        <div class="clock-badge" id="clock">--:--:--</div>
+      </div>
+      <div class="role-pill" id="rolePill">⏳ Loading…</div>
+      <div class="stats-row">
+        <div class="stat-box">
+          <div class="lbl">Saldo</div>
+          <div class="val blue" id="saldo">Rp 0</div>
+        </div>
+        <div class="stat-box">
+          <div class="lbl">Transaksi</div>
+          <div class="val cyan" id="trx">0</div>
+        </div>
+        <div class="stat-box">
+          <div class="lbl">Members</div>
+          <div class="val green" id="members">0</div>
+        </div>
+      </div>
     </div>
-
-    <div class="row-qty">
-      <button class="btn-blue" onclick="changeQty(-1)">- Kurangi</button>
-      <div class="qty-display" id="qty">1</div>
-      <button class="btn-blue" onclick="changeQty(1)">Tambah +</button>
-    </div>
-
-    <button class="btn-green" onclick="prosesBayar()">🟩 Bayar Saldo</button>
-    
-    <button class="btn-red" onclick="tutupApp()">🟥 Kembali</button>
   </div>
 
-  <script>
-    // Inisialisasi SDK Telegram Web App
-    const tg = window.Telegram.WebApp;
-    tg.expand(); // Membuka tampilan web app secara penuh (Full Screen)
+  <!-- WARN -->
+  <div class="warn" style="margin-top:14px">
+    ⚠️ <span>Hindari Top Up jam <b>00:00 – 00:10</b> WIB</span>
+  </div>
 
-    let currentQty = 1;
-    const hargaSatuan = 25000;
+  <div class="content">
 
-    function updateDisplay() {
-      document.getElementById('qty').innerText = currentQty;
-      document.getElementById('summary-qty').innerText = currentQty;
-      
-      const total = currentQty * hargaSatuan;
-      document.getElementById('total-price').innerText = 'Rp ' + total.toLocaleString('id-ID');
-    }
+    <!-- ADMIN -->
+    <div class="sec-wrap" id="adminSec" style="display:none">
+      <div class="sec-label">Administrator</div>
+      <div class="btn-row c1">
+        <button class="btn btn-gold" onclick="act('menu_adminreseller')">
+          <span class="ico">👑</span> Menu System Admin
+        </button>
+      </div>
+    </div>
 
-    function changeQty(amount) {
-      if (currentQty + amount >= 1) {
-        currentQty += amount;
-        updateDisplay();
-      }
-    }
+    <!-- VPN -->
+    <div class="sec-wrap">
+      <div class="sec-label">Layanan VPN</div>
+      <div class="btn-row c2">
+        <button class="btn btn-green" onclick="act('service_create')">
+          <span class="ico">➕</span> Buat Akun
+        </button>
+        <button class="btn btn-purple" onclick="act('service_trial')">
+          <span class="ico">⌛</span> Trial Akun
+        </button>
+      </div>
+    </div>
 
-    function prosesBayar() {
-      // Mengirimkan payload JSON kembali ke bot Node.js
-      const payload = {
-        action: 'process_payment',
-        qty: currentQty,
-        total_price: currentQty * hargaSatuan,
-        timestamp: new Date().getTime()
-      };
-      
-      tg.sendData(JSON.stringify(payload));
-      tg.close(); // Otomatis menutup web app setelah data terkirim
-    }
+    <!-- AKUN -->
+    <div class="sec-wrap">
+      <div class="sec-label">Manajemen Akun</div>
+      <div class="btn-row c2">
+        <button class="btn btn-orange" onclick="act('renew_select')">
+          <span class="ico">♻️</span> Perpanjang
+        </button>
+        <button class="btn btn-blue" onclick="act('menu_daftar_akun')">
+          <span class="ico">📋</span> Detail Akun
+        </button>
+      </div>
+    </div>
 
-    function tutupApp() {
-      tg.close(); // Menutup web app tanpa mengirim data (Kembali)
-    }
-  </script>
+    <!-- TRANSAKSI -->
+    <div class="sec-wrap">
+      <div class="sec-label">Transaksi</div>
+      <div class="btn-row c2">
+        <button class="btn btn-pink" onclick="act('menu_ppob')">
+          <span class="ico">🛍️</span> Menu PPOB
+        </button>
+        <button class="btn btn-teal" onclick="act('topup_saldo_orderkuota')">
+          <span class="ico">💳</span> Top Up Saldo
+        </button>
+      </div>
+    </div>
+
+    <!-- RESELLER -->
+    <div class="sec-wrap" id="resellerSec" style="display:none">
+      <div class="sec-label">Reseller</div>
+      <div class="btn-row c1">
+        <button class="btn btn-violet" onclick="act('menu_reseller')">
+          <span class="ico">📊</span> Dashboard Reseller
+        </button>
+      </div>
+    </div>
+
+    <!-- UPGRADE -->
+    <div class="sec-wrap" id="upgradeSec" style="display:none">
+      <div class="sec-label">Upgrade</div>
+      <div class="btn-row c1">
+        <button class="btn btn-red" onclick="act('upgrade_to_reseller')">
+          <span class="ico">⭐</span> Upgrade To Reseller
+        </button>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+
+  <div class="footer">CS Admin : <span id="adminCs">@joyhayabuse</span></div>
+
+</div><!-- /container -->
+
+<script>
+const tg = window.Telegram?.WebApp;
+if (tg) { tg.ready(); tg.expand(); tg.setHeaderColor('#0a0f1e'); tg.setBackgroundColor('#0a0f1e'); }
+
+// clock
+function tick() {
+  document.getElementById('clock').textContent =
+    new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit',second:'2-digit',timeZone:'Asia/Jakarta'});
+}
+setInterval(tick, 1000); tick();
+
+// action → kirim ke bot
+function act(action) {
+  toast('Memproses…');
+  if (tg) tg.sendData(action);
+}
+
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.classList.add('on');
+  setTimeout(() => el.classList.remove('on'), 1800);
+}
+
+// boot
+window.addEventListener('load', () => {
+  const p     = new URLSearchParams(location.search);
+  const iData = tg?.initDataUnsafe || {};
+  const user  = iData.user || {};
+
+  const saldo   = p.get('saldo')   ?? '0';
+  const role    = p.get('role')    ?? 'user';
+  const trx     = p.get('trx')     ?? '0';
+  const members = p.get('members') ?? '0';
+  const name    = p.get('name')    ?? user.first_name ?? 'Member';
+  const adminCs = p.get('admin')   ?? '@joyhayabuse';
+
+  const roleLabel = role==='admin' ? '👑 Administrator' :
+                    role==='reseller' ? '💎 Reseller Official' : '👤 Member';
+
+  document.getElementById('rolePill').textContent   = `${roleLabel}  •  ${name}`;
+  document.getElementById('saldo').textContent      = 'Rp ' + Number(saldo).toLocaleString('id-ID');
+  document.getElementById('trx').textContent        = trx + ' Proses';
+  document.getElementById('members').textContent    = members + ' User';
+  document.getElementById('adminCs').textContent    = adminCs;
+
+  if (role === 'admin') document.getElementById('adminSec').style.display = 'block';
+  if (role === 'reseller') document.getElementById('resellerSec').style.display = 'block';
+  else if (role !== 'admin') document.getElementById('upgradeSec').style.display = 'block';
+
+  setTimeout(() => {
+    document.getElementById('loader').classList.add('out');
+    document.getElementById('app').style.display = 'block';
+    setTimeout(() => document.getElementById('loader').remove(), 400);
+  }, 500);
+});
+</script>
 </body>
 </html>
