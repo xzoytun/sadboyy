@@ -3,345 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Core Dashboard System</title>
+    <title>Voice Random Chat</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://download.agora.io/sdk/release/AgoraRTC_N-4.20.0.js"></script>
     <style>
-        :root {
-            --bg-color: #0f172a;
-            --container-bg: #1e293b;
-            --accent-color: #38bdf8;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --border-color: #334155;
-            --btn-success: #10b981;
-            --btn-warning: #f59e0b;
-        }
-
         body {
-            font-family: '-apple-system', BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            margin: 0;
-            padding: 12px;
-            box-sizing: border-box;
-            -webkit-user-select: none;
-            user-select: none;
-        }
-
-        .container {
-            max-width: 500px;
-            margin: 0 auto;
-            background: var(--container-bg);
-            border-radius: 16px;
-            padding: 16px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--border-color);
-        }
-
-        /* Header Style */
-        .header {
-            text-align: center;
-            border-bottom: 2px dashed var(--border-color);
-            padding-bottom: 12px;
-            margin-bottom: 16px;
-        }
-
-        .header h3 {
-            margin: 0;
-            font-size: 1.2rem;
-            letter-spacing: 1px;
-            color: var(--accent-color);
+            background-color: #0b0e14;
+            color: white;
+            font-family: sans-serif;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            height: 100vh;
+            margin: 0;
         }
-
-        /* Info Grid */
-        .info-box {
-            background: rgba(15, 23, 42, 0.6);
-            border-radius: 12px;
-            padding: 14px;
-            margin-bottom: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+        .status-text {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #ff00ff; /* Warna pink neon mirip ss kamu */
         }
-
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .info-row:last-child {
-            border-bottom: none;
-        }
-
-        .info-label {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .info-value {
-            font-weight: 600;
-            font-family: 'Courier New', Courier, monospace;
-        }
-
-        .saldo-highlight {
-            color: var(--btn-success);
-            font-size: 1.1rem;
-        }
-
-        /* Warning Banner */
-        .warning-banner {
-            background: rgba(245, 158, 11, 0.15);
-            border: 1px solid var(--btn-warning);
-            color: #fcd34d;
-            border-radius: 8px;
-            padding: 8px 12px;
-            font-size: 0.8rem;
-            text-align: center;
-            margin-bottom: 16px;
-        }
-
-        /* Button Grid Layout */
-        .btn-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-bottom: 12px;
-        }
-
-        .btn-full {
-            grid-column: span 2;
-        }
-
         .btn {
-            background: #2563eb;
+            background-color: #2481cc;
             color: white;
             border: none;
-            padding: 12px 8px;
-            border-radius: 10px;
-            font-size: 0.9rem;
-            font-weight: bold;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
         }
-
-        .btn:active {
-            transform: scale(0.97);
-            opacity: 0.9;
-        }
-
-        /* Button Colors Modifier */
-        .btn-admin { background: #dc2626; }
-        .btn-reseller { background: #9333ea; }
-        .btn-upgrade { background: #059669; }
-        .btn-contact { background: #475569; }
-
-        /* Footer */
-        .footer {
-            text-align: center;
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            margin-top: 16px;
-        }
+        .btn:disabled { background-color: #555; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="header">
-        <h3><i class="fa-solid fa-terminal"></i> CORE DASHBOARD SYSTEM</h3>
-    </div>
+    <div class="status-text" id="status">Menghubungkan ke server...</div>
+    <button class="btn" id="actionBtn" onclick="startSearch()" disabled>Cari Teman Ngobrol</button>
 
-    <div class="info-box">
-        <div class="info-row">
-            <span class="info-label"><i class="fa-solid fa-user-shield"></i> Status</span>
-            <span class="info-value" id="user-role">Loading...</span>
-        </div>
-        <div class="info-row">
-            <span class="info-label"><i class="fa-solid fa-id-card"></i> ID</span>
-            <span class="info-value" id="user-id">-</span>
-        </div>
-        <div class="info-row">
-            <span class="info-label"><i class="fa-solid fa-wallet"></i> Saldo</span>
-            <span class="info-value wallet-highlight saldo-highlight" id="user-saldo">Rp 0</span>
-        </div>
-        <div class="info-row">
-            <span class="info-label"><i class="fa-solid fa-cubes"></i> Transaksi</span>
-            <span class="info-value" id="user-tx">0 Proses</span>
-        </div>
-        <div class="info-row">
-            <span class="info-label"><i class="fa-solid fa-users"></i> Members</span>
-            <span class="info-value" id="total-users">0 User</span>
-        </div>
-        <div class="info-row">
-            <span class="info-label"><i class="fa-solid fa-clock"></i> Waktu</span>
-            <span class="info-value" id="current-time">00:00:00 WIB</span>
-        </div>
-    </div>
-
-    <div class="warning-banner">
-        <i class="fa-solid fa-triangle-exclamation"></i> Hindari Top Up jam <b>00:00 – 00:10</b> WIB
-    </div>
-
-    <div class="btn-grid">
-        <button id="btn-admin" class="btn btn-full btn-admin" style="display: none;" onclick="sendAction('menu_adminreseller')">
-            <i class="fa-solid fa-sliders"></i> Menu System Admin
-        </button>
-
-        <button class="btn" onclick="sendAction('service_create')">
-            <i class="fa-solid fa-plus"></i> Buat Akun
-        </button>
-        <button class="btn" onclick="sendAction('service_trial')">
-            <i class="fa-solid fa-bolt"></i> Trial Akun
-        </button>
-
-        <button class="btn" onclick="sendAction('renew_select')">
-            <i class="fa-solid fa-arrows-rotate"></i> Perpanjang
-        </button>
-        <button class="btn" onclick="sendAction('menu_daftar_akun')">
-            <i class="fa-solid fa-list"></i> Detail Akun
-        </button>
-
-        <button class="btn" onclick="sendAction('menu_ppob')">
-            <i class="fa-solid fa-mobile-screen"></i> Menu PPOB
-        </button>
-        <button class="btn" onclick="sendAction('topup_saldo_orderkuota')">
-            <i class="fa-solid fa-money-bill-wave"></i> Top Up Saldo
-        </button>
-
-        <button id="btn-reseller-dash" class="btn btn-full btn-reseller" style="display: none;" onclick="sendAction('menu_reseller')">
-            <i class="fa-solid fa-chart-line"></i> Dashboard Reseller
-        </button>
-        <button id="btn-reseller-up" class="btn btn-full btn-upgrade" style="display: none;" onclick="sendAction('upgrade_to_reseller')">
-            <i class="fa-solid fa-angles-up"></i> Upgrade To Reseller
-        </button>
-
-        <button class="btn btn-full btn-contact" onclick="openAdmin()">
-            <i class="fa-solid fa-headset"></i> Hubungi Admin (<span id="admin-username">@joyhayabuse</span>)
-        </button>
-    </div>
-
-    <div class="footer">
-        Powered by love.sshgreen.cloud
-    </div>
-</div>
-
-<script>
-    // Inisialisasi Telegram WebApp
-    const tg = window.Telegram.WebApp;
-    tg.ready();
-    tg.expand(); // Membuka Mini App full screen ke atas
-
-    // Mengambil data user yang membuka Mini App
-    const initDataUnsafe = tg.initDataUnsafe;
-    const user = initDataUnsafe?.user;
-    
-    // Konfigurasi Default Admin Username
-    let adminUsername = '@joyhayabuse'; 
-
-    // --- INTEGRASI & FETCH DATA DARI BACKEND BOT LO ---
-    // Karena WebApp berjalan di client, idealnya lo buat API endpoint di VPS bot lo 
-    // untuk ngambil real data berdasarkan `user.id`. 
-    // Di bawah ini adalah simulasi & parsing data awal.
-    
-    async function loadUserData() {
-        if (!user) {
-            // Backup jika dibuka di browser biasa di luar Telegram
-            document.getElementById('user-id').innerText = "123456789";
-            document.getElementById('user-role').innerText = "Member";
-            return;
-        }
-
-        document.getElementById('user-id').innerText = user.id;
-
-        try {
-            // Contoh implementasi fetch ke server bot lo (Silahkan sesuaikan URL API lo nanti):
-            // const response = await fetch(`https://api.sshgreen.cloud/user/${user.id}`);
-            // const data = await response.json();
-            
-            // Dummy logic / Replika data dari database bot lo:
-            const role = 'user'; // Ubah 'admin', 'reseller', atau 'user' sesuai data asli server
-            const saldo = 25000;
-            const totalAkunDibuat = 0;
-            const totalUser = 150; 
-
-            // Render ke UI HTML
-            renderDashboard(role, saldo, totalAkunDibuat, totalUser);
-
-        } catch (error) {
-            console.error("Gagal memuat data dari server:", error);
-            // Fallback default jika API offline
-            renderDashboard('user', 0, 0, 0);
-        }
-    }
-
-    function renderDashboard(role, saldo, totalAkunDibuat, totalUser) {
-        // 1. Set Label Role
-        let roleLabel = 'Member';
-        if (role === 'admin') roleLabel = 'Administrator';
-        else if (role === 'reseller') roleLabel = 'Reseller Official';
-        document.getElementById('user-role').innerText = roleLabel;
-
-        // 2. Set Saldo & Status Angka
-        document.getElementById('user-saldo').innerText = 'Rp ' + saldo.toLocaleString('id-ID');
-        document.getElementById('user-tx').innerText = totalAkunDibuat + ' Proses';
-        document.getElementById('user-users').innerText = totalUser + ' User';
-
-        // 3. Logika Tombol Conditional (Sama seperti struktur IF di Node.js lo)
-        if (role === 'admin') {
-            document.getElementById('btn-admin').style.display = 'flex';
-        }
-        
-        if (role === 'reseller') {
-            document.getElementById('btn-reseller-dash').style.display = 'flex';
-            document.getElementById('btn-reseller-up').style.display = 'none';
-        } else if (role !== 'admin') {
-            document.getElementById('btn-reseller-up').style.display = 'flex';
-            document.getElementById('btn-reseller-dash').style.display = 'none';
-        }
-    }
-
-    // Fungsi Trigger Aksi Kirim ke Chat Bot Telegram
-    function sendAction(callbackData) {
-        // Mengirimkan instruksi kembali ke bot dalam bentuk teks/data
-        // Bot lo harus menghandle ini lewat event `ctx.on('web_app_data')`
-        tg.sendData(JSON.stringify({ action: callbackData }));
-        tg.close(); // Tutup mini app setelah tombol ditekan
-    }
-
-    // Fungsi Hubungi Admin
-    function openAdmin() {
-        tg.openTelegramLink(`https://t.me/${adminUsername.replace('@', '')}`);
-    }
-
-    // Realtime Clock WIB (Asia/Jakarta)
-    function updateClock() {
-        const now = new Date();
-        const timeStr = now.toLocaleTimeString('id-ID', {
-            hour: '2-digit', minute: '2-digit', second: '2-digit',
-            timeZone: 'Asia/Jakarta'
-        });
-        document.getElementById('current-time').innerText = timeStr + ' WIB';
-    }
-
-    // Jalankan Fungsi Utama
-    setInterval(updateClock, 1000);
-    loadUserData();
-    updateClock();
-</script>
-
+    <script src="script.js"></script>
 </body>
 </html>
