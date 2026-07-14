@@ -3,212 +3,237 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PediaStore - PPOB & VPN Termurah</title>
+    <title>CyberStore - PPOB & Premium VPN</title>
+    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    
     <style>
-        .hero-section {
-            background: linear-gradient(135deg, #0d6efd 0%, #0a46a3 100%);
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+            font-family: 'Plus Jakarta Sans', sans-serif;
         }
-        .card-product {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        .text-neon-cyan {
+            color: #06b6d4;
+            text-shadow: 0 0 10px rgba(6, 182, 212, 0.3);
         }
-        .card-product:hover {
+        .text-neon-purple {
+            color: #a855f7;
+            text-shadow: 0 0 10px rgba(168, 85, 247, 0.3);
+        }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15) !important;
+            border-color: rgba(6, 182, 212, 0.4);
+            box-shadow: 0 10px 30px rgba(6, 182, 212, 0.1);
+        }
+        .btn-cyan {
+            background-color: #06b6d4;
+            color: #0f172a;
+            font-weight: 600;
+        }
+        .btn-cyan:hover {
+            background-color: #22d3ee;
+            color: #0f172a;
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.5);
+        }
+        .nav-link {
+            color: #94a3b8 !important;
+        }
+        .nav-link.active, .nav-link:hover {
+            color: #06b6d4 !important;
         }
     </style>
 </head>
-<body class="bg-light">
+<body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark bg-opacity-50 fixed-top border-bottom border-secondary border-opacity-25" style="backdrop-filter: blur(10px);">
         <div class="container">
-            <a class="navbar-brand fw-bold text-primary" href="#"><i class="bi bi-lightning-charge-fill me-2"></i>PediaStore</a>
+            <a class="navbar-brand fw-extrabold text-neon-cyan fs-3" href="#">
+                <i class="bi bi-terminal-fill me-2"></i>CYBER<span class="text-white">NET</span>
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link active" href="#home">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#ppob">Layanan PPOB</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#vpn">Paket VPN</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#testimoni">Testimoni</a></li>
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link active" href="#hero">Beranda</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#fitur">Fitur</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#produk">Layanan</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#pricing">Harga VPN</a></li>
                 </ul>
-                <a href="https://wa.me/628123456789" class="btn btn-primary ms-lg-3"><i class="bi bi-whatsapp me-2"></i>Hubungi Kami</a>
+                <div class="ms-lg-4">
+                    <a href="#" class="btn btn-cyan btn-sm px-4 rounded-pill">Client Area</a>
+                </div>
             </div>
         </div>
     </nav>
 
-    <section id="home" class="hero-section text-white py-5 text-center text-md-start">
-        <div class="container py-5">
-            <div class="row align-items-center">
-                <div class="col-md-6 mb-4 mb-md-0">
-                    <h1 class="display-4 fw-bold mb-3">Top Up PPOB Kebutuhan Harian & VPN Premium Aman!</h1>
-                    <p class="lead text-white-50 mb-4">Bayar tagihan, isi pulsa, hingga amankan koneksi internet kamu dengan layanan VPN premium terbaik kami. Proses instan, harga agen!</p>
-                    <a href="#ppob" class="btn btn-light btn-lg text-primary fw-bold me-2">Beli PPOB</a>
-                    <a href="#vpn" class="btn btn-outline-light btn-lg">Beli VPN</a>
+    <!-- Hero Section -->
+    <header id="hero" class="container min-vh-100 d-flex align-items-center pt-5">
+        <div class="row align-items-center w-100">
+            <div class="col-lg-6 mb-5 mb-lg-0 text-center text-lg-start">
+                <span class="badge bg-secondary bg-opacity-25 text-neon-cyan px-3 py-2 rounded-pill mb-3 border border-info border-opacity-25">
+                    <i class="bi bi-patch-check-fill me-2"></i>Koneksi Aman & Top Up Instan
+                </span>
+                <h1 class="display-3 fw-bold mb-4">
+                    Jelajahi Internet Tanpa <span class="text-neon-purple">Batas</span>
+                </h1>
+                <p class="lead text-secondary mb-4">
+                    Satu platform untuk semua kebutuhan digitalmu. Amankan jaringan dengan VPN Enkripsi Militer dan top up PPOB/Game super cepat dalam hitungan detik.
+                </p>
+                <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center justify-content-lg-start">
+                    <a href="#produk" class="btn btn-cyan btn-lg px-4 rounded-3">Mulai Belanja</a>
+                    <a href="#pricing" class="btn btn-outline-secondary btn-lg px-4 rounded-3 text-white"><i class="bi bi-shield-lock me-2"></i>Lihat VPN</a>
                 </div>
-                <div class="col-md-6 text-center">
-                    <i class="bi bi-shield-lock-fill text-white-50" style="font-size: 12rem;"></i>
+            </div>
+            <div class="col-lg-6 text-center d-none d-lg-block">
+                <div class="position-relative d-inline-block">
+                    <!-- Efek glow di belakang icon -->
+                    <div class="position-absolute top-50 start-50 translate-middle rounded-circle bg-info opacity-10" style="width: 300px; height: 300px; filter: blur(50px);"></div>
+                    <i class="bi bi-cpu text-neon-cyan" style="font-size: 15rem;"></i>
                 </div>
             </div>
         </div>
-    </section>
+    </header>
 
-    <section id="ppob" class="container py-5">
-        <div class="text-center mb-5">
-            <h2 class="fw-bold">Layanan PPOB & Top Up</h2>
-            <p class="text-muted">Isi ulang pulsa, kuota, dan bayar tagihan bulanan tanpa ribet.</p>
-        </div>
+    <!-- Fitur Singkat -->
+    <section id="fitur" class="container py-5">
         <div class="row g-4">
             <div class="col-md-4">
-                <div class="card h-100 border-0 shadow-sm card-product">
-                    <div class="card-body text-center p-4">
-                        <div class="icon-box bg-primary-subtle text-primary rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
-                            <i class="bi bi-phone fs-3"></i>
-                        </div>
-                        <h4 class="card-title fw-bold">Pulsa & Kuota Data</h4>
-                        <p class="card-text text-muted">Tersedia untuk semua operator (Telkomsel, XL, Indosat, dll) dengan harga promo.</p>
-                        <hr>
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <span class="text-muted">Mulai dari</span>
-                            <span class="fw-bold text-success fs-5">Rp 5.000</span>
-                        </div>
-                        <button class="btn btn-outline-primary w-100">Order Sekarang</button>
-                    </div>
+                <div class="glass-card p-4 rounded-4 h-100">
+                    <i class="bi bi-lightning-charge text-neon-cyan fs-2 mb-3 d-block"></i>
+                    <h5 class="fw-bold">Proses Kilat</h5>
+                    <p class="text-secondary small mb-0">Sistem otomatisasi kami memproses pulsa, token, dan akun VPN kamu tanpa delay 24/7.</p>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card h-100 border-0 shadow-sm card-product">
-                    <div class="card-body text-center p-4">
-                        <div class="icon-box bg-warning-subtle text-warning rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
-                            <i class="bi bi-lightning fs-3"></i>
-                        </div>
-                        <h4 class="card-title fw-bold">Token & Tagihan PLN</h4>
-                        <p class="card-text text-muted">Isi token listrik rumah tangga atau bayar tagihan pascabayar instan 24 jam.</p>
-                        <hr>
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <span class="text-muted">Biaya Admin</span>
-                            <span class="fw-bold text-success fs-5">Rp 1.500</span>
-                        </div>
-                        <button class="btn btn-outline-primary w-100">Order Sekarang</button>
-                    </div>
+                <div class="glass-card p-4 rounded-4 h-100">
+                    <i class="bi bi-shield-check text-neon-purple fs-2 mb-3 d-block"></i>
+                    <h5 class="fw-bold">Keamanan Enkripsi</h5>
+                    <p class="text-secondary small mb-0">VPN menggunakan protokol terbaru (WireGuard/OpenVPN) yang menjaga data pribadimu tetap aman.</p>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card h-100 border-0 shadow-sm card-product">
-                    <div class="card-body text-center p-4">
-                        <div class="icon-box bg-success-subtle text-success rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
-                            <i class="bi bi-wallet2 fs-3"></i>
-                        </div>
-                        <h4 class="card-title fw-bold">Top Up E-Wallet</h4>
-                        <p class="card-text text-muted">Top up saldo Dana, OVO, GoPay, ShopeePay terlengkap dan masuk hitungan detik.</p>
-                        <hr>
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <span class="text-muted">Proses</span>
-                            <span class="fw-bold text-success fs-5">Otomatis</span>
-                        </div>
-                        <button class="btn btn-outline-primary w-100">Order Sekarang</button>
-                    </div>
+                <div class="glass-card p-4 rounded-4 h-100">
+                    <i class="bi bi-headset text-neon-cyan fs-2 mb-3 d-block"></i>
+                    <h5 class="fw-bold">Support Responsif</h5>
+                    <p class="text-secondary small mb-0">Tim bantuan kami siap membantu jika kamu mengalami kendala teknis kapan pun.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="vpn" class="bg-white py-5">
-        <div class="container py-3">
-            <div class="text-center mb-5">
-                <h2 class="fw-bold">Paket VPN Premium</h2>
-                <p class="text-muted">Bypass blokir, main game tanpa lag, dan amankan privasi internet kamu.</p>
-            </div>
-            <div class="row g-4 justify-content-center">
-                <div class="col-md-5 col-lg-4">
-                    <div class="card h-100 border border-2 shadow-sm card-product">
-                        <div class="card-body p-4 text-center">
-                            <span class="badge bg-primary mb-3">Best Seller</span>
-                            <h4 class="fw-bold">VPN 1 Bulan</h4>
-                            <h2 class="fw-bold my-3">Rp 35.000 <span class="fs-6 text-muted fw-normal">/bulan</span></h2>
-                            <p class="text-muted">Cocok buat coba-coba performa server premium kami.</p>
-                            <hr>
-                            <ul class="list-unstyled text-start mb-4">
-                                <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> High Speed Server (SG/ID/US)</li>
-                                <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Support Streaming & Gaming</li>
-                                <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Kouta Unlimited / Tanpa FUP</li>
-                                <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> 2 Device Login Maksimal</li>
-                            </ul>
-                            <button class="btn btn-primary w-100">Beli Paket</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-5 col-lg-4">
-                    <div class="card h-100 border border-primary border-2 shadow-sm card-product position-relative">
-                        <span class="position-absolute top-0 start-50 translate-middle badge rounded-pill bg-danger">Hemat 40%</span>
-                        <div class="card-body p-4 text-center">
-                            <span class="badge bg-secondary mb-3">Hemat Banget</span>
-                            <h4 class="fw-bold">VPN 1 Tahun</h4>
-                            <h2 class="fw-bold my-3">Rp 250.000 <span class="fs-6 text-muted fw-normal">/tahun</span></h2>
-                            <p class="text-muted">Pilihan terbaik untuk perlindungan privasi jangka panjang.</p>
-                            <hr>
-                            <ul class="list-unstyled text-start mb-4">
-                                <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Semua Fitur Bulanan</li>
-                                <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Prioritas Speed Server</li>
-                                <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Bypass Semua Web Blokir</li>
-                                <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> 5 Device Login Sekaligus</li>
-                            </ul>
-                            <button class="btn btn-dark w-100">Beli Paket</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="testimoni" class="container py-5">
+    <!-- Layanan PPOB Section -->
+    <section id="produk" class="container py-5">
         <div class="text-center mb-5">
-            <h2 class="fw-bold">Apa Kata Mereka?</h2>
-            <p class="text-muted">Ulasan jujur dari pelanggan setia kami.</p>
+            <h2 class="fw-bold">Layanan Digital & PPOB</h2>
+            <p class="text-secondary">Pilih kategori transaksi yang kamu butuhkan</p>
         </div>
+        
         <div class="row g-4">
-            <div class="col-md-4">
-                <div class="card border-0 shadow-sm bg-white p-3">
-                    <div class="card-body">
-                        <p class="card-text italic">"Beli kuota di sini prosesnya cepet bgt ga sampe 1 menit udah masuk. Mantap!"</p>
-                        <div class="d-flex align-items-center pt-2">
-                            <div class="fw-bold">Rian - Gamer</div>
-                        </div>
-                    </div>
+            <!-- PPOB Item 1 -->
+            <div class="col-6 col-md-3">
+                <div class="glass-card p-4 rounded-4 text-center h-100">
+                    <div class="mb-3 text-neon-cyan"><i class="bi bi-phone fs-1"></i></div>
+                    <h6 class="fw-bold mb-2">Pulsa All Operator</h6>
+                    <span class="text-success small fw-semibold">Aktif</span>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="card border-0 shadow-sm bg-white p-3">
-                    <div class="card-body">
-                        <p class="card-text">"VPN-nya kenceng dipake buat main game inter ping tetep ijo dan stabil. Gak nyesel beli yg setahun."</p>
-                        <div class="d-flex align-items-center pt-2">
-                            <div class="fw-bold">Andi - Remote Worker</div>
-                        </div>
-                    </div>
+            <!-- PPOB Item 2 -->
+            <div class="col-6 col-md-3">
+                <div class="glass-card p-4 rounded-4 text-center h-100">
+                    <div class="mb-3 text-neon-purple"><i class="bi bi-globe fs-1"></i></div>
+                    <h6 class="fw-bold mb-2">Paket Data Internet</h6>
+                    <span class="text-success small fw-semibold">Aktif</span>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="card border-0 shadow-sm bg-white p-3">
-                    <div class="card-body">
-                        <p class="card-text">"Suka banget top up dana di sini, adminnya murah dibanding aplikasi sebelah."</p>
-                        <div class="d-flex align-items-center pt-2">
-                            <div class="fw-bold">Siti - Ibu Rumah Tangga</div>
-                        </div>
-                    </div>
+            <!-- PPOB Item 3 -->
+            <div class="col-6 col-md-3">
+                <div class="glass-card p-4 rounded-4 text-center h-100">
+                    <div class="mb-3 text-neon-cyan"><i class="bi bi-lightning-charge fs-1"></i></div>
+                    <h6 class="fw-bold mb-2">Token PLN</h6>
+                    <span class="text-success small fw-semibold">Aktif</span>
+                </div>
+            </div>
+            <!-- PPOB Item 4 -->
+            <div class="col-6 col-md-3">
+                <div class="glass-card p-4 rounded-4 text-center h-100">
+                    <div class="mb-3 text-neon-purple"><i class="bi bi-joystick fs-1"></i></div>
+                    <h6 class="fw-bold mb-2">Voucher Game</h6>
+                    <span class="text-success small fw-semibold">Aktif</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <footer class="bg-dark text-white-50 py-4 text-center">
-        <div class="container">
-            <p class="mb-2">&copy; 2026 PediaStore. All Rights Reserved.</p>
-            <p class="small">Dibuat dengan <i class="bi bi-heart-fill text-danger"></i> menggunakan Bootstrap 5.</p>
+    <!-- Pricing VPN Section -->
+    <section id="pricing" class="container py-5">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Paket <span class="text-neon-cyan">VPN Premium</span></h2>
+            <p class="text-secondary">Tanpa log, kecepatan maksimal, bypass sensor internet.</p>
+        </div>
+
+        <div class="row g-4 justify-content-center">
+            <!-- Paket Hemat -->
+            <div class="col-lg-4">
+                <div class="glass-card p-4 rounded-4 h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <h4 class="fw-bold">Bulanan</h4>
+                        <p class="text-secondary small">Cocok untuk kebutuhan kasual</p>
+                        <h2 class="fw-bold text-neon-cyan my-4">Rp 30k <span class="fs-6 text-secondary fw-normal">/ bln</span></h2>
+                        <hr class="border-secondary opacity-25">
+                        <ul class="list-unstyled mb-4 text-secondary small">
+                            <li class="mb-2"><i class="bi bi-check2 text-neon-cyan me-2"></i> 3 Server Negara Pilihan</li>
+                            <li class="mb-2"><i class="bi bi-check2 text-neon-cyan me-2"></i> Speed Up to 100 Mbps</li>
+                            <li class="mb-2"><i class="bi bi-check2 text-neon-cyan me-2"></i> 1 Device Terhubung</li>
+                            <li class="mb-2 text-muted text-decoration-line-through"><i class="bi bi-x2 me-2"></i> Fitur Port Forwarding</li>
+                        </ul>
+                    </div>
+                    <button class="btn btn-outline-info w-100 rounded-3">Beli Sekarang</button>
+                </div>
+            </div>
+
+            <!-- Paket Pro -->
+            <div class="col-lg-4">
+                <div class="glass-card p-4 rounded-4 h-100 d-flex flex-column justify-content-between border border-info border-opacity-50 position-relative">
+                    <span class="position-absolute top-0 end-0 bg-info text-dark badge rounded-bl-3 px-3 py-2 fw-bold" style="border-radius: 0 1rem 0 1rem;">POPULER</span>
+                    <div>
+                        <h4 class="fw-bold text-neon-cyan">Tahunan</h4>
+                        <p class="text-secondary small">Paling hemat & disukai gamer</p>
+                        <h2 class="fw-bold text-neon-purple my-4">Rp 220k <span class="fs-6 text-secondary fw-normal">/ thn</span></h2>
+                        <hr class="border-secondary opacity-25">
+                        <ul class="list-unstyled mb-4 text-secondary small">
+                            <li class="mb-2"><i class="bi bi-check2 text-neon-cyan me-2"></i> 30+ Global Server Premium</li>
+                            <li class="mb-2"><i class="bi bi-check2 text-neon-cyan me-2"></i> Speed Unlimited (No FUP)</li>
+                            <li class="mb-2"><i class="bi bi-check2 text-neon-cyan me-2"></i> 5 Device Login Bersamaan</li>
+                            <li class="mb-2"><i class="bi bi-check2 text-neon-cyan me-2"></i> Anti-DDoS Protection</li>
+                        </ul>
+                    </div>
+                    <button class="btn btn-cyan w-100 rounded-3">Beli Sekarang</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-top border-secondary border-opacity-25 bg-dark bg-opacity-20 mt-5 py-4">
+        <div class="container text-center text-secondary small">
+            <p class="mb-0">&copy; 2026 CyberNet Store. All rights reserved.</p>
         </div>
     </footer>
 
+    <!-- Bootstrap 5 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
