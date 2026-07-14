@@ -3,44 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Voice Random Chat</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script src="https://download.agora.io/sdk/release/AgoraRTC_N-4.20.0.js"></script>
-    <style>
-        body {
-            background-color: #0b0e14;
-            color: white;
-            font-family: sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .status-text {
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 20px;
-            color: #ff00ff; /* Warna pink neon mirip ss kamu */
-        }
-        .btn {
-            background-color: #2481cc;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            font-size: 16px;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-        .btn:disabled { background-color: #555; }
-    </style>
+    <title>Coba Bootstrap Pertama</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
+<body class="bg-light">
 
-    <div class="status-text" id="status">Menghubungkan ke server...</div>
-    <button class="btn" id="actionBtn" onclick="startSearch()" disabled>Cari Teman Ngobrol</button>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">LogoKita</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Fitur</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Kontak</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-    <script src="script.js"></script>
+    <div class="container my-5">
+        <div class="p-5 text-center bg-white rounded-3 shadow-sm">
+            <h1 class="text-body-emphasis">Bikin Website Cepat Pakai Bootstrap!</h1>
+            <p class="col-lg-8 mx-auto fs-5 text-muted">
+                Ini adalah contoh halaman web sederhana. Dengan Bootstrap, kita bisa bikin layout rapi begini tanpa nulis CSS manual sama sekali.
+            </p>
+            <button class="btn btn-primary btn-lg px-4" type="button">Mulai Belajar</button>
+        </div>
+    </div>
+
+    <div class="container my-5">
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title text-success">Responsif</h5>
+                        <p class="card-text">Coba kecilin ukuran browser kamu atau buka di HP. 3 kotak ini bakal otomatis tersusun vertikal ke bawah biar gak sempit.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">Hemat Waktu</h5>
+                        <p class="card-text">Gak perlu pusing mikirin `margin`, `padding`, atau `border-radius`. Semuanya tinggal panggil nama kelasnya aja.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title text-danger">Banyak Komponen</h5>
+                        <p class="card-text">Ada tombol, tabel, formulir, modal (pop-up), hingga animasi loading yang semuanya udah siap pakai.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
