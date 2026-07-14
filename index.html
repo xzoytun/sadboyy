@@ -1,810 +1,678 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" data-bs-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zoy Digital - PPOB & VPN Solutions</title>
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-    <style>
-        :root {
-            --primary: #0d6efd;
-            --secondary: #6c5ce7;
-            --dark: #0f0f1a;
-        }
-        
-        body {
-            background: #f8f9fa;
-        }
-        
-        .navbar-brand {
-            font-weight: 800;
-            font-size: 1.8rem;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .navbar {
-            background: rgba(15, 15, 26, 0.95) !important;
-            backdrop-filter: blur(10px);
-            border-bottom: 2px solid rgba(13, 110, 253, 0.2);
-        }
-        
-        .navbar .nav-link {
-            color: #fff !important;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-        
-        .navbar .nav-link:hover {
-            color: #0d6efd !important;
-        }
-        
-        .hero-section {
-            background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 50%, #16213e 100%);
-            color: white;
-            padding: 140px 0 100px;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .hero-section::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -20%;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(13, 110, 253, 0.1), transparent 70%);
-            border-radius: 50%;
-        }
-        
-        .hero-section::after {
-            content: '';
-            position: absolute;
-            bottom: -30%;
-            left: -10%;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(108, 92, 231, 0.1), transparent 70%);
-            border-radius: 50%;
-        }
-        
-        .hero-title {
-            font-size: 4rem;
-            font-weight: 800;
-            line-height: 1.1;
-        }
-        
-        .hero-title span {
-            background: linear-gradient(135deg, #0d6efd, #6c5ce7);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .btn-gradient {
-            background: linear-gradient(135deg, #0d6efd, #6c5ce7);
-            border: none;
-            color: white;
-            padding: 14px 40px;
-            font-weight: 600;
-            border-radius: 50px;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        
-        .btn-gradient:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 40px rgba(13, 110, 253, 0.4);
-            color: white;
-        }
-        
-        .btn-outline-glass {
-            background: rgba(255,255,255,0.05);
-            border: 2px solid rgba(255,255,255,0.2);
-            color: white;
-            padding: 14px 40px;
-            font-weight: 600;
-            border-radius: 50px;
-            transition: all 0.3s;
-        }
-        
-        .btn-outline-glass:hover {
-            background: rgba(255,255,255,0.1);
-            border-color: #0d6efd;
-            color: white;
-        }
-        
-        .feature-card {
-            background: rgba(255,255,255,0.03);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 20px;
-            padding: 30px;
-            transition: all 0.4s;
-            height: 100%;
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-10px);
-            border-color: #0d6efd;
-            box-shadow: 0 20px 60px rgba(13, 110, 253, 0.15);
-        }
-        
-        .feature-icon {
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(135deg, rgba(13, 110, 253, 0.2), rgba(108, 92, 231, 0.2));
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-            color: #0d6efd;
-            margin-bottom: 20px;
-        }
-        
-        .section-title {
-            font-size: 2.8rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #0f0f1a, #16213e);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .service-card {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
-            transition: all 0.4s;
-            border: 1px solid #eee;
-            height: 100%;
-        }
-        
-        .service-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 60px rgba(13, 110, 253, 0.15);
-            border-color: #0d6efd;
-        }
-        
-        .service-icon {
-            font-size: 48px;
-            color: #0d6efd;
-            margin-bottom: 15px;
-        }
-        
-        .price-tag {
-            font-size: 2rem;
-            font-weight: 800;
-            color: #0d6efd;
-        }
-        
-        .vpn-card {
-            background: linear-gradient(135deg, #0f0f1a, #16213e);
-            color: white;
-            border-radius: 20px;
-            padding: 40px;
-            border: 1px solid rgba(255,255,255,0.1);
-            transition: all 0.4s;
-            height: 100%;
-        }
-        
-        .vpn-card:hover {
-            transform: translateY(-10px);
-            border-color: #0d6efd;
-            box-shadow: 0 20px 60px rgba(13, 110, 253, 0.2);
-        }
-        
-        .vpn-card .price {
-            font-size: 3rem;
-            font-weight: 800;
-            color: #0d6efd;
-        }
-        
-        .testimonial-card {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
-            height: 100%;
-            transition: all 0.3s;
-        }
-        
-        .testimonial-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 50px rgba(0,0,0,0.1);
-        }
-        
-        .footer {
-            background: #0f0f1a;
-            color: rgba(255,255,255,0.7);
-            padding: 60px 0 30px;
-            border-top: 2px solid rgba(13, 110, 253, 0.2);
-        }
-        
-        .footer h5 {
-            color: white;
-            font-weight: 700;
-        }
-        
-        .footer a {
-            color: rgba(255,255,255,0.7);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        
-        .footer a:hover {
-            color: #0d6efd;
-        }
-        
-        .social-icons a {
-            display: inline-block;
-            width: 45px;
-            height: 45px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 50%;
-            text-align: center;
-            line-height: 45px;
-            color: white;
-            margin-right: 10px;
-            transition: all 0.3s;
-        }
-        
-        .social-icons a:hover {
-            background: #0d6efd;
-            transform: translateY(-3px);
-        }
-        
-        .floating-wa {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: #25D366;
-            color: white;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-            box-shadow: 0 10px 40px rgba(37, 211, 102, 0.4);
-            transition: all 0.3s;
-            z-index: 999;
-            text-decoration: none;
-        }
-        
-        .floating-wa:hover {
-            transform: scale(1.1);
-            color: white;
-        }
-        
-        @media (max-width: 768px) {
-            .hero-title {
-                font-size: 2.5rem;
-            }
-            .section-title {
-                font-size: 2rem;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Xtrimer — Dashboard</title>
+  <!-- Google Fonts & Bootstrap 5.3 CSS -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  
+  <style>
+    :root {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      --app-max-width: 440px;
+    }
+    
+    body {
+      background-color: #f4f7fa;
+      padding-bottom: 90px;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    [data-bs-theme="dark"] body {
+      background-color: #0b0f17;
+    }
+
+    /* Layout Wrapper Mobile-First Centered */
+    .app-container {
+      max-width: var(--app-max-width);
+      margin: 0 auto;
+      min-height: 100vh;
+      background-color: #f8fafc;
+      box-shadow: 0 0 30px rgba(0,0,0,0.03);
+    }
+    [data-bs-theme="dark"] .app-container {
+      background-color: #0f172a;
+    }
+
+    /* Premium Header Curve Gradient */
+    .header-premium {
+      background: linear-gradient(135deg, #3a7bc8 0%, #255899 100%);
+      border-bottom-left-radius: 24px;
+      border-bottom-right-radius: 24px;
+      padding: 28px 20px 55px;
+    }
+
+    .hdr-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      transition: all 0.2s ease;
+    }
+    .hdr-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+    }
+
+    /* Floating Balance Card */
+    .balance-wrapper {
+      margin-top: -32px;
+      padding: 0 20px;
+    }
+    .card-balance {
+      border: 1px solid rgba(0,0,0,0.04);
+      border-radius: 18px;
+      box-shadow: 0 10px 25px rgba(58, 123, 200, 0.08);
+    }
+
+    /* Marquee/Announcement Custom */
+    .announcement-banner {
+      border-radius: 12px;
+      padding: 10px 14px;
+    }
+    .marquee-box {
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .marquee-box span {
+      display: inline-block;
+      padding-left: 100%;
+      animation: textScroll 18s linear infinite;
+    }
+    @keyframes textScroll {
+      0% { transform: translate3d(0, 0, 0); }
+      100% { transform: translate3d(-100%, 0, 0); }
+    }
+
+    /* Modern Banner Horizontal Scroll */
+    .banner-scroll-container {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      gap: 12px;
+      padding-bottom: 5px;
+    }
+    .banner-scroll-container::-webkit-scrollbar { display: none; }
+    .banner-item {
+      flex: 0 0 100%;
+      scroll-snap-align: start;
+      border-radius: 16px;
+      min-height: 125px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Grid Uniform Items */
+    .grid-item-link {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      padding: 8px 4px;
+      border-radius: 12px;
+      transition: all 0.2s ease;
+    }
+    .grid-item-link:hover {
+      background-color: var(--bs-secondary-bg);
+      transform: translateY(-2px);
+    }
+    .icon-box-ui {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+    }
+    .icon-box-ui img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Skeleton Loading Matcher */
+    .skeleton-box {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      background: linear-gradient(90deg, var(--bs-border-color) 25%, var(--bs-secondary-bg) 50%, var(--bs-border-color) 75%);
+      background-size: 200% 100%;
+      animation: skeletonPulse 1.5s infinite;
+    }
+    .skeleton-text {
+      width: 40px;
+      height: 8px;
+      border-radius: 4px;
+      background: linear-gradient(90deg, var(--bs-border-color) 25%, var(--bs-secondary-bg) 50%, var(--bs-border-color) 75%);
+      background-size: 200% 100%;
+      animation: skeletonPulse 1.5s infinite;
+    }
+    @keyframes skeletonPulse {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* Fixed Bottom Navigation Modis */
+    .app-bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: var(--app-max-width);
+      background-color: var(--bs-body-bg);
+      border-top: 1px solid var(--bs-border-color);
+      box-shadow: 0 -8px 25px rgba(0,0,0,0.04);
+      z-index: 1030;
+    }
+    .nav-btn-item {
+      color: var(--bs-secondary-color);
+      font-size: 11px;
+      font-weight: 600;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 10px 0 12px;
+      transition: color 0.2s ease;
+    }
+    .nav-btn-item i {
+      font-size: 18px;
+      margin-bottom: 2px;
+      transition: transform 0.2s ease;
+    }
+    .nav-btn-item:hover i { transform: translateY(-2px); }
+    .nav-btn-item.active {
+      color: #3a7bc8 !important;
+    }
+
+    /* Elegant Custom Toast */
+    .custom-toast {
+      position: fixed;
+      top: 25px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-100px);
+      z-index: 1080;
+      padding: 12px 20px;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 13px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      opacity: 0;
+      pointer-events: none;
+    }
+    .custom-toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+    
+    [data-bs-theme="dark"] .theme-sun,
+    [data-bs-theme="light"] .theme-moon {
+      display: none;
+    }
+  </style>
 </head>
 <body>
 
-    <!-- Floating WhatsApp -->
-    <a href="https://wa.me/6281234567890" target="_blank" class="floating-wa">
-        <i class="bi bi-whatsapp"></i>
-    </a>
-
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg fixed-top">
-        <div class="container">
-            <a class="navbar-brand" href="#">
-                <i class="bi bi-shield-fill-check" style="-webkit-text-fill-color: #0d6efd;"></i> ZOY DIGITAL
-            </a>
-            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link active" href="#">Beranda</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#ppob">PPOB</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#vpn">VPN</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#promo">Promo</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#testimoni">Testimoni</a></li>
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-primary text-white px-4 ms-2 rounded-pill" href="#kontak">
-                            <i class="bi bi-person-plus"></i> Daftar
-                        </a>
-                    </li>
-                </ul>
-            </div>
+<div class="app-container d-flex flex-column position-relative">
+  
+  <!-- HEADER -->
+  <header class="header-premium text-white">
+    <div class="d-flex align-items-center justify-content-between">
+      <div class="d-flex align-items-center gap-3">
+        <div class="position-relative">
+          <div id="avatarContainer" class="avatar-dashboard rounded-3 border border-2 border-white-50 d-flex align-items-center justify-content-center fw-bold text-white bg-white-50 overflow-hidden" style="width: 42px; height: 42px; font-size: 16px;">—</div>
+          <span class="position-absolute bottom-0 end-0 p-1 bg-success border border-2 border-light rounded-circle" style="animation: pulse 2s infinite;"></span>
         </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section class="hero-section">
-        <div class="container position-relative">
-            <div class="row align-items-center">
-                <div class="col-lg-7">
-                    <div class="badge bg-primary bg-opacity-25 text-primary px-4 py-2 rounded-pill mb-4">
-                        <i class="bi bi-rocket"></i> #1 PPOB & VPN Solution
-                    </div>
-                    <h1 class="hero-title">
-                        Bayar Tagihan & <br><span>Internet Aman</span> <br>Bersama Zoy Digital
-                    </h1>
-                    <p class="lead mt-4 opacity-75">
-                        Solusi pembayaran PPOB dan layanan VPN premium untuk kebutuhan digital Anda. 
-                        Cepat, aman, dan terpercaya.
-                    </p>
-                    <div class="mt-4">
-                        <a href="#ppob" class="btn btn-gradient me-3">
-                            <i class="bi bi-wallet2"></i> Bayar Sekarang
-                        </a>
-                        <a href="#vpn" class="btn-outline-glass">
-                            <i class="bi bi-shield-lock"></i> Coba VPN
-                        </a>
-                    </div>
-                    <div class="mt-5 d-flex gap-4">
-                        <div>
-                            <h4 class="text-white fw-bold">10K+</h4>
-                            <small class="opacity-75">Transaksi</small>
-                        </div>
-                        <div>
-                            <h4 class="text-white fw-bold">500+</h4>
-                            <small class="opacity-75">Klien Aktif</small>
-                        </div>
-                        <div>
-                            <h4 class="text-white fw-bold">99.9%</h4>
-                            <small class="opacity-75">Uptime</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-5 d-none d-lg-block">
-                    <div class="feature-card">
-                        <div class="text-center">
-                            <i class="bi bi-shield-check display-1 text-primary"></i>
-                            <h4 class="text-white mt-3">Aman & Terpercaya</h4>
-                            <p class="opacity-75">Dilindungi enkripsi 256-bit</p>
-                            <hr class="border-light opacity-25">
-                            <div class="row g-2">
-                                <div class="col-6">
-                                    <div class="bg-white bg-opacity-10 p-3 rounded-3">
-                                        <i class="bi bi-lightning-fill text-warning"></i>
-                                        <small class="d-block text-white">Cepat</small>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="bg-white bg-opacity-10 p-3 rounded-3">
-                                        <i class="bi bi-coin text-success"></i>
-                                        <small class="d-block text-white">Murah</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div>
+          <small class="text-white-50 d-block" style="font-size: 11px;">Selamat datang 👋</small>
+          <span id="headerName" class="fw-800 d-block style-name text-truncate" style="max-width: 160px; font-size: 16px; font-weight: 700;">—</span>
         </div>
-    </section>
+      </div>
+      <div class="d-flex gap-2">
+        <button id="themeToggle" class="btn hdr-btn" aria-label="Ganti tema">
+          <i class="bi bi-sun-fill theme-sun"></i>
+          <i class="bi bi-moon-stars-fill theme-moon"></i>
+        </button>
+        <a href="help.html" class="btn hdr-btn" aria-label="Bantuan">
+          <i class="bi bi-question-circle-fill"></i>
+        </a>
+      </div>
+    </div>
+  </header>
 
-    <!-- PPOB Section -->
-    <section id="ppob" class="py-5">
-        <div class="container">
-            <div class="text-center mb-5">
-                <span class="badge bg-primary bg-opacity-10 text-primary px-4 py-2 rounded-pill mb-2">PPOB</span>
-                <h2 class="section-title">Layanan Pembayaran <br>Tagihan & Top-Up</h2>
-                <p class="text-muted">Bayar semua kebutuhan digital Anda dalam satu platform</p>
-            </div>
-            <div class="row g-4">
-                <div class="col-md-3 col-6">
-                    <div class="service-card text-center">
-                        <i class="bi bi-phone service-icon"></i>
-                        <h6>Pulsa & Kuota</h6>
-                        <p class="text-muted small">Semua operator</p>
-                        <span class="price-tag">Mulai 5K</span>
-                    </div>
-                </div>
-                <div class="col-md-3 col-6">
-                    <div class="service-card text-center">
-                        <i class="bi bi-wifi service-icon"></i>
-                        <h6>Internet</h6>
-                        <p class="text-muted small">Indihome, Biznet</p>
-                        <span class="price-tag">Mulai 50K</span>
-                    </div>
-                </div>
-                <div class="col-md-3 col-6">
-                    <div class="service-card text-center">
-                        <i class="bi bi-lightning service-icon"></i>
-                        <h6>Listrik & PDAM</h6>
-                        <p class="text-muted small">PLN, PAM</p>
-                        <span class="price-tag">Mulai 20K</span>
-                    </div>
-                </div>
-                <div class="col-md-3 col-6">
-                    <div class="service-card text-center">
-                        <i class="bi bi-tv service-icon"></i>
-                        <h6>TV Kabel</h6>
-                        <p class="text-muted small">Indovision, MNC</p>
-                        <span class="price-tag">Mulai 30K</span>
-                    </div>
-                </div>
-                <div class="col-md-3 col-6">
-                    <div class="service-card text-center">
-                        <i class="bi bi-credit-card service-icon"></i>
-                        <h6>Top-Up E-Wallet</h6>
-                        <p class="text-muted small">OVO, DANA, Shopee</p>
-                        <span class="price-tag">Mulai 10K</span>
-                    </div>
-                </div>
-                <div class="col-md-3 col-6">
-                    <div class="service-card text-center">
-                        <i class="bi bi-coin service-icon"></i>
-                        <h6>Top-Up Game</h6>
-                        <p class="text-muted small">ML, FF, PUBG</p>
-                        <span class="price-tag">Mulai 5K</span>
-                    </div>
-                </div>
-                <div class="col-md-3 col-6">
-                    <div class="service-card text-center">
-                        <i class="bi bi-ticket-perforated service-icon"></i>
-                        <h6>Token Listrik</h6>
-                        <p class="text-muted small">PLN Token</p>
-                        <span class="price-tag">Mulai 20K</span>
-                    </div>
-                </div>
-                <div class="col-md-3 col-6">
-                    <div class="service-card text-center">
-                        <i class="bi bi-bank2 service-icon"></i>
-                        <h6>BPJS & Asuransi</h6>
-                        <p class="text-muted small">Kesehatan, Ketenagakerjaan</p>
-                        <span class="price-tag">Mulai 30K</span>
-                    </div>
-                </div>
-            </div>
-            <div class="text-center mt-5">
-                <a href="#" class="btn btn-gradient">
-                    <i class="bi bi-plus-circle"></i> Lihat Semua Layanan
-                </a>
-            </div>
+  <!-- FLOATING BALANCE CARD -->
+  <div class="balance-wrapper">
+    <div class="card card-balance bg-body text-body p-3">
+      <div class="d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center gap-3">
+          <div class="bg-primary-subtle text-primary rounded-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+            <i class="bi bi-wallet2 fs-5"></i>
+          </div>
+          <div>
+            <small class="text-muted text-uppercase fw-bold tracking-wider d-block mb-1" style="font-size: 9px; letter-spacing: 0.5px;">Saldo Anda</small>
+            <h4 id="balanceAmt" class="fw-800 mb-0" style="font-size: 20px; font-weight: 800;">Rp 0</h4>
+          </div>
         </div>
-    </section>
+        <a href="topup.html" class="btn btn-primary d-flex align-items-center gap-2 px-3 py-2 rounded-3 fw-bold" style="font-size: 13px; background: linear-gradient(135deg, #4A90D9 0%, #3A7BC8 100%); border: none;">
+          <i class="bi bi-plus-lg"></i> Top Up
+        </a>
+      </div>
+    </div>
+  </div>
 
-    <!-- VPN Section -->
-    <section id="vpn" class="py-5" style="background: #0f0f1a;">
-        <div class="container">
-            <div class="text-center mb-5">
-                <span class="badge bg-primary bg-opacity-10 text-primary px-4 py-2 rounded-pill mb-2">VPN PREMIUM</span>
-                <h2 class="text-white">Internet Aman & <br>Privasi Terjaga</h2>
-                <p class="text-white-50">Jelajahi internet dengan aman dan bebas batasan</p>
-            </div>
-            <div class="row g-4">
-                <div class="col-lg-4">
-                    <div class="vpn-card text-center">
-                        <i class="bi bi-person display-3 text-primary"></i>
-                        <h4 class="mt-3">Paket Personal</h4>
-                        <p class="text-white-50">Untuk penggunaan pribadi</p>
-                        <div class="price">Rp 49.000</div>
-                        <small class="text-white-50">/bulan</small>
-                        <hr class="border-light opacity-25">
-                        <ul class="list-unstyled text-start">
-                            <li><i class="bi bi-check-circle-fill text-primary me-2"></i> 5 Perangkat</li>
-                            <li><i class="bi bi-check-circle-fill text-primary me-2"></i> Kecepatan 10 Mbps</li>
-                            <li><i class="bi bi-check-circle-fill text-primary me-2"></i> 30+ Server</li>
-                            <li><i class="bi bi-check-circle-fill text-primary me-2"></i> Tanpa Log</li>
-                        </ul>
-                        <a href="#" class="btn btn-gradient w-100 mt-3">Pilih Paket</a>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="vpn-card text-center" style="border-color: #0d6efd; box-shadow: 0 0 60px rgba(13, 110, 253, 0.1);">
-                        <div class="badge bg-primary text-white position-absolute top-0 start-50 translate-middle px-4 py-2 rounded-pill">
-                            POPULER
-                        </div>
-                        <i class="bi bi-users display-3 text-primary"></i>
-                        <h4 class="mt-3">Paket Keluarga</h4>
-                        <p class="text-white-50">Untuk keluarga & teman</p>
-                        <div class="price">Rp 89.000</div>
-                        <small class="text-white-50">/bulan</small>
-                        <hr class="border-light opacity-25">
-                        <ul class="list-unstyled text-start">
-                            <li><i class="bi bi-check-circle-fill text-primary me-2"></i> 10 Perangkat</li>
-                            <li><i class="bi bi-check-circle-fill text-primary me-2"></i> Kecepatan 25 Mbps</li>
-                            <li><i class="bi bi-check-circle-fill text-primary me-2"></i> 50+ Server</li>
-                            <li><i class="bi bi-check-circle-fill text-primary me-2"></i> Tanpa Log</li>
-                            <li><i class="bi bi-check-circle-fill text-primary me-2"></i> Prioritas Support</li>
-                        </ul>
-                        <a href="#" class="btn btn-gradient w-100 mt-3">Pilih Paket</a>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="vpn-card text-center">
-                        <i class="bi bi-building display-3 text-primary"></i>
-                        <h4 class="mt-3">Paket Bisnis</h4>
-                        <p class="text-white-50">Untuk perusahaan & tim</p>
-                        <div class="price">Rp 199.000</div>
-                        <small class="text-white-50">/bulan</small>
-                        <hr class="border-light opacity-25">
-                        <ul class="list-unstyled text-start">
-                            <li><i class="bi bi-check-circle-fill text-primary me-2"></i> Unlimited Perangkat</li>
-                            <li><i class="bi bi-check-circle-fill text-primary me-2"></i> Kecepatan 100 Mbps</li>
-                            <li><i class="bi bi-check-circle-fill text-primary me-2"></i> 100+ Server</li>
-                            <li><i class="bi bi-check-circle-fill text-primary me-2"></i> Dedicated IP</li>
-                            <li><i class="bi bi-check-circle-fill text-primary me-2"></i> 24/7 Support</li>
-                        </ul>
-                        <a href="#" class="btn btn-gradient w-100 mt-3">Pilih Paket</a>
-                    </div>
-                </div>
-            </div>
-            <div class="text-center mt-5">
-                <p class="text-white-50">
-                    <i class="bi bi-shield-check text-primary"></i> Semua paket dilengkapi enkripsi 256-bit & proteksi kebocoran DNS
-                </p>
-            </div>
+  <!-- MAIN BODY SCOPE -->
+  <main class="px-3 pt-3 flex-grow-1">
+    
+    <!-- ANNOUNCEMENT RUNNING TEXT -->
+    <div class="announcement-banner bg-primary-subtle text-primary border border-primary-subtle d-flex align-items-center gap-2 mb-3">
+      <i class="bi bi-megaphone-fill flex-shrink-0" style="font-size: 14px;"></i>
+      <div class="marquee-box w-100 text-truncate">
+        <span class="fw-semibold" style="font-size: 11px;">Pemberitahuan: Layanan Top Up tidak dapat digunakan sementara pada pukul 00:00 s/d 00:10 WIB dikarenakan adanya cut-off harian sistem. Terima kasih atas pengertiannya.</span>
+      </div>
+    </div>
+
+    <!-- PROMO BANNER SECTION -->
+    <div class="d-flex align-items-center justify-content-between px-1 mb-2">
+      <span class="fw-bold text-body-emphasis" style="font-size: 13px;">Informasi Promo</span>
+      <span class="badge text-primary bg-primary-subtle px-2 py-1 text-uppercase rounded" style="font-size: 9px; font-weight: 700;">Terbaru</span>
+    </div>
+    
+    <div class="mb-4">
+      <div id="autoBannerScroll" class="banner-scroll-container">
+        <!-- Banner 1 -->
+        <div class="banner-item bg-primary p-3 text-white d-flex flex-column justify-content-end" style="background: linear-gradient(135deg, #3A7BC8 0%, #255899 100%) !important;">
+          <span class="badge position-absolute top-0 end-0 m-3 bg-white text-primary fw-bold" style="font-size: 8px;">HOT PROMO</span>
+          <small class="text-warning fw-bold text-uppercase" style="font-size: 9px; letter-spacing: 0.5px;">⚡ Pulsa Murah</small>
+          <h6 class="fw-bold mb-1" style="font-size: 14px;">Isi Pulsa & Data Anti Telat</h6>
+          <p class="mb-0 text-white-50" style="font-size: 10.5px;">Harga agen super murah untuk seluruh provider nasional.</p>
         </div>
-    </section>
-
-    <!-- Promo Section -->
-    <section id="promo" class="py-5">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6">
-                    <span class="badge bg-danger bg-opacity-10 text-danger px-4 py-2 rounded-pill mb-2">
-                        <i class="bi bi-gift"></i> PROMO
-                    </span>
-                    <h2 class="section-title">Diskon 20% <br>Untuk Pengguna Baru</h2>
-                    <p class="text-muted">Dapatkan potongan 20% untuk semua layanan PPOB dan VPN dengan kode promo:</p>
-                    <div class="bg-dark text-white p-4 rounded-4 d-inline-block">
-                        <code class="text-warning" style="font-size: 1.5rem;">ZOY20</code>
-                    </div>
-                    <div class="mt-4">
-                        <p><i class="bi bi-check-circle-fill text-success"></i> Berlaku untuk semua layanan</p>
-                        <p><i class="bi bi-check-circle-fill text-success"></i> Minimal transaksi Rp 50.000</p>
-                        <p><i class="bi bi-check-circle-fill text-success"></i> Masa berlaku 30 hari</p>
-                    </div>
-                    <a href="#kontak" class="btn btn-gradient mt-3">Klaim Promo</a>
-                </div>
-                <div class="col-lg-6">
-                    <div class="bg-gradient p-5 rounded-4 text-white" style="background: linear-gradient(135deg, #0d6efd, #6c5ce7);">
-                        <div class="text-center">
-                            <i class="bi bi-megaphone display-1"></i>
-                            <h3 class="mt-3">Bergabung Sekarang!</h3>
-                            <p>Rasakan kemudahan bertransaksi dan keamanan internet bersama Zoy Digital</p>
-                            <div class="row g-2 mt-4">
-                                <div class="col-4">
-                                    <div class="bg-white bg-opacity-20 p-3 rounded-3">
-                                        <small>PPOB</small>
-                                        <h5>10+</h5>
-                                    </div>
-                                </div>
-                                <div class="col-4">
-                                    <div class="bg-white bg-opacity-20 p-3 rounded-3">
-                                        <small>VPN Server</small>
-                                        <h5>100+</h5>
-                                    </div>
-                                </div>
-                                <div class="col-4">
-                                    <div class="bg-white bg-opacity-20 p-3 rounded-3">
-                                        <small>Klien</small>
-                                        <h5>500+</h5>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <!-- Banner 2 -->
+        <div class="banner-item bg-info p-3 text-white d-flex flex-column justify-content-end" style="background: linear-gradient(135deg, #4A90D9 0%, #3172b8 100%) !important;">
+          <span class="badge position-absolute top-0 end-0 m-3 bg-white text-info fw-bold" style="font-size: 8px;">TOKEN PLN</span>
+          <small class="text-warning fw-bold text-uppercase" style="font-size: 9px; letter-spacing: 0.5px;">💡 Bebas Denda</small>
+          <h6 class="fw-bold mb-1" style="font-size: 14px;">Listrik Rumah Mulai Redup?</h6>
+          <p class="mb-0 text-white-50" style="font-size: 10.5px;">Top up Token PLN 24 jam non-stop, biaya admin miring.</p>
         </div>
-    </section>
-
-    <!-- Testimoni -->
-    <section id="testimoni" class="py-5" style="background: #f0f2f5;">
-        <div class="container">
-            <div class="text-center mb-5">
-                <span class="badge bg-primary bg-opacity-10 text-primary px-4 py-2 rounded-pill mb-2">TESTIMONI</span>
-                <h2 class="section-title">Apa Kata Klien Kami</h2>
-            </div>
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="testimonial-card">
-                        <div class="d-flex align-items-center mb-3">
-                            <img src="https://ui-avatars.com/api/?name=Rina+Wati&background=0d6efd&color=fff&size=50" 
-                                 class="rounded-circle me-3" alt="User">
-                            <div>
-                                <h6 class="mb-0 fw-bold">Rina Wati</h6>
-                                <small class="text-muted">Freelancer</small>
-                            </div>
-                        </div>
-                        <p>"Layanan PPOB Zoy Digital sangat cepat dan murah. Top-up game langsung masuk, gak pake lama!"</p>
-                        <div class="text-warning">
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="testimonial-card">
-                        <div class="d-flex align-items-center mb-3">
-                            <img src="https://ui-avatars.com/api/?name=Budi+Santoso&background=6c5ce7&color=fff&size=50" 
-                                 class="rounded-circle me-3" alt="User">
-                            <div>
-                                <h6 class="mb-0 fw-bold">Budi Santoso</h6>
-                                <small class="text-muted">CEO Startup</small>
-                            </div>
-                        </div>
-                        <p>"VPN dari Zoy Digital sangat stabil. Tim saya bisa bekerja remote dengan aman tanpa khawatir data bocor."</p>
-                        <div class="text-warning">
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="testimonial-card">
-                        <div class="d-flex align-items-center mb-3">
-                            <img src="https://ui-avatars.com/api/?name=Anisa+Putri&background=0d6efd&color=fff&size=50" 
-                                 class="rounded-circle me-3" alt="User">
-                            <div>
-                                <h6 class="mb-0 fw-bold">Anisa Putri</h6>
-                                <small class="text-muted">Mahasiswa</small>
-                            </div>
-                        </div>
-                        <p>"Bayar listrik dan internet jadi lebih mudah lewat Zoy Digital. Harganya juga lebih murah dari counter lain!"</p>
-                        <div class="text-warning">
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-half"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <!-- Banner 3 -->
+        <div class="banner-item bg-dark p-3 text-white d-flex flex-column justify-content-end" style="background: linear-gradient(135deg, #2C5F8A 0%, #173752 100%) !important;">
+          <span class="badge position-absolute top-0 end-0 m-3 bg-white text-dark fw-bold" style="font-size: 8px;">E-WALLET</span>
+          <small class="text-warning fw-bold text-uppercase" style="font-size: 9px; letter-spacing: 0.5px;">💰 Top Up Murah</small>
+          <h6 class="fw-bold mb-1" style="font-size: 14px;">Dana, OVO, GoPay & Shopee</h6>
+          <p class="mb-0 text-white-50" style="font-size: 10.5px;">Transfer saldo e-wallet praktis, murah, tanpa antre.</p>
         </div>
-    </section>
+      </div>
+    </div>
 
-    <!-- Kontak -->
-    <section id="kontak" class="py-5">
-        <div class="container">
-            <div class="row g-5">
-                <div class="col-lg-5">
-                    <span class="badge bg-primary bg-opacity-10 text-primary px-4 py-2 rounded-pill mb-2">KONTAK</span>
-                    <h2 class="section-title">Hubungi Kami</h2>
-                    <p class="text-muted">Ada pertanyaan? Tim kami siap membantu Anda 24/7.</p>
-                    <div class="mt-4">
-                        <div class="d-flex mb-3">
-                            <div class="bg-primary bg-opacity-10 p-3 rounded-3 me-3">
-                                <i class="bi bi-whatsapp text-primary fs-4"></i>
-                            </div>
-                            <div>
-                                <h6 class="fw-bold">WhatsApp</h6>
-                                <p class="text-muted">+62 812-3456-7890</p>
-                            </div>
-                        </div>
-                        <div class="d-flex mb-3">
-                            <div class="bg-primary bg-opacity-10 p-3 rounded-3 me-3">
-                                <i class="bi bi-envelope text-primary fs-4"></i>
-                            </div>
-                            <div>
-                                <h6 class="fw-bold">Email</h6>
-                                <p class="text-muted">info@zoydigital.com</p>
-                            </div>
-                        </div>
-                        <div class="d-flex mb-3">
-                            <div class="bg-primary bg-opacity-10 p-3 rounded-3 me-3">
-                                <i class="bi bi-geo-alt text-primary fs-4"></i>
-                            </div>
-                            <div>
-                                <h6 class="fw-bold">Alamat</h6>
-                                <p class="text-muted">Jl. Digital No. 45, Jakarta Selatan</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="social-icons mt-3">
-                        <a href="#"><i class="bi bi-instagram"></i></a>
-                        <a href="#"><i class="bi bi-tiktok"></i></a>
-                        <a href="#"><i class="bi bi-youtube"></i></a>
-                        <a href="#"><i class="bi bi-facebook"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-7">
-                    <div class="card border-0 shadow-sm p-4">
-                        <form>
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label class="fw-bold small">Nama Lengkap</label>
-                                    <input type="text" class="form-control form-control-lg" placeholder="Nama Anda">
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="fw-bold small">Email</label>
-                                    <input type="email" class="form-control form-control-lg" placeholder="Email">
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <label class="fw-bold small">No. WhatsApp</label>
-                                <input type="text" class="form-control form-control-lg" placeholder="08xxxx">
-                            </div>
-                            <div class="mb-3">
-                                <label class="fw-bold small">Layanan yang Diminati</label>
-                                <select class="form-select form-select-lg">
-                                    <option>PPOB (Tagihan & Top-Up)</option>
-                                    <option>VPN Premium</option>
-                                    <option>Keduanya</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label class="fw-bold small">Pesan</label>
-                                <textarea class="form-control form-control-lg" rows="4" placeholder="Tulis pesan Anda..."></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-gradient w-100">
-                                <i class="bi bi-send"></i> Kirim Pesan
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
+    <!-- DIGITAL PRODUCTS SECTION -->
+    <div class="d-flex align-items-center justify-content-between px-1 mb-2">
+      <span class="fw-bold text-body-emphasis" style="font-size: 13px;">Produk Digital</span>
+      <span id="catCount" class="badge text-warning bg-warning-subtle px-2 py-1 text-uppercase rounded" style="font-size: 9px; font-weight: 700;">Loading…</span>
+    </div>
+
+    <div class="card card-body bg-body border-light-subtle shadow-sm p-3 mb-4 rounded-4">
+      <div id="catGrid" class="row row-cols-4 g-2">
+        <!-- Skeleton Template Matches Original Logic -->
+        <div class="col text-center grid-item-link">
+          <div class="skeleton-box mb-2"></div><div class="skeleton-text mx-auto"></div>
         </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="row g-4">
-                <div class="col-lg-4">
-                    <h5 class="fw-bold mb-3">
-                        <i class="bi bi-shield-fill-check text-primary"></i> ZOY DIGITAL
-                    </h5>
-                    <p>Solusi PPOB dan VPN premium untuk kebutuhan digital Anda. Cepat, aman, dan terpercaya.</p>
-                    <div class="mt-3">
-                        <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2">#AmanBersamaZoy</span>
-                    </div>
-                </div>
-                <div class="col-lg-2">
-                    <h5>Layanan</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="#">PPOB</a></li>
-                        <li><a href="#">VPN</a></li>
-                        <li><a href="#">Top-Up Game</a></li>
-                        <li><a href="#">E-Wallet</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-2">
-                    <h5>Perusahaan</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="#">Tentang Kami</a></li>
-                        <li><a href="#">Karir</a></li>
-                        <li><a href="#">Blog</a></li>
-                        <li><a href="#">Kebijakan</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-4">
-                    <h5>Subscribe</h5>
-                    <p>Dapatkan promo dan update terbaru</p>
-                    <div class="input-group">
-                        <input type="email" class="form-control" placeholder="Email">
-                        <button class="btn btn-primary" type="button">Subscribe</button>
-                    </div>
-                </div>
-            </div>
-            <hr class="mt-4 border-light opacity-25">
-            <div class="d-flex justify-content-between align-items-center flex-wrap">
-                <p class="mb-0">&copy; 2026 Zoy Digital. All rights reserved.</p>
-                <small>
-                    <i class="bi bi-shield-check text-primary"></i> Dilindungi enkripsi 256-bit
-                </small>
-            </div>
+        <div class="col text-center grid-item-link">
+          <div class="skeleton-box mb-2"></div><div class="skeleton-text mx-auto"></div>
         </div>
-    </footer>
+        <div class="col text-center grid-item-link">
+          <div class="skeleton-box mb-2"></div><div class="skeleton-text mx-auto"></div>
+        </div>
+        <div class="col text-center grid-item-link">
+          <div class="skeleton-box mb-2"></div><div class="skeleton-text mx-auto"></div>
+        </div>
+      </div>
+    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- VPN NAVIGATION SERVICES -->
+    <div class="d-flex align-items-center justify-content-between px-1 mb-2">
+      <span class="fw-bold text-body-emphasis" style="font-size: 13px;">Menu Layanan</span>
+      <span class="badge text-success bg-success-subtle px-2 py-1 text-uppercase rounded" style="font-size: 9px; font-weight: 700;">VPN</span>
+    </div>
+
+    <div class="card card-body bg-body border-light-subtle shadow-sm p-3 mb-4 rounded-4">
+      <div class="row row-cols-3 g-2">
+        <div class="col">
+          <a class="grid-item-link text-center" href="products.html">
+            <div class="icon-box-ui">
+              <img src="https://app.isdarprem.net/images/vpn22.png" alt="" onerror="this.src='https://placehold.co/46/4A90D9/fff?text=VPN'">
+            </div>
+            <span class="text-secondary fw-bold" style="font-size: 10.5px;">Belanja VPN</span>
+          </a>
+        </div>
+        <div class="col">
+          <a class="grid-item-link text-center" href="trial.html">
+            <div class="icon-box-ui">
+              <img src="https://app.isdarprem.net/images/trialvpn22.png" alt="" onerror="this.src='https://placehold.co/46/7BB3E6/fff?text=Trial'">
+            </div>
+            <span class="text-secondary fw-bold" style="font-size: 10.5px;">Trial VPN</span>
+          </a>
+        </div>
+        <div class="col">
+          <a class="grid-item-link text-center" href="my-vpn.html">
+            <div class="icon-box-ui">
+              <img src="https://app.isdarprem.net/images/detilvpn22.png" alt="" onerror="this.src='https://placehold.co/46/3A7BC8/fff?text=Akun'">
+            </div>
+            <span class="text-secondary fw-bold" style="font-size: 10.5px;">Detail Akun</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCHEDULE/MAINTENANCE SECTION -->
+    <div class="d-flex align-items-center justify-content-between px-1 mb-2">
+      <span class="fw-bold text-body-emphasis" style="font-size: 13px;">Jadwal Maintenance</span>
+      <span class="badge text-danger bg-danger-subtle px-2 py-1 text-uppercase rounded" style="font-size: 9px; font-weight: 700;">Sistem</span>
+    </div>
+
+    <div class="card bg-body border-light-subtle shadow-sm p-3 mb-4 rounded-4">
+      <div class="p-3 bg-light-subtle border border-light-subtle rounded-3">
+        <div class="d-flex align-items-center justify-content-between mb-2">
+          <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-calendar3 text-primary" style="font-size: 14px;"></i>
+            <span class="fw-bold text-body-emphasis" style="font-size: 12.5px;">PPOB</span>
+          </div>
+          <span id="statusPpob" class="fw-bold text-uppercase tracking-wide" style="font-size: 11px;">…</span>
+        </div>
+        <p class="text-muted mb-0 lh-base" style="font-size: 11px;">Setiap hari pukul 23:30 – 00:30 WIB. Transaksi dibekukan sementara oleh sistem pusat.</p>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- BOTTOM BAR FIXED NAVIGATION -->
+  <nav class="app-bottom-nav">
+    <div class="row g-0 text-center">
+      <div class="col">
+        <a class="nav-btn-item active" href="dashboard.html">
+          <i class="bi bi-house-door-fill"></i>
+          <span>Home</span>
+        </a>
+      </div>
+      <div class="col">
+        <a class="nav-btn-item" href="riwayat-ppob.html">
+          <i class="bi bi-clock-history"></i>
+          <span>Riwayat</span>
+        </a>
+      </div>
+      <div class="col">
+        <a class="nav-btn-item" href="profile.html">
+          <i class="bi bi-person-circle"></i>
+          <span>Profile</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- IMMERSIVE COMPACT TOAST -->
+  <div id="toast" class="custom-toast bg-dark text-white d-flex align-items-center gap-2"></div>
+
+</div>
+
+<!-- Bootstrap JS Bundle Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+// ─── THEME MANAGER WITH BOOTSTRAP 5.3 COMPATIBILITY ───
+(function initTheme(){
+  const saved = localStorage.getItem('theme');
+  if (saved === 'dark' || saved === 'light') {
+    document.documentElement.setAttribute('data-bs-theme', saved);
+  } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    document.documentElement.setAttribute('data-bs-theme', 'dark');
+  } else {
+    document.documentElement.setAttribute('data-bs-theme', 'light');
+  }
+})();
+
+document.getElementById('themeToggle').addEventListener('click', () => {
+  const current = document.documentElement.getAttribute('data-bs-theme');
+  const next = current === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-bs-theme', next);
+  localStorage.setItem('theme', next);
+});
+
+// ─── SHOW TOAST (UPDATED TO FRESH PILL LOOK) ───
+function showToast(msg, type = 'success') {
+  const t = document.getElementById('toast');
+  if (!t) return;
+  
+  const icon = type === 'success'
+    ? `<i class="bi bi-check-circle-fill text-success"></i>`
+    : `<i class="bi bi-exclaimation-circle-fill text-danger"></i>`;
+    
+  t.innerHTML = icon + `<span>${msg}</span>`;
+  
+  // Apply dynamic dark/light standard background
+  t.className = `custom-toast text-white bg-dark show`;
+  if(type === 'error') {
+     t.className = `custom-toast text-white bg-danger show`;
+  } else if (type === 'success') {
+     t.className = `custom-toast text-white bg-dark show`;
+  }
+  
+  clearTimeout(t._timeout);
+  t._timeout = setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+// ─── AVATAR GENERATOR ───
+function getAvatarColor(name){
+  const palettes = [
+    ['#4A90D9','#3A7BC8'],['#5CB87A','#3D9B5E'],['#F5A623','#D4891A'],
+    ['#D96565','#C55050'],['#2C5F8A','#4A90D9'],['#7BB3E6','#4A90D9']
+  ];
+  let hash = 0;
+  for(let i = 0; i < name.length; i++){ hash = name.charCodeAt(i) + ((hash << 5) - hash); }
+  return palettes[Math.abs(hash) % palettes.length];
+}
+
+function renderUserAvatar(userObj) {
+  const container = document.getElementById('avatarContainer');
+  if (!container) return;
+  const name = userObj.username || 'Xtrimer User';
+  if (userObj.avatar && userObj.avatar !== '' && !userObj.avatar.includes('via.placeholder.com')) {
+    container.innerHTML = `<img src="${userObj.avatar}" style="width:100%; height:100%; object-fit:cover;" alt="Profile">`;
+    container.style.background = 'none';
+  } else {
+    container.textContent = name.charAt(0).toUpperCase();
+    const colors = getAvatarColor(name);
+    container.style.background = `linear-gradient(135deg, ${colors[0]}, ${colors[1]})`;
+  }
+}
+
+// ─── AUTH CHECK ───
+const localUser = JSON.parse(localStorage.getItem('user') || 'null');
+const token = localStorage.getItem('token') || '';
+
+if (!localUser || !token) {
+  localStorage.clear();
+  window.location.href = 'index.html';
+} else {
+  document.getElementById('headerName').textContent = localUser.username || '—';
+  renderUserAvatar(localUser);
+}
+
+const headers = {
+  'Content-Type': 'application/json',
+  'Authorization': `Bearer ${token}`
+};
+
+function rupiah(val) {
+  return 'Rp ' + Number(val || 0).toLocaleString('id-ID');
+}
+
+// ─── LOAD PROFILE ───
+async function loadProfile() {
+  try {
+    const r = await fetch('/api/profile', { method: 'GET', headers });
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    const d = await r.json();
+    if (!d.success || !d.user) {
+      window.location.href = 'index.html';
+      return;
+    }
+    const u = d.user;
+    localStorage.setItem('user', JSON.stringify(u));
+    document.getElementById('headerName').textContent = u.username || '—';
+    renderUserAvatar(u);
+    document.getElementById('balanceAmt').textContent = rupiah(u.balance);
+  } catch (e) {
+    console.error('Load Profile Error:', e);
+    showToast('Gagal memuat profil', 'error');
+  }
+}
+
+// ─── CATEGORIES CONTROLLER ───
+const HIDDEN = ['gas','tv','tv kabel','gas pln','gas elpiji','tagihan gas', 'aktivasi voucher', 'perdana'];
+const IMG_MAP = [  
+  { keys:['masa aktif','masa'], img:'https://app.isdarprem.net/images/masa-aktif22.png' },
+  { keys:['e-wallet','ewallet','e-money','emoney'], img:'https://app.isdarprem.net/images/ewallet23.png' },  
+  { keys:['pln','listrik','token'], img:'https://app.isdarprem.net/images/pln22.png' },
+  { keys:['sms','telp'], img:'https://app.isdarprem.net/images/sms-telpon22.png' },
+  { keys:['pulsa'], img:'https://app.isdarprem.net/images/pulsa22.png' },
+  { keys:['data'], img:'https://app.isdarprem.net/images/data22.png' },
+  { keys:['game','gaming'], img:'https://app.isdarprem.net/images/game22.png' },
+  { keys:['voucher'], img:'https://app.isdarprem.net/images/voucher22.png' },
+];
+
+function getImg(name) {
+  const k = name.toLowerCase();
+  for (const { keys, img } of IMG_MAP) {
+    if (keys.some(x => k.includes(x))) return img;
+  }
+  return 'https://app.isdarprem.net/images/images.png';
+}
+
+async function loadCategories() {
+  try {
+    const r = await fetch('/api/ppob/categories', { method: 'GET', headers });
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    const d = await r.json();
+    const grid = document.getElementById('catGrid');
+    const badge = document.getElementById('catCount');
+    
+    if (d.success && d.categories?.length) {
+      const visible = d.categories.filter(c => !HIDDEN.some(h => c.toLowerCase().includes(h)));
+      badge.textContent = visible.length + ' Kategori';
+      grid.innerHTML = '';
+      visible.forEach(cat => {
+        const el = document.createElement('div');
+        el.className = 'col text-center';
+        const initial = encodeURIComponent(cat[0] || '?');
+        el.innerHTML = `
+          <a class="grid-item-link" href="ppob.html?cat=${encodeURIComponent(cat)}">
+            <div class="icon-box-ui">
+              <img src="${getImg(cat)}" alt="${cat}" onerror="this.src='https://placehold.co/46/4A90D9/fff?text=${initial}'">
+            </div>
+            <span class="text-secondary fw-bold text-truncate w-100" style="font-size: 10.5px;">${cat}</span>
+          </a>`;
+        grid.appendChild(el);
+      });
+    } else {
+      showCatErr();
+    }
+  } catch (e) {
+    console.error('Load Categories Error:', e);
+    const demo = ['Pulsa','Paket Data','Token PLN','E-Wallet','Games','Voucher','Perdana','Masa Active'];
+    const grid = document.getElementById('catGrid');
+    const badge = document.getElementById('catCount');
+    badge.textContent = demo.length + ' Kategori';
+    grid.innerHTML = '';
+    demo.forEach(cat => {
+      const el = document.createElement('div');
+      el.className = 'col text-center';
+      const initial = encodeURIComponent(cat[0] || '?');
+      el.innerHTML = `
+        <a class="grid-item-link" href="#">
+          <div class="icon-box-ui">
+            <img src="${getImg(cat)}" alt="${cat}" onerror="this.src='https://placehold.co/46/4A90D9/fff?text=${initial}'">
+          </div>
+          <span class="text-secondary fw-bold text-truncate w-100" style="font-size: 10.5px;">${cat}</span>
+        </a>`;
+      grid.appendChild(el);
+    });
+    showToast('Gagal memuat kategori', 'error');
+  }
+}
+
+function showCatErr() {
+  document.getElementById('catGrid').innerHTML = '<div class="col-12 py-3 text-center text-muted fw-bold" style="font-size:12px;">Gagal memuat kategori.</div>';
+  document.getElementById('catCount').textContent = 'Offline';
+}
+
+// ─── MAINTENANCE STATUS ───
+function checkMaintenanceStatus() {
+  const now = new Date();
+  const hours = now.getHours();
+  const minutes = now.getMinutes();
+  const currentTimeInMinutes = (hours * 60) + minutes;
+
+  const ppobStart = (23 * 60) + 30;
+  const ppobEnd = 30;
+  const isPpobMaint = (currentTimeInMinutes >= ppobStart || currentTimeInMinutes <= ppobEnd);
+  
+  const statusPpobEl = document.getElementById('statusPpob');
+  if (isPpobMaint) {
+    statusPpobEl.textContent = 'Maint';
+    statusPpobEl.className = 'fw-bold text-uppercase text-danger';
+  } else {
+    statusPpobEl.textContent = 'Lancar';
+    statusPpobEl.className = 'fw-bold text-uppercase text-success';
+  }
+}
+
+// ─── BANNER AUTO SCROLL ───
+function startAutoBannerScroll() {
+  const container = document.getElementById('autoBannerScroll');
+  if (!container) return;
+  let isTargetingManual = false;
+  const scrollInterval = setInterval(autoScrollEffect, 3000);
+  
+  function autoScrollEffect() {
+    if (isTargetingManual) return;
+    const cardWidth = container.offsetWidth;
+    const maxScrollLeft = container.scrollWidth - container.clientWidth;
+    if (container.scrollLeft >= maxScrollLeft - 5) {
+      container.scrollLeft = 0;
+    } else {
+      container.scrollLeft += cardWidth;
+    }
+  }
+  
+  container.addEventListener('touchstart', () => { isTargetingManual = true; });
+  container.addEventListener('touchend', () => {
+    setTimeout(() => { isTargetingManual = false; }, 2000);
+  });
+}
+
+// ─── RUN INIT ───
+document.addEventListener('DOMContentLoaded', () => {
+  checkMaintenanceStatus();
+  setInterval(checkMaintenanceStatus, 30000);
+  setTimeout(startAutoBannerScroll, 500);
+  loadProfile();
+  loadCategories();
+});
+</script>
 </body>
 </html>
