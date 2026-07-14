@@ -3,237 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CyberStore - PPOB & Premium VPN</title>
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
-    
-    <style>
-        body {
-            background-color: #0f172a;
-            color: #f8fafc;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-        .text-neon-cyan {
-            color: #06b6d4;
-            text-shadow: 0 0 10px rgba(6, 182, 212, 0.3);
-        }
-        .text-neon-purple {
-            color: #a855f7;
-            text-shadow: 0 0 10px rgba(168, 85, 247, 0.3);
-        }
-        .glass-card {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.3s ease;
-        }
-        .glass-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(6, 182, 212, 0.4);
-            box-shadow: 0 10px 30px rgba(6, 182, 212, 0.1);
-        }
-        .btn-cyan {
-            background-color: #06b6d4;
-            color: #0f172a;
-            font-weight: 600;
-        }
-        .btn-cyan:hover {
-            background-color: #22d3ee;
-            color: #0f172a;
-            box-shadow: 0 0 15px rgba(6, 182, 212, 0.5);
-        }
-        .nav-link {
-            color: #94a3b8 !important;
-        }
-        .nav-link.active, .nav-link:hover {
-            color: #06b6d4 !important;
-        }
-    </style>
+    <title>PediaNet - PPOB & VPN Premium</title>
+    <!-- Menghubungkan ke Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Icon Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
-<body>
+<body class="bg-light">
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark bg-opacity-50 fixed-top border-bottom border-secondary border-opacity-25" style="backdrop-filter: blur(10px);">
+    <!-- 1. NAVBAR (Navigasi Atas) -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
         <div class="container">
-            <a class="navbar-brand fw-extrabold text-neon-cyan fs-3" href="#">
-                <i class="bi bi-terminal-fill me-2"></i>CYBER<span class="text-white">NET</span>
-            </a>
+            <a class="navbar-brand fw-bold text-info" href="#"><i class="bi bi-shield-lock-fill me-2"></i>PediaNet</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link active" href="#hero">Beranda</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#fitur">Fitur</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#produk">Layanan</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#pricing">Harga VPN</a></li>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link active" href="#home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#layanan">Layanan</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#harga">Harga</a></li>
+                    <li class="nav-item"><a class="btn btn-info btn-sm text-dark fw-bold ms-lg-2 mt-2 mt-lg-0" href="https://wa.me/628123456789" target="_blank">Hubungi Kami</a></li>
                 </ul>
-                <div class="ms-lg-4">
-                    <a href="#" class="btn btn-cyan btn-sm px-4 rounded-pill">Client Area</a>
-                </div>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <header id="hero" class="container min-vh-100 d-flex align-items-center pt-5">
-        <div class="row align-items-center w-100">
-            <div class="col-lg-6 mb-5 mb-lg-0 text-center text-lg-start">
-                <span class="badge bg-secondary bg-opacity-25 text-neon-cyan px-3 py-2 rounded-pill mb-3 border border-info border-opacity-25">
-                    <i class="bi bi-patch-check-fill me-2"></i>Koneksi Aman & Top Up Instan
-                </span>
-                <h1 class="display-3 fw-bold mb-4">
-                    Jelajahi Internet Tanpa <span class="text-neon-purple">Batas</span>
-                </h1>
-                <p class="lead text-secondary mb-4">
-                    Satu platform untuk semua kebutuhan digitalmu. Amankan jaringan dengan VPN Enkripsi Militer dan top up PPOB/Game super cepat dalam hitungan detik.
-                </p>
-                <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center justify-content-lg-start">
-                    <a href="#produk" class="btn btn-cyan btn-lg px-4 rounded-3">Mulai Belanja</a>
-                    <a href="#pricing" class="btn btn-outline-secondary btn-lg px-4 rounded-3 text-white"><i class="bi bi-shield-lock me-2"></i>Lihat VPN</a>
-                </div>
-            </div>
-            <div class="col-lg-6 text-center d-none d-lg-block">
-                <div class="position-relative d-inline-block">
-                    <!-- Efek glow di belakang icon -->
-                    <div class="position-absolute top-50 start-50 translate-middle rounded-circle bg-info opacity-10" style="width: 300px; height: 300px; filter: blur(50px);"></div>
-                    <i class="bi bi-cpu text-neon-cyan" style="font-size: 15rem;"></i>
-                </div>
-            </div>
+    <!-- 2. HERO SECTION (Banner Utama) -->
+    <section id="home" class="bg-dark text-white text-center py-5 border-bottom border-info">
+        <div class="container py-4">
+            <h1 class="display-4 fw-bold">Solusi Digital & Internet Aman</h1>
+            <p class="lead text-secondary">Top up game, pulsa, token PLN murah, sekaligus langganan VPN premium anti-blokir dalam satu tempat.</p>
+            <a href="#harga" class="btn btn-info btn-lg fw-bold mt-3">Lihat Produk</a>
         </div>
-    </header>
+    </section>
 
-    <!-- Fitur Singkat -->
-    <section id="fitur" class="container py-5">
+    <!-- 3. LAYANAN / FITUR -->
+    <section id="layanan" class="container py-5">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Kenapa Pilih Kami?</h2>
+            <p class="text-muted">Layanan terbaik untuk kebutuhan harian dan privasi internet Anda.</p>
+        </div>
         <div class="row g-4">
+            <!-- Fitur 1 -->
             <div class="col-md-4">
-                <div class="glass-card p-4 rounded-4 h-100">
-                    <i class="bi bi-lightning-charge text-neon-cyan fs-2 mb-3 d-block"></i>
-                    <h5 class="fw-bold">Proses Kilat</h5>
-                    <p class="text-secondary small mb-0">Sistem otomatisasi kami memproses pulsa, token, dan akun VPN kamu tanpa delay 24/7.</p>
+                <div class="card h-100 text-center p-3 border-0 shadow-sm">
+                    <div class="card-body">
+                        <i class="bi bi-lightning-charge-fill text-warning display-4"></i>
+                        <h5 class="card-title fw-bold mt-3">Proses Otomatis</h5>
+                        <p class="card-text text-muted">Top up pulsa dan kuota masuk dalam hitungan detik setelah pembayaran dikonfirmasi.</p>
+                    </div>
                 </div>
             </div>
+            <!-- Fitur 2 -->
             <div class="col-md-4">
-                <div class="glass-card p-4 rounded-4 h-100">
-                    <i class="bi bi-shield-check text-neon-purple fs-2 mb-3 d-block"></i>
-                    <h5 class="fw-bold">Keamanan Enkripsi</h5>
-                    <p class="text-secondary small mb-0">VPN menggunakan protokol terbaru (WireGuard/OpenVPN) yang menjaga data pribadimu tetap aman.</p>
+                <div class="card h-100 text-center p-3 border-0 shadow-sm">
+                    <div class="card-body">
+                        <i class="bi bi-shield-fill-check text-success display-4"></i>
+                        <h5 class="card-title fw-bold mt-3">VPN Server Premium</h5>
+                        <p class="card-text text-muted">Koneksi super cepat, *unlimited bandwidth*, dan aman dari pelacakan pihak ketiga.</p>
+                    </div>
                 </div>
             </div>
+            <!-- Fitur 3 -->
             <div class="col-md-4">
-                <div class="glass-card p-4 rounded-4 h-100">
-                    <i class="bi bi-headset text-neon-cyan fs-2 mb-3 d-block"></i>
-                    <h5 class="fw-bold">Support Responsif</h5>
-                    <p class="text-secondary small mb-0">Tim bantuan kami siap membantu jika kamu mengalami kendala teknis kapan pun.</p>
+                <div class="card h-100 text-center p-3 border-0 shadow-sm">
+                    <div class="card-body">
+                        <i class="bi bi-wallet2 text-info display-4"></i>
+                        <h5 class="card-title fw-bold mt-3">Harga Termurah</h5>
+                        <p class="card-text text-muted">Mendapatkan harga agen terbaik yang cocok untuk dipakai sendiri atau dijual kembali.</p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Layanan PPOB Section -->
-    <section id="produk" class="container py-5">
-        <div class="text-center mb-5">
-            <h2 class="fw-bold">Layanan Digital & PPOB</h2>
-            <p class="text-secondary">Pilih kategori transaksi yang kamu butuhkan</p>
-        </div>
-        
-        <div class="row g-4">
-            <!-- PPOB Item 1 -->
-            <div class="col-6 col-md-3">
-                <div class="glass-card p-4 rounded-4 text-center h-100">
-                    <div class="mb-3 text-neon-cyan"><i class="bi bi-phone fs-1"></i></div>
-                    <h6 class="fw-bold mb-2">Pulsa All Operator</h6>
-                    <span class="text-success small fw-semibold">Aktif</span>
-                </div>
-            </div>
-            <!-- PPOB Item 2 -->
-            <div class="col-6 col-md-3">
-                <div class="glass-card p-4 rounded-4 text-center h-100">
-                    <div class="mb-3 text-neon-purple"><i class="bi bi-globe fs-1"></i></div>
-                    <h6 class="fw-bold mb-2">Paket Data Internet</h6>
-                    <span class="text-success small fw-semibold">Aktif</span>
-                </div>
-            </div>
-            <!-- PPOB Item 3 -->
-            <div class="col-6 col-md-3">
-                <div class="glass-card p-4 rounded-4 text-center h-100">
-                    <div class="mb-3 text-neon-cyan"><i class="bi bi-lightning-charge fs-1"></i></div>
-                    <h6 class="fw-bold mb-2">Token PLN</h6>
-                    <span class="text-success small fw-semibold">Aktif</span>
-                </div>
-            </div>
-            <!-- PPOB Item 4 -->
-            <div class="col-6 col-md-3">
-                <div class="glass-card p-4 rounded-4 text-center h-100">
-                    <div class="mb-3 text-neon-purple"><i class="bi bi-joystick fs-1"></i></div>
-                    <h6 class="fw-bold mb-2">Voucher Game</h6>
-                    <span class="text-success small fw-semibold">Aktif</span>
-                </div>
-            </div>
-        </div>
-    </section>
+    <hr class="container text-muted">
 
-    <!-- Pricing VPN Section -->
-    <section id="pricing" class="container py-5">
+    <!-- 4. DAFTAR HARGA & PRODUK -->
+    <section id="harga" class="container py-5">
         <div class="text-center mb-5">
-            <h2 class="fw-bold">Paket <span class="text-neon-cyan">VPN Premium</span></h2>
-            <p class="text-secondary">Tanpa log, kecepatan maksimal, bypass sensor internet.</p>
+            <h2 class="fw-bold">Paket Produk Populer</h2>
+            <p class="text-muted">Pilih paket yang sesuai dengan kebutuhan Anda saat ini.</p>
         </div>
 
         <div class="row g-4 justify-content-center">
-            <!-- Paket Hemat -->
-            <div class="col-lg-4">
-                <div class="glass-card p-4 rounded-4 h-100 d-flex flex-column justify-content-between">
-                    <div>
-                        <h4 class="fw-bold">Bulanan</h4>
-                        <p class="text-secondary small">Cocok untuk kebutuhan kasual</p>
-                        <h2 class="fw-bold text-neon-cyan my-4">Rp 30k <span class="fs-6 text-secondary fw-normal">/ bln</span></h2>
-                        <hr class="border-secondary opacity-25">
-                        <ul class="list-unstyled mb-4 text-secondary small">
-                            <li class="mb-2"><i class="bi bi-check2 text-neon-cyan me-2"></i> 3 Server Negara Pilihan</li>
-                            <li class="mb-2"><i class="bi bi-check2 text-neon-cyan me-2"></i> Speed Up to 100 Mbps</li>
-                            <li class="mb-2"><i class="bi bi-check2 text-neon-cyan me-2"></i> 1 Device Terhubung</li>
-                            <li class="mb-2 text-muted text-decoration-line-through"><i class="bi bi-x2 me-2"></i> Fitur Port Forwarding</li>
-                        </ul>
+            <!-- Paket PPOB -->
+            <div class="col-md-5">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-header bg-primary text-white text-center py-3 fw-bold fs-5">
+                        <i class="bi bi-phone-fill me-2"></i>Produk PPOB
                     </div>
-                    <button class="btn btn-outline-info w-100 rounded-3">Beli Sekarang</button>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Pulsa Telkomsel 10k <span class="badge bg-success rounded-pill">Rp 10.500</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Kuota Indosat Freedom 10GB <span class="badge bg-success rounded-pill">Rp 35,000</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Token PLN Rp 50.000 <span class="badge bg-success rounded-pill">Rp 51.500</span>
+                            </li>
+                        </ul>
+                        <div class="d-grid mt-4">
+                            <a href="https://wa.me/628123456789?text=Halo,%20mau%20order%20PPOB" class="btn btn-outline-primary fw-bold" target="_blank">Order PPOB via WA</a>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Paket Pro -->
-            <div class="col-lg-4">
-                <div class="glass-card p-4 rounded-4 h-100 d-flex flex-column justify-content-between border border-info border-opacity-50 position-relative">
-                    <span class="position-absolute top-0 end-0 bg-info text-dark badge rounded-bl-3 px-3 py-2 fw-bold" style="border-radius: 0 1rem 0 1rem;">POPULER</span>
-                    <div>
-                        <h4 class="fw-bold text-neon-cyan">Tahunan</h4>
-                        <p class="text-secondary small">Paling hemat & disukai gamer</p>
-                        <h2 class="fw-bold text-neon-purple my-4">Rp 220k <span class="fs-6 text-secondary fw-normal">/ thn</span></h2>
-                        <hr class="border-secondary opacity-25">
-                        <ul class="list-unstyled mb-4 text-secondary small">
-                            <li class="mb-2"><i class="bi bi-check2 text-neon-cyan me-2"></i> 30+ Global Server Premium</li>
-                            <li class="mb-2"><i class="bi bi-check2 text-neon-cyan me-2"></i> Speed Unlimited (No FUP)</li>
-                            <li class="mb-2"><i class="bi bi-check2 text-neon-cyan me-2"></i> 5 Device Login Bersamaan</li>
-                            <li class="mb-2"><i class="bi bi-check2 text-neon-cyan me-2"></i> Anti-DDoS Protection</li>
-                        </ul>
+            <!-- Paket VPN -->
+            <div class="col-md-5">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-header bg-info text-dark text-center py-3 fw-bold fs-5">
+                        <i class="bi bi-vpn-network me-2"></i>VPN Premium (1 Bulan)
                     </div>
-                    <button class="btn btn-cyan w-100 rounded-3">Beli Sekarang</button>
+                    <div class="card-body text-center d-flex flex-column justify-content-between">
+                        <div>
+                            <h3 class="card-title fw-bold my-3">Rp 25.000 <small class="text-muted fs-6">/ bulan</small></h3>
+                            <ul class="list-unstyled my-3 text-start ps-4">
+                                <li><i class="bi bi-check-circle-fill text-success me-2"></i> Buka blokir Netflix & web</li>
+                                <li><i class="bi bi-check-circle-fill text-success me-2"></i> Server SG & US Premium</li>
+                                <li><i class="bi bi-check-circle-fill text-success me-2"></i> Support 3 Perangkat sekaligus</li>
+                            </ul>
+                        </div>
+                        <div class="d-grid mt-4">
+                            <a href="https://wa.me/628123456789?text=Halo,%20mau%20order%20VPN" class="btn btn-info text-dark fw-bold" target="_blank">Beli VPN Sekarang</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="border-top border-secondary border-opacity-25 bg-dark bg-opacity-20 mt-5 py-4">
-        <div class="container text-center text-secondary small">
-            <p class="mb-0">&copy; 2026 CyberNet Store. All rights reserved.</p>
-        </div>
+    <!-- 5. FOOTER -->
+    <footer class="bg-dark text-white text-center py-4 mt-5">
+        <p class="mb-0">&copy; 2026 PediaNet. All rights reserved.</p>
     </footer>
 
-    <!-- Bootstrap 5 JS Bundle -->
+    <!-- JS Bootstrap (Untuk handle menu responsif/dropdown) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
