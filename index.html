@@ -3,66 +3,192 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coba Bootstrap Pertama</title>
+    <title>Xtrimer Tunneling & PPOB</title>
+    <!-- CSS Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Icon Tambahan (Bootstrap Icons) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <body class="bg-light">
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow-sm">
         <div class="container">
-            <a class="navbar-brand" href="#">LogoKita</a>
+            <a class="navbar-brand fw-bold text-primary" href="#"><i class="bi bi-shield-lock-fill me-2"></i>Xtrimer Service</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Fitur</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Kontak</a></li>
+                <ul class="navbar-nav ms-auto fw-medium">
+                    <li class="nav-item"><a class="nav-link active" href="#home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#vpn">Paket VPN</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#ppob">Layanan PPOB</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#server">Status Server</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <div class="container my-5">
-        <div class="p-5 text-center bg-white rounded-3 shadow-sm">
-            <h1 class="text-body-emphasis">Bikin Website Cepat Pakai Bootstrap!</h1>
-            <p class="col-lg-8 mx-auto fs-5 text-muted">
-                Ini adalah contoh halaman web sederhana. Dengan Bootstrap, kita bisa bikin layout rapi begini tanpa nulis CSS manual sama sekali.
-            </p>
-            <button class="btn btn-primary btn-lg px-4" type="button">Mulai Belajar</button>
-        </div>
-    </div>
-
-    <div class="container my-5">
-        <div class="row g-4">
-            <div class="col-md-4">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title text-success">Responsif</h5>
-                        <p class="card-text">Coba kecilin ukuran browser kamu atau buka di HP. 3 kotak ini bakal otomatis tersusun vertikal ke bawah biar gak sempit.</p>
-                    </div>
+    <!-- HERO SECTION -->
+    <div id="home" class="container my-5 py-4">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6 text-center text-lg-start">
+                <span class="badge bg-primary-subtle text-primary mb-3 px-3 py-2 rounded-pill fw-semibold">Update Sistem 2026</span>
+                <h1 class="display-5 fw-bold text-dark mb-3">Solusi Internet Cepat & Top-Up Digital Termurah</h1>
+                <p class="lead text-muted mb-4">Menyediakan akun Premium VPN Tunneling (VMess, VLess, Trojan, Hysteria2) yang stabil dan panel PPOB otomatis 24 jam.</p>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                    <a href="#vpn" class="btn btn-primary btn-lg px-4 me-md-2 fw-bold shadow-sm"><i class="bi bi-rocket-takeoff me-2"></i>Order VPN</a>
+                    <a href="#ppob" class="btn btn-outline-secondary btn-lg px-4"><i class="bi bi-wallet2 me-2"></i>Cek PPOB</a>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title text-primary">Hemat Waktu</h5>
-                        <p class="card-text">Gak perlu pusing mikirin `margin`, `padding`, atau `border-radius`. Semuanya tinggal panggil nama kelasnya aja.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title text-danger">Banyak Komponen</h5>
-                        <p class="card-text">Ada tombol, tabel, formulir, modal (pop-up), hingga animasi loading yang semuanya udah siap pakai.</p>
-                    </div>
-                </div>
+            <div class="col-lg-6 text-center">
+                <!-- Gunakan icon besar sebagai pengganti gambar -->
+                <i class="bi bi-globe-asia-australia text-primary" style="font-size: 10rem;"></i>
             </div>
         </div>
     </div>
 
+    <!-- PRICING SECTION (PAKET VPN) -->
+    <div id="vpn" class="bg-white py-5 shadow-sm">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold">Paket Premium VPN Tunneling</h2>
+                <p class="text-muted">Support semua protokol andalan untuk optimasi jaringan kamu</p>
+            </div>
+            <div class="row g-4 justify-content-center">
+                <!-- Kartu Paket 1 -->
+                <div class="col-md-4">
+                    <div class="card h-100 border-primary shadow-sm">
+                        <div class="card-header bg-primary text-white text-center py-3">
+                            <h4 class="my-0 fw-bold">Paket SSH / VMess</h4>
+                        </div>
+                        <div class="card-body text-center d-flex flex-column">
+                            <h1 class="card-title pricing-card-title my-3">Rp 15k<small class="text-muted fw-light">/bulan</small></h1>
+                            <ul class="list-unstyled mt-3 mb-4 text-start mx-auto" style="max-width: 200px;">
+                                <li><i class="bi bi-check-circle-fill text-success me-2"></i> Server Singapore (SG)</li>
+                                <li><i class="bi bi-check-circle-fill text-success me-2"></i> Aktif 30 Hari</li>
+                                <li><i class="bi bi-check-circle-fill text-success me-2"></i> Limit 1 Device</li>
+                                <li><i class="bi bi-check-circle-fill text-success me-2"></i> Kebutuhan Game/Browsing</li>
+                            </ul>
+                            <button type="button" class="w-100 btn btn-primary mt-auto fw-bold">Beli Sekarang</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Kartu Paket 2 -->
+                <div class="col-md-4">
+                    <div class="card h-100 border-dark shadow-sm">
+                        <div class="card-header bg-dark text-white text-center py-3">
+                            <h4 class="my-0 fw-bold">Hysteria2 / Trojan</h4>
+                        </div>
+                        <div class="card-body text-center d-flex flex-column">
+                            <h1 class="card-title pricing-card-title my-3">Rp 25k<small class="text-muted fw-light">/bulan</small></h1>
+                            <ul class="list-unstyled mt-3 mb-4 text-start mx-auto" style="max-width: 200px;">
+                                <li><i class="bi bi-check-circle-fill text-success me-2"></i> High Speed Server</li>
+                                <li><i class="bi bi-check-circle-fill text-success me-2"></i> Bypass Blokir Provider</li>
+                                <li><i class="bi bi-check-circle-fill text-success me-2"></i> Low Ping & No Lag</li>
+                                <li><i class="bi bi-check-circle-fill text-success me-2"></i> Full Garansi 30 Hari</li>
+                            </ul>
+                            <button type="button" class="w-100 btn btn-dark mt-auto fw-bold">Beli Sekarang</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PPOB PREVIEW SECTION -->
+    <div id="ppob" class="container my-5 py-4">
+        <div class="row align-items-center">
+            <div class="col-lg-5 mb-4 mb-lg-0">
+                <h2 class="fw-bold mb-3">Layanan PPOB Otomatis</h2>
+                <p class="text-muted">Top-up saldo pulsa, paket data, voucher game, hingga token PLN instan tanpa tunda dengan harga reseller.</p>
+                <div class="d-flex align-items-center mb-3">
+                    <div class="bg-success-subtle text-success rounded p-2 me-3"><i class="bi bi-lightning-charge-fill fs-4"></i></div>
+                    <div><strong>Proses Instan:</strong> Detik itu juga langsung masuk via API otomatis.</div>
+                </div>
+                <div class="d-flex align-items-center">
+                    <div class="bg-info-subtle text-info rounded p-2 me-3"><i class="bi bi-shield-check fs-4"></i></div>
+                    <div><strong>Aman & Legal:</strong> Transaksi bergaransi dengan riwayat yang transparan.</div>
+                </div>
+            </div>
+            <!-- Form Simulasi Cek Harga -->
+            <div class="col-lg-6 offset-lg-1">
+                <div class="card shadow p-4 border-0">
+                    <h5 class="fw-bold mb-3 text-secondary"><i class="bi bi-search me-2"></i>Cek Harga Produk</h5>
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label font-monospace small">Kategori Layanan</label>
+                            <select class="form-select">
+                                <option>Pulsa Reguler</option>
+                                <option>Paket Data Internet</option>
+                                <option>Token PLN (Listrik)</option>
+                                <option>Top-Up Game</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label font-monospace small">Pilih Operator / Game</label>
+                            <select class="form-select">
+                                <option>Telkomsel</option>
+                                <option>Indosat Ooredoo</option>
+                                <option>XL Axiata / Axis</option>
+                                <option>Mobile Legends / Free Fire</option>
+                            </select>
+                        </div>
+                        <button type="button" class="btn btn-success w-100 fw-bold"><i class="bi bi-eye me-2"></i>Tampilkan Daftar Harga</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SERVER STATUS SECTION -->
+    <div id="server" class="bg-dark text-white py-5">
+        <div class="container">
+            <div class="text-center mb-4">
+                <h2 class="fw-bold">Status Server Tunneling</h2>
+                <p class="text-secondary">Kami memastikan server selalu prima demi kenyamanan koneksi Anda</p>
+            </div>
+            <div class="table-responsive col-lg-8 mx-auto">
+                <table class="table table-dark table-hover table-striped align-middle border-secondary">
+                    <thead>
+                        <tr>
+                            <th>Nama Server</th>
+                            <th>Protokol</th>
+                            <th>Lokasi</th>
+                            <th class="text-center">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="fw-bold">SG-Premium-01</td>
+                            <td>VMess / VLess</td>
+                            <td>Singapore</td>
+                            <td class="text-center"><span class="badge bg-success"><i class="bi bi-check-circle me-1"></i> Normal</span></td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">SG-Hysteria-VIP</td>
+                            <td>Hysteria2</td>
+                            <td>Singapore</td>
+                            <td class="text-center"><span class="badge bg-success"><i class="bi bi-check-circle me-1"></i> Normal</span></td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">ID-Biznet-01</td>
+                            <td>Trojan / SSH</td>
+                            <td>Indonesia</td>
+                            <td class="text-center"><span class="badge bg-warning text-dark"><i class="bi bi-exclamation-triangle me-1"></i> Maintenance</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-secondary-subtle text-center py-3">
+        <p class="mb-0 text-muted small">&copy; 2026 Xtrimer Service. All Rights Reserved.</p>
+    </footer>
+
+    <!-- JS Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
