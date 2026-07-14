@@ -3,65 +3,211 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coba Bootstrap Pertama</title>
+    <title>PediaStore - PPOB & VPN Termurah</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <style>
+        .hero-section {
+            background: linear-gradient(135deg, #0d6efd 0%, #0a46a3 100%);
+        }
+        .card-product {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card-product:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15) !important;
+        }
+    </style>
 </head>
 <body class="bg-light">
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
         <div class="container">
-            <a class="navbar-brand" href="#">LogoKita</a>
+            <a class="navbar-brand fw-bold text-primary" href="#"><i class="bi bi-lightning-charge-fill me-2"></i>PediaStore</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Fitur</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Kontak</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="#home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#ppob">Layanan PPOB</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#vpn">Paket VPN</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#testimoni">Testimoni</a></li>
                 </ul>
+                <a href="https://wa.me/628123456789" class="btn btn-primary ms-lg-3"><i class="bi bi-whatsapp me-2"></i>Hubungi Kami</a>
             </div>
         </div>
     </nav>
 
-    <div class="container my-5">
-        <div class="p-5 text-center bg-white rounded-3 shadow-sm">
-            <h1 class="text-body-emphasis">Bikin Website Cepat Pakai Bootstrap!</h1>
-            <p class="col-lg-8 mx-auto fs-5 text-muted">
-                Ini adalah contoh halaman web sederhana. Dengan Bootstrap, kita bisa bikin layout rapi begini tanpa nulis CSS manual sama sekali.
-            </p>
-            <button class="btn btn-primary btn-lg px-4" type="button">Mulai Belajar</button>
+    <section id="home" class="hero-section text-white py-5 text-center text-md-start">
+        <div class="container py-5">
+            <div class="row align-items-center">
+                <div class="col-md-6 mb-4 mb-md-0">
+                    <h1 class="display-4 fw-bold mb-3">Top Up PPOB Kebutuhan Harian & VPN Premium Aman!</h1>
+                    <p class="lead text-white-50 mb-4">Bayar tagihan, isi pulsa, hingga amankan koneksi internet kamu dengan layanan VPN premium terbaik kami. Proses instan, harga agen!</p>
+                    <a href="#ppob" class="btn btn-light btn-lg text-primary fw-bold me-2">Beli PPOB</a>
+                    <a href="#vpn" class="btn btn-outline-light btn-lg">Beli VPN</a>
+                </div>
+                <div class="col-md-6 text-center">
+                    <i class="bi bi-shield-lock-fill text-white-50" style="font-size: 12rem;"></i>
+                </div>
+            </div>
         </div>
-    </div>
+    </section>
 
-    <div class="container my-5">
+    <section id="ppob" class="container py-5">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Layanan PPOB & Top Up</h2>
+            <p class="text-muted">Isi ulang pulsa, kuota, dan bayar tagihan bulanan tanpa ribet.</p>
+        </div>
         <div class="row g-4">
             <div class="col-md-4">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title text-success">Responsif</h5>
-                        <p class="card-text">Coba kecilin ukuran browser kamu atau buka di HP. 3 kotak ini bakal otomatis tersusun vertikal ke bawah biar gak sempit.</p>
+                <div class="card h-100 border-0 shadow-sm card-product">
+                    <div class="card-body text-center p-4">
+                        <div class="icon-box bg-primary-subtle text-primary rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                            <i class="bi bi-phone fs-3"></i>
+                        </div>
+                        <h4 class="card-title fw-bold">Pulsa & Kuota Data</h4>
+                        <p class="card-text text-muted">Tersedia untuk semua operator (Telkomsel, XL, Indosat, dll) dengan harga promo.</p>
+                        <hr>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="text-muted">Mulai dari</span>
+                            <span class="fw-bold text-success fs-5">Rp 5.000</span>
+                        </div>
+                        <button class="btn btn-outline-primary w-100">Order Sekarang</button>
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title text-primary">Hemat Waktu</h5>
-                        <p class="card-text">Gak perlu pusing mikirin `margin`, `padding`, atau `border-radius`. Semuanya tinggal panggil nama kelasnya aja.</p>
+                <div class="card h-100 border-0 shadow-sm card-product">
+                    <div class="card-body text-center p-4">
+                        <div class="icon-box bg-warning-subtle text-warning rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                            <i class="bi bi-lightning fs-3"></i>
+                        </div>
+                        <h4 class="card-title fw-bold">Token & Tagihan PLN</h4>
+                        <p class="card-text text-muted">Isi token listrik rumah tangga atau bayar tagihan pascabayar instan 24 jam.</p>
+                        <hr>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="text-muted">Biaya Admin</span>
+                            <span class="fw-bold text-success fs-5">Rp 1.500</span>
+                        </div>
+                        <button class="btn btn-outline-primary w-100">Order Sekarang</button>
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title text-danger">Banyak Komponen</h5>
-                        <p class="card-text">Ada tombol, tabel, formulir, modal (pop-up), hingga animasi loading yang semuanya udah siap pakai.</p>
+                <div class="card h-100 border-0 shadow-sm card-product">
+                    <div class="card-body text-center p-4">
+                        <div class="icon-box bg-success-subtle text-success rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                            <i class="bi bi-wallet2 fs-3"></i>
+                        </div>
+                        <h4 class="card-title fw-bold">Top Up E-Wallet</h4>
+                        <p class="card-text text-muted">Top up saldo Dana, OVO, GoPay, ShopeePay terlengkap dan masuk hitungan detik.</p>
+                        <hr>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="text-muted">Proses</span>
+                            <span class="fw-bold text-success fs-5">Otomatis</span>
+                        </div>
+                        <button class="btn btn-outline-primary w-100">Order Sekarang</button>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
+
+    <section id="vpn" class="bg-white py-5">
+        <div class="container py-3">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold">Paket VPN Premium</h2>
+                <p class="text-muted">Bypass blokir, main game tanpa lag, dan amankan privasi internet kamu.</p>
+            </div>
+            <div class="row g-4 justify-content-center">
+                <div class="col-md-5 col-lg-4">
+                    <div class="card h-100 border border-2 shadow-sm card-product">
+                        <div class="card-body p-4 text-center">
+                            <span class="badge bg-primary mb-3">Best Seller</span>
+                            <h4 class="fw-bold">VPN 1 Bulan</h4>
+                            <h2 class="fw-bold my-3">Rp 35.000 <span class="fs-6 text-muted fw-normal">/bulan</span></h2>
+                            <p class="text-muted">Cocok buat coba-coba performa server premium kami.</p>
+                            <hr>
+                            <ul class="list-unstyled text-start mb-4">
+                                <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> High Speed Server (SG/ID/US)</li>
+                                <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Support Streaming & Gaming</li>
+                                <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Kouta Unlimited / Tanpa FUP</li>
+                                <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> 2 Device Login Maksimal</li>
+                            </ul>
+                            <button class="btn btn-primary w-100">Beli Paket</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5 col-lg-4">
+                    <div class="card h-100 border border-primary border-2 shadow-sm card-product position-relative">
+                        <span class="position-absolute top-0 start-50 translate-middle badge rounded-pill bg-danger">Hemat 40%</span>
+                        <div class="card-body p-4 text-center">
+                            <span class="badge bg-secondary mb-3">Hemat Banget</span>
+                            <h4 class="fw-bold">VPN 1 Tahun</h4>
+                            <h2 class="fw-bold my-3">Rp 250.000 <span class="fs-6 text-muted fw-normal">/tahun</span></h2>
+                            <p class="text-muted">Pilihan terbaik untuk perlindungan privasi jangka panjang.</p>
+                            <hr>
+                            <ul class="list-unstyled text-start mb-4">
+                                <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Semua Fitur Bulanan</li>
+                                <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Prioritas Speed Server</li>
+                                <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Bypass Semua Web Blokir</li>
+                                <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> 5 Device Login Sekaligus</li>
+                            </ul>
+                            <button class="btn btn-dark w-100">Beli Paket</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="testimoni" class="container py-5">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Apa Kata Mereka?</h2>
+            <p class="text-muted">Ulasan jujur dari pelanggan setia kami.</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm bg-white p-3">
+                    <div class="card-body">
+                        <p class="card-text italic">"Beli kuota di sini prosesnya cepet bgt ga sampe 1 menit udah masuk. Mantap!"</p>
+                        <div class="d-flex align-items-center pt-2">
+                            <div class="fw-bold">Rian - Gamer</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm bg-white p-3">
+                    <div class="card-body">
+                        <p class="card-text">"VPN-nya kenceng dipake buat main game inter ping tetep ijo dan stabil. Gak nyesel beli yg setahun."</p>
+                        <div class="d-flex align-items-center pt-2">
+                            <div class="fw-bold">Andi - Remote Worker</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm bg-white p-3">
+                    <div class="card-body">
+                        <p class="card-text">"Suka banget top up dana di sini, adminnya murah dibanding aplikasi sebelah."</p>
+                        <div class="d-flex align-items-center pt-2">
+                            <div class="fw-bold">Siti - Ibu Rumah Tangga</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-dark text-white-50 py-4 text-center">
+        <div class="container">
+            <p class="mb-2">&copy; 2026 PediaStore. All Rights Reserved.</p>
+            <p class="small">Dibuat dengan <i class="bi bi-heart-fill text-danger"></i> menggunakan Bootstrap 5.</p>
+        </div>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
