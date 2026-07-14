@@ -1,280 +1,161 @@
 <!DOCTYPE html>
-<html lang="id">
+<html ng-app="iklanApp">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PayNet - PPOB & VPN Premium</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <style>
-        :root {
-            --dark-bg: #0b0f19;
-            --card-bg: #151c2c;
-            --accent-color: #00f2fe;
-            --accent-gradient: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
-        }
+  <meta charset="utf-8">
+  <title>PPOB & VPN Premium - Layanan Cepat & Aman</title>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-        body {
-            background-color: var(--dark-bg);
-            color: #f8f9fa;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            overflow-x: hidden;
-        }
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.5.0/ui-bootstrap-tpls.min.js"></script>
 
-        /* Navbar Custom */
-        .navbar {
-            background-color: rgba(11, 15, 25, 0.9) !important;
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .navbar-brand {
-            font-weight: 800;
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* Hero Section */
-        .hero-section {
-            padding: 150px 0 100px 0;
-            background: radial-gradient(circle at 90% 10%, rgba(0, 242, 254, 0.1) 0%, transparent 40%);
-        }
-
-        .btn-gradient {
-            background: var(--accent-gradient);
-            color: #000;
-            font-weight: 600;
-            border: none;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .btn-gradient:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0, 242, 254, 0.3);
-            color: #000;
-        }
-
-        .btn-outline-custom {
-            color: #fff;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            transition: all 0.3s ease;
-        }
-
-        .btn-outline-custom:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: #fff;
-            border-color: var(--accent-color);
-        }
-
-        /* Card Custom */
-        .custom-card {
-            background-color: var(--card-bg);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 16px;
-            transition: transform 0.3s ease, border-color 0.3s ease;
-        }
-
-        .custom-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(0, 242, 254, 0.3);
-        }
-
-        .icon-box {
-            width: 60px;
-            height: 60px;
-            background: rgba(0, 242, 254, 0.1);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            color: var(--accent-color);
-            margin-bottom: 20px;
-        }
-
-        /* Footer */
-        footer {
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            background-color: #080b12;
-        }
-    </style>
+  <style>
+    body { background-color: #f8f9fa; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    .hero-section { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white; padding: 60px 0; text-align: center; }
+    .service-card { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 30px; transition: transform 0.3s; }
+    .service-card:hover { transform: translateY(-5px); }
+    .icon-box { font-size: 50px; margin-bottom: 15px; }
+    .text-ppob { color: #27ae60; }
+    .text-vpn { color: #2980b9; }
+    .footer { background: #222; color: #aaa; padding: 20px 0; margin-top: 50px; text-align: center; }
+  </style>
 </head>
-<body>
+<body ng-controller="MainController">
 
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-        <div class="container">
-            <a class="navbar-brand fs-3" href="#">PAYNET</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item"><a class="nav-link px-3" href="#fitur">Fitur</a></li>
-                    <li class="nav-item"><a class="nav-link px-3" href="#ppob">PPOB</a></li>
-                    <li class="nav-item"><a class="nav-link px-3" href="#vpn">VPN Premium</a></li>
-                    <li class="nav-item ms-2">
-                        <a class="btn btn-gradient px-4 rounded-pill" href="#gabung">Mulai Sekarang</a>
-                    </li>
-                </ul>
-            </div>
+  <div class="hero-section">
+    <div class="container">
+      <h1>Solusi Digital Terlengkap & Aman</h1>
+      <p class="lead">Bayar tagihan PPOB super cepat & amankan internetmu dengan VPN Premium berkecepatan tinggi.</p>
+    </div>
+  </div>
+
+  <div class="container" style="margin-top: 40px;">
+    <div class="row">
+      
+      <div class="col-md-6">
+        <div class="service-card text-center">
+          <div class="icon-box text-ppob">
+            <i class="fa fa-money"></i>
+          </div>
+          <h2 class="text-ppob">PPOB Terlengkap</h2>
+          <p>Bayar Pulsa, Paket Data, Token PLN, PDAM, BPJS, hingga top-up E-Wallet secara instan 24/7 dengan harga agen termurah!</p>
+          <hr>
+          <button class="btn btn-success btn-lg" ng-click="bukaOrder('PPOB (Pulsa, Token, Tagihan)')">
+            <i class="fa fa-shopping-cart"></i> Order / Bayar Sekarang
+          </button>
         </div>
-    </nav>
+      </div>
 
-    <header class="hero-section">
-        <div class="container">
-            <div class="row align-items-center gy-5">
-                <div class="col-lg-6">
-                    <span class="badge bg-secondary mb-3 px-3 py-2 rounded-pill bg-opacity-25 text-info">
-                        <i class="bi bi-shield-check me-1"></i> All-in-One Digital Solution
-                    </span>
-                    <h1 class="display-4 fw-bold mb-3">Transaksi Lancar, Internetan Aman Tanpa Batas!</h1>
-                    <p class="lead text-muted mb-4">
-                        Penuhi kebutuhan tagihan harianmu dengan layanan PPOB tercepat, sekaligus amankan koneksi internetmu menggunakan VPN Premium berkecepatan tinggi dalam satu platform.
-                    </p>
-                    <div class="d-flex gap-3">
-                        <a href="#ppob" class="btn btn-gradient btn-lg px-4 rounded-pill">Gunakan PPOB</a>
-                        <a href="#vpn" class="btn btn-outline-custom btn-lg px-4 rounded-pill">Sewa VPN</a>
-                    </div>
-                </div>
-                <div class="col-lg-6 text-center">
-                    <div class="position-relative py-5">
-                        <div class="spinner-grow text-info position-absolute top-50 start-50 translate-middle" style="width: 300px; height: 300px; opacity: 0.05;" role="status"></div>
-                        <i class="bi bi-shield-lock-fill text-info" style="font-size: 10rem; filter: drop-shadow(0 0 20px rgba(0,242,254,0.3));"></i>
-                    </div>
-                </div>
-            </div>
+      <div class="col-md-6">
+        <div class="service-card text-center">
+          <div class="icon-box text-vpn">
+            <i class="fa fa-shield"></i>
+          </div>
+          <h2 class="text-vpn">VPN Premium</h2>
+          <p>Bypass blokir internet positif, enkripsi data 256-bit, *no-logs policy*, dan nikmati server berkecepatan tinggi tanpa batas kuota.</p>
+          <hr>
+          <button class="btn btn-primary btn-lg" ng-click="bukaOrder('VPN Premium (Fast & Secure)')">
+            <i class="fa fa-key"></i> Langganan VPN
+          </button>
         </div>
-    </header>
+      </div>
 
-    <section id="fitur" class="py-5">
-        <div class="container py-4">
-            <div class="text-center mb-5">
-                <h2 class="fw-bold">Kenapa Memilih Kami?</h2>
-                <p class="text-muted">Layanan terbaik untuk kebutuhan digital harian dan privasi online Anda</p>
-            </div>
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="card custom-card h-100 p-4">
-                        <div class="icon-box">
-                            <i class="bi bi-lightning-charge-fill"></i>
-                        </div>
-                        <h4 class="fw-bold">Transaksi Detik Itu Juga</h4>
-                        <p class="text-muted mb-0">Sistem PPOB otomatis yang memproses pulsa, kuota, dan tagihan listrik Anda hanya dalam hitungan detik.</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card custom-card h-100 p-4">
-                        <div class="icon-box">
-                            <i class="bi bi-incognito"></i>
-                        </div>
-                        <h4 class="fw-bold">Privasi VPN Tingkat Militer</h4>
-                        <p class="text-muted mb-0">Sembunyikan aktivitas browsing Anda dari pelacak pihak ketiga dengan enkripsi VPN end-to-end.</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card custom-card h-100 p-4">
-                        <div class="icon-box">
-                            <i class="bi bi-headset"></i>
-                        </div>
-                        <h4 class="fw-bold">Dukungan CS 24/7</h4>
-                        <p class="text-muted mb-0">Tim support kami selalu siap sedia membantu Anda kapan saja, siang maupun malam.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    </div>
+  </div>
 
-    <section id="ppob" class="py-5 bg-opacity-25 bg-black">
-        <div class="container py-4">
-            <div class="row align-items-center gy-5">
-                <div class="col-lg-5">
-                    <h2 class="fw-bold mb-3">Layanan PPOB Terlengkap & Termurah</h2>
-                    <p class="text-muted mb-4">
-                        Nikmati kemudahan membayar berbagai macam tagihan bulanan dan pengisian ulang saldo digital langsung dari genggaman tangan Anda.
-                    </p>
-                    <ul class="list-unstyled">
-                        <li class="mb-3"><i class="bi bi-check-circle-fill text-info me-2"></i> Pulsa & Paket Data Semua Operator</li>
-                        <li class="mb-3"><i class="bi bi-check-circle-fill text-info me-2"></i> Token PLN & Tagihan Pascabayar</li>
-                        <li class="mb-3"><i class="bi bi-check-circle-fill text-info me-2"></i> Top Up E-Wallet (Dana, OVO, GoPay)</li>
-                        <li class="mb-3"><i class="bi bi-check-circle-fill text-info me-2"></i> Voucher Game Terlengkap</li>
-                    </ul>
-                </div>
-                <div class="col-lg-7">
-                    <div class="card custom-card p-4">
-                        <h5 class="fw-bold mb-4 text-info"><i class="bi bi-cart3 me-2"></i>Form Simulasi Order</h5>
-                        <form>
-                            <div class="mb-3">
-                                <label class="form-label">Pilih Kategori</label>
-                                <select class="form-select bg-dark text-white border-secondary">
-                                    <option>Pulsa & Kuota</option>
-                                    <option>Token Listrik (PLN)</option>
-                                    <option>E-Wallet Top Up</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Nomor Tujuan / ID Pelanggan</label>
-                                <input type="number" class="form-control bg-dark text-white border-secondary" placeholder="Contoh: 08123456789">
-                            </div>
-                            <button type="button" class="btn btn-gradient w-100 py-2 mt-2">Cek Harga Sekarang</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+  <div class="footer">
+    <p>&copy; 2026 Agen Digital PPOB & VPN. All Rights Reserved.</p>
+  </div>
 
-    <section id="vpn" class="py-5">
-        <div class="container py-4">
-            <div class="text-center mb-5">
-                <h2 class="fw-bold">Pilihan Paket VPN Premium</h2>
-                <p class="text-muted">Bypass sensor, amankan koneksi WiFi publik, dan dapatkan IP Dedicated</p>
-            </div>
-            <div class="row g-4 justify-content-center">
-                <div class="col-md-4">
-                    <div class="card custom-card text-center p-4 h-100">
-                        <h5 class="fw-bold text-muted mb-3">BULANAN</h5>
-                        <h2 class="fw-bold text-info mb-4">Rp 25.000<span class="fs-6 text-muted">/bln</span></h2>
-                        <ul class="list-unstyled mb-4 text-start mx-auto" style="max-width: 200px;">
-                            <li class="mb-2"><i class="bi bi-check text-info me-2"></i> 3 Perangkat</li>
-                            <li class="mb-2"><i class="bi bi-check text-info me-2"></i> 10+ Negara</li>
-                            <li class="mb-2"><i class="bi bi-check text-info me-2"></i> Unlimited Bandwidth</li>
-                            <li class="mb-2 text-muted"><i class="bi bi-x text-danger me-2"></i> IP Dedicated</li>
-                        </ul>
-                        <button class="btn btn-outline-custom w-100 mt-auto rounded-pill">Sewa Sekarang</button>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card custom-card text-center p-4 h-100 border-info" style="box-shadow: 0 0 20px rgba(0, 242, 254, 0.15);">
-                        <span class="badge bg-info text-dark align-self-center px-3 py-1 rounded-pill mb-3">TERLARIS</span>
-                        <h5 class="fw-bold text-white mb-3">TAHUNAN</h5>
-                        <h2 class="fw-bold text-info mb-4">Rp 200.000<span class="fs-6 text-muted">/thn</span></h2>
-                        <ul class="list-unstyled mb-4 text-start mx-auto" style="max-width: 200px;">
-                            <li class="mb-2"><i class="bi bi-check text-info me-2"></i> 5 Perangkat</li>
-                            <li class="mb-2"><i class="bi bi-check text-info me-2"></i> 50+ Negara</li>
-                            <li class="mb-2"><i class="bi bi-check text-info me-2"></i> Unlimited Bandwidth</li>
-                            <li class="mb-2"><i class="bi bi-check text-info me-2"></i> Support Torrent/P2P</li>
-                        </ul>
-                        <button class="btn btn-gradient w-100 mt-auto rounded-pill">Sewa Sekarang</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+  <script type="text/ng-template" id="modalOrder.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Formulir Pemesanan</h3>
+    </div>
+    <div class="modal-body">
+        <p>Anda memilih layanan: <strong>{{ layanan }}</strong></p>
+        
+        <form>
+          <div class="form-group">
+            <label>Nama Lengkap:</label>
+            <input type="text" class="form-control" ng-model="form.nama" placeholder="Masukkan nama Anda">
+          </div>
+          <div class="form-group">
+            <label>Nomor WhatsApp:</label>
+            <input type="text" class="form-control" ng-model="form.wa" placeholder="Contoh: 0812xxxxxxxx">
+          </div>
+          <div class="form-group">
+            <label>Detail Tambahan / Paket:</label>
+            <textarea class="form-control" ng-model="form.catatan" rows="3" placeholder="Contoh: Token PLN 100rb / VPN Paket 1 Bulan"></textarea>
+          </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-default" type="button" ng-click="batal()">Batal</button>
+        <button class="btn btn-success" type="button" ng-click="kirim()">Kirim via WhatsApp</button>
+    </div>
+  </script>
 
-    <footer class="py-5">
-        <div class="container text-center">
-            <h4 class="navbar-brand fs-3 mb-3">PAYNET</h4>
-            <p class="text-muted small">Solusi Pembayaran Digital & Perlindungan Privasi Terbaik di Indonesia.</p>
-            <div class="d-flex justify-content-center gap-3 my-4">
-                <a href="#" class="text-muted fs-4"><i class="bi bi-facebook"></i></a>
-                <a href="#" class="text-muted fs-4"><i class="bi bi-instagram"></i></a>
-                <a href="#" class="text-muted fs-4"><i class="bi bi-telegram"></i></a>
-            </div>
-            <p class="text-muted small mb-0">&copy; 2026 PayNet. All rights reserved.</p>
-        </div>
-    </footer>
+  <script>
+    var app = angular.module('iklanApp', ['ui.bootstrap']);
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    app.controller('MainController', function($scope, $uibModal) {
+      
+      // Fungsi untuk membuka modal order
+      $scope.bukaOrder = function(namaLayanan) {
+        var modalInstance = $uibModal.open({
+          templateUrl: 'modalOrder.html',
+          controller: 'OrderController',
+          resolve: {
+            layananTerpilih: function () {
+              return namaLayanan;
+            }
+          }
+        });
+
+        // Hasil setelah modal disubmit
+        modalInstance.result.then(function (dataForm) {
+          // Simulasi mengarahkan ke chat WhatsApp dengan data orderan
+          var pesanText = "Halo Admin, saya mau order:\n\n" +
+                          "Layanan: " + dataForm.layanan + "\n" +
+                          "Nama: " + dataForm.nama + "\n" +
+                          "WA: " + dataForm.wa + "\n" +
+                          "Catatan: " + dataForm.catatan;
+          
+          var urlWhatsapp = "https://api.whatsapp.com/send?phone=628123456789&text=" + encodeURIComponent(pesanText);
+          window.open(urlWhatsapp, '_blank');
+        }, function () {
+          console.log('Order dibatalkan.');
+        });
+      };
+      
+    });
+
+    // Controller untuk mengontrol data di dalam modal
+    app.controller('OrderController', function($scope, $uibModalInstance, layananTerpilih) {
+      $scope.layanan = layananTerpilih;
+      $scope.form = {
+        nama: '',
+        wa: '',
+        catatan: ''
+      };
+
+      $scope.kirim = function() {
+        // Mengirim data form kembali ke MainController
+        $uibModalInstance.close({
+          layanan: $scope.layanan,
+          nama: $scope.form.nama,
+          wa: $scope.form.wa,
+          catatan: $scope.form.catatan
+        });
+      };
+
+      $scope.batal = function() {
+        $uibModalInstance.dismiss('cancel');
+      };
+    });
+  </script>
+
 </body>
 </html>
