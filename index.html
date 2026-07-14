@@ -3,192 +3,290 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Xtrimer Tunneling & PPOB</title>
-    <!-- CSS Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Icon Tambahan (Bootstrap Icons) -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <title>Website Bootstrap - Contoh Modern</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 120px 0;
+            border-radius: 0 0 50px 50px;
+        }
+        .card-hover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+        .footer {
+            background: #2d3436;
+            color: white;
+            padding: 40px 0;
+        }
+        .social-icons a {
+            color: white;
+            font-size: 24px;
+            margin: 0 10px;
+            transition: color 0.3s;
+        }
+        .social-icons a:hover {
+            color: #667eea;
+        }
+        .navbar {
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+        .testimonial-img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 3px solid #667eea;
+        }
+    </style>
 </head>
-<body class="bg-light">
+<body>
 
-    <!-- NAVBAR -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow-sm">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top">
         <div class="container">
-            <a class="navbar-brand fw-bold text-primary" href="#"><i class="bi bi-shield-lock-fill me-2"></i>Xtrimer Service</a>
+            <a class="navbar-brand fw-bold" href="#">
+                <i class="bi bi-bootstrap-fill text-primary"></i> BootstrapCo
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto fw-medium">
-                    <li class="nav-item"><a class="nav-link active" href="#home">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#vpn">Paket VPN</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#ppob">Layanan PPOB</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#server">Status Server</a></li>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link active" href="#">Beranda</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#layanan">Layanan</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#tentang">Tentang</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#testimoni">Testimoni</a></li>
+                    <li class="nav-item"><a class="nav-link btn btn-primary text-white px-3 ms-2" href="#kontak">Hubungi</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <!-- HERO SECTION -->
-    <div id="home" class="container my-5 py-4">
-        <div class="row align-items-center g-5">
-            <div class="col-lg-6 text-center text-lg-start">
-                <span class="badge bg-primary-subtle text-primary mb-3 px-3 py-2 rounded-pill fw-semibold">Update Sistem 2026</span>
-                <h1 class="display-5 fw-bold text-dark mb-3">Solusi Internet Cepat & Top-Up Digital Termurah</h1>
-                <p class="lead text-muted mb-4">Menyediakan akun Premium VPN Tunneling (VMess, VLess, Trojan, Hysteria2) yang stabil dan panel PPOB otomatis 24 jam.</p>
-                <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-                    <a href="#vpn" class="btn btn-primary btn-lg px-4 me-md-2 fw-bold shadow-sm"><i class="bi bi-rocket-takeoff me-2"></i>Order VPN</a>
-                    <a href="#ppob" class="btn btn-outline-secondary btn-lg px-4"><i class="bi bi-wallet2 me-2"></i>Cek PPOB</a>
-                </div>
-            </div>
-            <div class="col-lg-6 text-center">
-                <!-- Gunakan icon besar sebagai pengganti gambar -->
-                <i class="bi bi-globe-asia-australia text-primary" style="font-size: 10rem;"></i>
-            </div>
-        </div>
-    </div>
-
-    <!-- PRICING SECTION (PAKET VPN) -->
-    <div id="vpn" class="bg-white py-5 shadow-sm">
+    <!-- Hero Section -->
+    <section class="hero-section text-center">
         <div class="container">
-            <div class="text-center mb-5">
-                <h2 class="fw-bold">Paket Premium VPN Tunneling</h2>
-                <p class="text-muted">Support semua protokol andalan untuk optimasi jaringan kamu</p>
-            </div>
-            <div class="row g-4 justify-content-center">
-                <!-- Kartu Paket 1 -->
+            <h1 class="display-2 fw-bold mb-4">Solusi Digital <br>Untuk Masa Depan</h1>
+            <p class="lead mb-4">Kami membantu bisnis Anda bertransformasi secara digital <br>dengan teknologi terkini dan desain yang memukau.</p>
+            <a href="#layanan" class="btn btn-light btn-lg px-5 py-3 fw-bold">Mulai Sekarang</a>
+            <a href="#kontak" class="btn btn-outline-light btn-lg px-5 py-3 ms-2">Konsultasi</a>
+        </div>
+    </section>
+
+    <!-- Layanan Section -->
+    <section id="layanan" class="py-5">
+        <div class="container">
+            <h2 class="text-center fw-bold mb-5">Layanan Kami</h2>
+            <div class="row g-4">
                 <div class="col-md-4">
-                    <div class="card h-100 border-primary shadow-sm">
-                        <div class="card-header bg-primary text-white text-center py-3">
-                            <h4 class="my-0 fw-bold">Paket SSH / VMess</h4>
-                        </div>
-                        <div class="card-body text-center d-flex flex-column">
-                            <h1 class="card-title pricing-card-title my-3">Rp 15k<small class="text-muted fw-light">/bulan</small></h1>
-                            <ul class="list-unstyled mt-3 mb-4 text-start mx-auto" style="max-width: 200px;">
-                                <li><i class="bi bi-check-circle-fill text-success me-2"></i> Server Singapore (SG)</li>
-                                <li><i class="bi bi-check-circle-fill text-success me-2"></i> Aktif 30 Hari</li>
-                                <li><i class="bi bi-check-circle-fill text-success me-2"></i> Limit 1 Device</li>
-                                <li><i class="bi bi-check-circle-fill text-success me-2"></i> Kebutuhan Game/Browsing</li>
-                            </ul>
-                            <button type="button" class="w-100 btn btn-primary mt-auto fw-bold">Beli Sekarang</button>
+                    <div class="card card-hover h-100 text-center p-4">
+                        <i class="bi bi-display display-1 text-primary"></i>
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">Web Development</h5>
+                            <p class="card-text">Membangun website modern, responsif, dan cepat dengan teknologi terbaru.</p>
                         </div>
                     </div>
                 </div>
-                <!-- Kartu Paket 2 -->
                 <div class="col-md-4">
-                    <div class="card h-100 border-dark shadow-sm">
-                        <div class="card-header bg-dark text-white text-center py-3">
-                            <h4 class="my-0 fw-bold">Hysteria2 / Trojan</h4>
+                    <div class="card card-hover h-100 text-center p-4">
+                        <i class="bi bi-phone display-1 text-success"></i>
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">Mobile Apps</h5>
+                            <p class="card-text">Aplikasi mobile native dan hybrid untuk iOS dan Android.</p>
                         </div>
-                        <div class="card-body text-center d-flex flex-column">
-                            <h1 class="card-title pricing-card-title my-3">Rp 25k<small class="text-muted fw-light">/bulan</small></h1>
-                            <ul class="list-unstyled mt-3 mb-4 text-start mx-auto" style="max-width: 200px;">
-                                <li><i class="bi bi-check-circle-fill text-success me-2"></i> High Speed Server</li>
-                                <li><i class="bi bi-check-circle-fill text-success me-2"></i> Bypass Blokir Provider</li>
-                                <li><i class="bi bi-check-circle-fill text-success me-2"></i> Low Ping & No Lag</li>
-                                <li><i class="bi bi-check-circle-fill text-success me-2"></i> Full Garansi 30 Hari</li>
-                            </ul>
-                            <button type="button" class="w-100 btn btn-dark mt-auto fw-bold">Beli Sekarang</button>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card card-hover h-100 text-center p-4">
+                        <i class="bi bi-cloud display-1 text-info"></i>
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">Cloud Solutions</h5>
+                            <p class="card-text">Solusi cloud computing dan infrastruktur yang scalable.</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <!-- PPOB PREVIEW SECTION -->
-    <div id="ppob" class="container my-5 py-4">
-        <div class="row align-items-center">
-            <div class="col-lg-5 mb-4 mb-lg-0">
-                <h2 class="fw-bold mb-3">Layanan PPOB Otomatis</h2>
-                <p class="text-muted">Top-up saldo pulsa, paket data, voucher game, hingga token PLN instan tanpa tunda dengan harga reseller.</p>
-                <div class="d-flex align-items-center mb-3">
-                    <div class="bg-success-subtle text-success rounded p-2 me-3"><i class="bi bi-lightning-charge-fill fs-4"></i></div>
-                    <div><strong>Proses Instan:</strong> Detik itu juga langsung masuk via API otomatis.</div>
+    <!-- Tentang Section -->
+    <section id="tentang" class="py-5 bg-light">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <img src="https://via.placeholder.com/600x400/667eea/ffffff?text=Tentang+Kami" 
+                         class="img-fluid rounded-4 shadow" alt="Tentang Kami">
                 </div>
-                <div class="d-flex align-items-center">
-                    <div class="bg-info-subtle text-info rounded p-2 me-3"><i class="bi bi-shield-check fs-4"></i></div>
-                    <div><strong>Aman & Legal:</strong> Transaksi bergaransi dengan riwayat yang transparan.</div>
+                <div class="col-lg-6">
+                    <h2 class="fw-bold mb-4">Tentang Kami</h2>
+                    <p class="lead">Kami adalah tim profesional yang berdedikasi untuk membantu bisnis Anda berkembang.</p>
+                    <p>Dengan pengalaman lebih dari 10 tahun di industri teknologi, kami telah membantu ratusan klien mencapai tujuan digital mereka.</p>
+                    <div class="d-flex gap-4 mt-4">
+                        <div>
+                            <h3 class="fw-bold text-primary">500+</h3>
+                            <p>Proyek Selesai</p>
+                        </div>
+                        <div>
+                            <h3 class="fw-bold text-primary">98%</h3>
+                            <p>Kepuasan Klien</p>
+                        </div>
+                        <div>
+                            <h3 class="fw-bold text-primary">50+</h3>
+                            <p>Tim Ahli</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <!-- Form Simulasi Cek Harga -->
-            <div class="col-lg-6 offset-lg-1">
-                <div class="card shadow p-4 border-0">
-                    <h5 class="fw-bold mb-3 text-secondary"><i class="bi bi-search me-2"></i>Cek Harga Produk</h5>
+        </div>
+    </section>
+
+    <!-- Testimoni Section -->
+    <section id="testimoni" class="py-5">
+        <div class="container">
+            <h2 class="text-center fw-bold mb-5">Apa Kata Klien Kami</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card card-hover h-100 p-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <img src="https://via.placeholder.com/80/667eea/ffffff?text=User" class="testimonial-img" alt="User">
+                            <div class="ms-3">
+                                <h6 class="fw-bold mb-0">Andi Wijaya</h6>
+                                <small class="text-muted">CEO TechInno</small>
+                            </div>
+                        </div>
+                        <p class="card-text">"Tim ini sangat profesional dan hasilnya melebihi ekspektasi. Website kami sekarang jauh lebih cepat dan modern."</p>
+                        <div class="text-warning">
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card card-hover h-100 p-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <img src="https://via.placeholder.com/80/764ba2/ffffff?text=User" class="testimonial-img" alt="User">
+                            <div class="ms-3">
+                                <h6 class="fw-bold mb-0">Siti Rahayu</h6>
+                                <small class="text-muted">Marketing Director</small>
+                            </div>
+                        </div>
+                        <p class="card-text">"Aplikasi mobile yang dikembangkan sangat user-friendly dan membantu meningkatkan engagement pelanggan."</p>
+                        <div class="text-warning">
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card card-hover h-100 p-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <img src="https://via.placeholder.com/80/6c5ce7/ffffff?text=User" class="testimonial-img" alt="User">
+                            <div class="ms-3">
+                                <h6 class="fw-bold mb-0">Budi Santoso</h6>
+                                <small class="text-muted">Founder Startup</small>
+                            </div>
+                        </div>
+                        <p class="card-text">"Dukungan teknis yang luar biasa dan solusi cloud yang diberikan sangat membantu skalabilitas bisnis kami."</p>
+                        <div class="text-warning">
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Kontak Section -->
+    <section id="kontak" class="py-5 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <h2 class="fw-bold mb-4">Hubungi Kami</h2>
+                    <p class="mb-4">Ada pertanyaan? Jangan ragu untuk menghubungi tim kami. Kami siap membantu Anda 24/7.</p>
                     <form>
                         <div class="mb-3">
-                            <label class="form-label font-monospace small">Kategori Layanan</label>
-                            <select class="form-select">
-                                <option>Pulsa Reguler</option>
-                                <option>Paket Data Internet</option>
-                                <option>Token PLN (Listrik)</option>
-                                <option>Top-Up Game</option>
-                            </select>
+                            <input type="text" class="form-control form-control-lg" placeholder="Nama Lengkap">
                         </div>
                         <div class="mb-3">
-                            <label class="form-label font-monospace small">Pilih Operator / Game</label>
-                            <select class="form-select">
-                                <option>Telkomsel</option>
-                                <option>Indosat Ooredoo</option>
-                                <option>XL Axiata / Axis</option>
-                                <option>Mobile Legends / Free Fire</option>
-                            </select>
+                            <input type="email" class="form-control form-control-lg" placeholder="Email">
                         </div>
-                        <button type="button" class="btn btn-success w-100 fw-bold"><i class="bi bi-eye me-2"></i>Tampilkan Daftar Harga</button>
+                        <div class="mb-3">
+                            <textarea class="form-control form-control-lg" rows="5" placeholder="Pesan"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-lg px-5">Kirim Pesan</button>
                     </form>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card p-4">
+                        <h5 class="fw-bold mb-3">Informasi Kontak</h5>
+                        <p><i class="bi bi-geo-alt text-primary me-2"></i> Jl. Teknologi No. 123, Jakarta</p>
+                        <p><i class="bi bi-envelope text-primary me-2"></i> info@bootstrapco.com</p>
+                        <p><i class="bi bi-telephone text-primary me-2"></i> (021) 1234-5678</p>
+                        <div class="mt-3">
+                            <div class="social-icons">
+                                <a href="#"><i class="bi bi-facebook"></i></a>
+                                <a href="#"><i class="bi bi-twitter-x"></i></a>
+                                <a href="#"><i class="bi bi-instagram"></i></a>
+                                <a href="#"><i class="bi bi-linkedin"></i></a>
+                                <a href="#"><i class="bi bi-youtube"></i></a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <!-- SERVER STATUS SECTION -->
-    <div id="server" class="bg-dark text-white py-5">
+    <!-- Footer -->
+    <footer class="footer">
         <div class="container">
-            <div class="text-center mb-4">
-                <h2 class="fw-bold">Status Server Tunneling</h2>
-                <p class="text-secondary">Kami memastikan server selalu prima demi kenyamanan koneksi Anda</p>
+            <div class="row">
+                <div class="col-md-4">
+                    <h5 class="fw-bold">BootstrapCo</h5>
+                    <p>Membangun solusi digital untuk masa depan yang lebih baik.</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Menu</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white text-decoration-none">Beranda</a></li>
+                        <li><a href="#layanan" class="text-white text-decoration-none">Layanan</a></li>
+                        <li><a href="#tentang" class="text-white text-decoration-none">Tentang</a></li>
+                        <li><a href="#kontak" class="text-white text-decoration-none">Kontak</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Subscribe</h5>
+                    <p>Dapatkan update terbaru dari kami.</p>
+                    <div class="input-group">
+                        <input type="email" class="form-control" placeholder="Email">
+                        <button class="btn btn-primary" type="button">Subscribe</button>
+                    </div>
+                </div>
             </div>
-            <div class="table-responsive col-lg-8 mx-auto">
-                <table class="table table-dark table-hover table-striped align-middle border-secondary">
-                    <thead>
-                        <tr>
-                            <th>Nama Server</th>
-                            <th>Protokol</th>
-                            <th>Lokasi</th>
-                            <th class="text-center">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="fw-bold">SG-Premium-01</td>
-                            <td>VMess / VLess</td>
-                            <td>Singapore</td>
-                            <td class="text-center"><span class="badge bg-success"><i class="bi bi-check-circle me-1"></i> Normal</span></td>
-                        </tr>
-                        <tr>
-                            <td class="fw-bold">SG-Hysteria-VIP</td>
-                            <td>Hysteria2</td>
-                            <td>Singapore</td>
-                            <td class="text-center"><span class="badge bg-success"><i class="bi bi-check-circle me-1"></i> Normal</span></td>
-                        </tr>
-                        <tr>
-                            <td class="fw-bold">ID-Biznet-01</td>
-                            <td>Trojan / SSH</td>
-                            <td>Indonesia</td>
-                            <td class="text-center"><span class="badge bg-warning text-dark"><i class="bi bi-exclamation-triangle me-1"></i> Maintenance</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            <hr class="mt-4">
+            <p class="text-center mb-0">&copy; 2026 BootstrapCo. All rights reserved.</p>
         </div>
-    </div>
-
-    <!-- FOOTER -->
-    <footer class="bg-secondary-subtle text-center py-3">
-        <p class="mb-0 text-muted small">&copy; 2026 Xtrimer Service. All Rights Reserved.</p>
     </footer>
 
-    <!-- JS Bootstrap -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
