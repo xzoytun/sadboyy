@@ -1,125 +1,281 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Xtrimer Media | Layanan Digital & VPN Premium</title>
-
-<!-- Bootstrap 5 -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-<!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-
-<style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NetPay - PPOB & VPN Service</title>
+  <!-- Bootstrap 5 + Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
+  <style>
     :root {
-        --primary: #2563eb;
-        --secondary: #64748b;
-        --bg-body: #f8fafc;
-        --text-main: #0f172a;
-        --white: #ffffff;
+      --primary: #6C63FF;
+      --secondary: #3F3D56;
     }
-
     body {
-        font-family: 'Inter', sans-serif;
-        background-color: var(--bg-body);
-        color: var(--text-main);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      scroll-behavior: smooth;
     }
-
-    /* Navbar Modern */
-    .navbar {
-        background-color: var(--white);
-        border-bottom: 1px solid #e2e8f0;
+    .bg-primary-custom {
+      background: linear-gradient(135deg, #6C63FF 0%, #4A43D6 100%);
     }
-    .brand-name { font-weight: 800; font-size: 1.4rem; color: var(--primary); }
-
-    /* Hero */
+    .btn-primary-custom {
+      background-color: var(--primary);
+      border: none;
+      color: #fff;
+      transition: 0.3s;
+    }
+    .btn-primary-custom:hover {
+      background-color: #5a52d5;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(108, 99, 255, 0.3);
+    }
     .hero-section {
-        padding: 80px 0;
-        background: radial-gradient(circle at top right, #dbeafe, transparent);
+      min-height: 90vh;
+      display: flex;
+      align-items: center;
     }
-    .hero-title { font-size: 3rem; font-weight: 800; line-height: 1.1; margin-bottom: 20px; }
-    
-    /* Cards */
-    .card-custom {
-        border: none;
-        border-radius: 20px;
-        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
-        padding: 30px;
-        background: var(--white);
-        transition: 0.3s;
+    .feature-icon {
+      font-size: 2.5rem;
+      color: var(--primary);
     }
-    .card-custom:hover { box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
-    .icon-box {
-        width: 60px; height: 60px;
-        background: #eff6ff; color: var(--primary);
-        display: flex; align-items: center; justify-content: center;
-        border-radius: 16px; font-size: 24px; margin-bottom: 20px;
+    .card-hover {
+      transition: 0.3s;
+      border: none;
+      border-radius: 16px;
     }
-
-    /* Buttons */
-    .btn-primary {
-        background-color: var(--primary);
-        padding: 12px 30px;
-        border-radius: 12px;
-        font-weight: 600;
-        border: none;
+    .card-hover:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.08);
     }
-    
-    /* Utilities */
-    .section-padding { padding: 80px 0; }
-    .text-muted { color: var(--secondary); }
-</style>
+    .navbar-brand {
+      font-weight: 700;
+      font-size: 1.6rem;
+      color: #fff !important;
+    }
+    .navbar {
+      background: rgba(108, 99, 255, 0.92);
+      backdrop-filter: blur(8px);
+    }
+    .footer {
+      background-color: #1a1a2e;
+      color: #ccc;
+    }
+    .pricing-card {
+      border-radius: 20px;
+      padding: 2rem 1.5rem;
+    }
+    .pricing-card.popular {
+      background: var(--primary);
+      color: #fff;
+      transform: scale(1.02);
+    }
+    .pricing-card.popular .btn {
+      background: #fff;
+      color: var(--primary);
+    }
+    .pricing-card.popular .btn:hover {
+      background: #f0f0ff;
+    }
+  </style>
 </head>
 <body>
 
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg sticky-top">
-    <div class="container">
-        <a class="navbar-brand brand-name" href="#">XTRIMER<span class="text-dark">MEDIA</span></a>
-        <a href="login.html" class="btn btn-outline-primary rounded-pill px-4">Login Akun</a>
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="#">
+      <i class="bi bi-shield-lock-fill me-2"></i>NetPay
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto gap-2">
+        <li class="nav-item"><a class="nav-link active" href="#home">Beranda</a></li>
+        <li class="nav-item"><a class="nav-link" href="#layanan">Layanan</a></li>
+        <li class="nav-item"><a class="nav-link" href="#paket">Paket VPN</a></li>
+        <li class="nav-item"><a class="nav-link" href="#ppob">PPOB</a></li>
+        <li class="nav-item"><a class="nav-link" href="#kontak">Kontak</a></li>
+      </ul>
+      <a href="#" class="btn btn-light ms-3 rounded-pill px-4">Daftar</a>
     </div>
+  </div>
 </nav>
 
-<!-- Hero -->
-<section class="hero-section text-center">
-    <div class="container">
-        <span class="badge bg-primary text-white rounded-pill px-3 py-2 mb-3">Platform Digital Terpercaya 2026</span>
-        <h1 class="hero-title">Solusi VPN & PPOB <br>Satu Pintu untuk Anda</h1>
-        <p class="lead text-muted mb-4 max-w-lg mx-auto">Akses internet aman dengan VPN premium dan transaksi PPOB instan. <br> Semuanya otomatis 24 jam penuh.</p>
-        <a href="login.html" class="btn btn-primary btn-lg">Mulai Sekarang</a>
-    </div>
-</section>
-
-<!-- Services -->
-<section class="section-padding">
-    <div class="container">
-        <div class="row g-4">
-            <div class="col-md-6">
-                <div class="card-custom">
-                    <div class="icon-box"><i class="bi bi-shield-lock"></i></div>
-                    <h3>VPN Tunneling Premium</h3>
-                    <p class="text-muted">Protokol canggih SSH, VMess, VLess, dan Trojan. Kecepatan tinggi, tanpa lag, dan enkripsi data tingkat militer.</p>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card-custom">
-                    <div class="icon-box"><i class="bi bi-cash-stack"></i></div>
-                    <h3>Layanan PPOB Cepat</h3>
-                    <p class="text-muted">Isi pulsa, data, bayar listrik, dan top-up e-wallet dalam hitungan detik. Harga termurah dan transaksi 24/7.</p>
-                </div>
-            </div>
+<!-- HERO -->
+<section id="home" class="hero-section bg-primary-custom text-white">
+  <div class="container py-5">
+    <div class="row align-items-center">
+      <div class="col-lg-6 mb-4 mb-lg-0">
+        <h1 class="display-4 fw-bold">Bayar Tagihan & <br/>Amankan Koneksi <br/>dalam Satu Platform</h1>
+        <p class="lead my-4">PPOB + VPN terintegrasi. Bayar listrik, Pulsa, PDAM, dan nikmati internet aman & cepat dengan sekali klik.</p>
+        <div class="d-flex flex-wrap gap-3">
+          <a href="#paket" class="btn btn-light btn-lg rounded-pill px-5">Mulai Sekarang</a>
+          <a href="#ppob" class="btn btn-outline-light btn-lg rounded-pill px-5"><i class="bi bi-play-circle me-2"></i>Lihat Demo</a>
         </div>
+        <div class="mt-5 d-flex gap-4">
+          <div><i class="bi bi-check-circle-fill me-1"></i> 50.000+ transaksi</div>
+          <div><i class="bi bi-check-circle-fill me-1"></i> 10+ penyedia VPN</div>
+        </div>
+      </div>
+      <div class="col-lg-6 text-center">
+        <img src="https://via.placeholder.com/500x400?text=PPOB+VPN+Illustration" alt="Hero" class="img-fluid rounded-4 shadow-lg" style="max-height:400px;"/>
+      </div>
     </div>
+  </div>
 </section>
 
-<!-- Footer -->
-<footer class="py-5 text-center border-top bg-white">
-    <div class="container">
-        <p class="text-secondary">&copy; 2026 Xtrimer Media. Semua hak dilindungi.</p>
+<!-- LAYANAN -->
+<section id="layanan" class="py-5 bg-light">
+  <div class="container py-4">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold">Layanan <span class="text-primary">Kami</span></h2>
+      <p class="text-secondary">Solusi lengkap untuk kebutuhan digital Anda sehari-hari</p>
     </div>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card card-hover h-100 p-4 text-center shadow-sm">
+          <div class="feature-icon mb-3"><i class="bi bi-credit-card"></i></div>
+          <h5>PPOB Lengkap</h5>
+          <p class="text-secondary">Listrik, PDAM, BPJS, Pulsa, Token PLN, Internet, TV kabel & lebih dari 50 produk.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card card-hover h-100 p-4 text-center shadow-sm">
+          <div class="feature-icon mb-3"><i class="bi bi-shield-lock"></i></div>
+          <h5>VPN Premium</h5>
+          <p class="text-secondary">Proteksi privasi, bypass geo-block, kecepatan tinggi, dan server di 20+ negara.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card card-hover h-100 p-4 text-center shadow-sm">
+          <div class="feature-icon mb-3"><i class="bi bi-arrows-angle-expand"></i></div>
+          <h5>All-in-One Dashboard</h5>
+          <p class="text-secondary">Kelola tagihan & koneksi VPN dari satu akun. Riwayat transaksi jelas.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PAKET VPN -->
+<section id="paket" class="py-5">
+  <div class="container py-4">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold">Paket <span class="text-primary">VPN</span></h2>
+      <p class="text-secondary">Pilih sesuai kebutuhan Anda</p>
+    </div>
+    <div class="row g-4 align-items-center">
+      <div class="col-md-4">
+        <div class="pricing-card card-hover text-center p-4 shadow-sm">
+          <h5>Starter</h5>
+          <h3 class="fw-bold">Rp49.000</h3>
+          <p class="text-secondary">/ bulan</p>
+          <ul class="list-unstyled mt-3">
+            <li><i class="bi bi-check text-primary me-2"></i> 5 perangkat</li>
+            <li><i class="bi bi-check text-primary me-2"></i> Server 10 negara</li>
+            <li><i class="bi bi-check text-primary me-2"></i> Kecepatan 10 Mbps</li>
+          </ul>
+          <a href="#" class="btn btn-outline-primary rounded-pill px-5 mt-3">Pilih</a>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="pricing-card popular text-center p-4 shadow-lg">
+          <span class="badge bg-warning text-dark mb-2">⭐ POPULER</span>
+          <h5>Pro</h5>
+          <h3 class="fw-bold">Rp99.000</h3>
+          <p class="text-white-50">/ bulan</p>
+          <ul class="list-unstyled mt-3 text-white">
+            <li><i class="bi bi-check me-2"></i> 10 perangkat</li>
+            <li><i class="bi bi-check me-2"></i> Server 25 negara</li>
+            <li><i class="bi bi-check me-2"></i> Kecepatan 50 Mbps</li>
+            <li><i class="bi bi-check me-2"></i> No-log policy</li>
+          </ul>
+          <a href="#" class="btn btn-light rounded-pill px-5 mt-3">Pilih Pro</a>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="pricing-card card-hover text-center p-4 shadow-sm">
+          <h5>Business</h5>
+          <h3 class="fw-bold">Rp249.000</h3>
+          <p class="text-secondary">/ bulan</p>
+          <ul class="list-unstyled mt-3">
+            <li><i class="bi bi-check text-primary me-2"></i> 25 perangkat</li>
+            <li><i class="bi bi-check text-primary me-2"></i> Server 40+ negara</li>
+            <li><i class="bi bi-check text-primary me-2"></i> Kecepatan 200 Mbps</li>
+            <li><i class="bi bi-check text-primary me-2"></i> Dedicated IP</li>
+          </ul>
+          <a href="#" class="btn btn-outline-primary rounded-pill px-5 mt-3">Pilih</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PPOB -->
+<section id="ppob" class="py-5 bg-light">
+  <div class="container py-4">
+    <div class="row align-items-center">
+      <div class="col-lg-6 mb-4 mb-lg-0">
+        <h2 class="fw-bold">Bayar Tagihan <span class="text-primary">PPOB</span> Gampang</h2>
+        <p class="lead">Cukup pilih produk, masukkan nomor/ID, dan bayar. Semua dalam satu aplikasi.</p>
+        <ul class="list-unstyled mt-4">
+          <li><i class="bi bi-check-circle-fill text-primary me-2"></i> Listrik (PLN, prabayar & pascabayar)</li>
+          <li><i class="bi bi-check-circle-fill text-primary me-2"></i> PDAM & BPJS Kesehatan</li>
+          <li><i class="bi bi-check-circle-fill text-primary me-2"></i> Pulsa & Paket Data semua operator</li>
+          <li><i class="bi bi-check-circle-fill text-primary me-2"></i> Internet & TV kabel (Indihome, First Media)</li>
+          <li><i class="bi bi-check-circle-fill text-primary me-2"></i> E-wallet top-up (OVO, GoPay, DANA)</li>
+        </ul>
+        <a href="#" class="btn btn-primary-custom btn-lg rounded-pill px-5 mt-3">Coba Sekarang</a>
+      </div>
+      <div class="col-lg-6 text-center">
+        <img src="https://via.placeholder.com/450x350?text=PPOB+App" alt="PPOB" class="img-fluid rounded-4 shadow"/>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KONTAK / CTA -->
+<section id="kontak" class="py-5 bg-primary-custom text-white">
+  <div class="container text-center py-4">
+    <h2 class="fw-bold">Siap Untuk Mulai?</h2>
+    <p class="lead mb-4">Daftar sekarang dan nikmati kemudahan PPOB + keamanan VPN dalam satu platform.</p>
+    <a href="#" class="btn btn-light btn-lg rounded-pill px-5">Daftar Gratis</a>
+    <p class="mt-3 small">atau hubungi kami di <i class="bi bi-whatsapp ms-2"></i> +62 812-3456-7890</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer py-4">
+  <div class="container">
+    <div class="row gy-3">
+      <div class="col-md-4">
+        <h5 class="text-white"><i class="bi bi-shield-lock-fill me-2"></i>NetPay</h5>
+        <p class="small">PPOB + VPN terintegrasi. #SatuUntukSemua</p>
+      </div>
+      <div class="col-md-4">
+        <h6 class="text-white">Layanan</h6>
+        <ul class="list-unstyled small">
+          <li><a href="#" class="text-decoration-none text-secondary">PPOB</a></li>
+          <li><a href="#" class="text-decoration-none text-secondary">VPN</a></li>
+          <li><a href="#" class="text-decoration-none text-secondary">Bantuan</a></li>
+        </ul>
+      </div>
+      <div class="col-md-4">
+        <h6 class="text-white">Ikuti Kami</h6>
+        <div class="d-flex gap-3 fs-5">
+          <a href="#" class="text-secondary"><i class="bi bi-instagram"></i></a>
+          <a href="#" class="text-secondary"><i class="bi bi-twitter-x"></i></a>
+          <a href="#" class="text-secondary"><i class="bi bi-youtube"></i></a>
+        </div>
+        <p class="small mt-2">&copy; 2026 NetPay. All rights reserved.</p>
+      </div>
+    </div>
+  </div>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
