@@ -1,681 +1,600 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" data-theme="light">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Zoy Digital - VPN & PPOB Service</title>
-  <!-- Bootstrap 5 + Icons -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --primary: #0ea5e9;
-      --primary-dark: #0284c7;
-      --secondary: #0f172a;
-      --bg-light: #f8fafc;
-      --text-muted: #64748b;
-    }
-    
-    * {
-      font-family: 'Nunito', 'Segoe UI', sans-serif;
-    }
-    
-    body {
-      scroll-behavior: smooth;
-      background-color: var(--bg-light);
-    }
-    
-    /* ─── NAVBAR ─── */
-    .navbar-custom {
-      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-      padding: 12px 0;
-    }
-    
-    .navbar-brand-custom {
-      font-weight: 900;
-      font-size: 1.5rem;
-      color: #fff !important;
-      letter-spacing: 0.5px;
-    }
-    
-    .navbar-brand-custom i {
-      color: var(--primary);
-    }
-    
-    .nav-link-custom {
-      color: rgba(255,255,255,0.75) !important;
-      font-weight: 600;
-      transition: 0.3s;
-      padding: 8px 16px !important;
-      border-radius: 8px;
-    }
-    
-    .nav-link-custom:hover,
-    .nav-link-custom.active {
-      color: #fff !important;
-      background: rgba(255,255,255,0.08);
-    }
-    
-    .btn-daftar-nav {
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      color: #fff !important;
-      font-weight: 700;
-      padding: 8px 28px;
-      border-radius: 50px;
-      border: none;
-      transition: 0.3s;
-      text-decoration: none;
-    }
-    
-    .btn-daftar-nav:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(14, 165, 233, 0.3);
-      color: #fff !important;
-    }
-    
-    /* ─── HERO ─── */
-    .hero-section {
-      background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
-      min-height: 90vh;
-      display: flex;
-      align-items: center;
-      padding: 80px 0;
-    }
-    
-    .hero-title {
-      font-size: 3.2rem;
-      font-weight: 900;
-      line-height: 1.2;
-    }
-    
-    .hero-subtitle {
-      font-size: 1.15rem;
-      opacity: 0.9;
-      line-height: 1.8;
-    }
-    
-    .btn-hero-primary {
-      background: #fff;
-      color: var(--primary-dark);
-      font-weight: 800;
-      padding: 14px 40px;
-      border-radius: 50px;
-      text-decoration: none;
-      transition: 0.3s;
-      display: inline-block;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-    }
-    
-    .btn-hero-primary:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-      color: var(--primary-dark);
-    }
-    
-    .btn-hero-outline {
-      color: #fff;
-      border: 2px solid rgba(255,255,255,0.5);
-      font-weight: 700;
-      padding: 14px 32px;
-      border-radius: 50px;
-      text-decoration: none;
-      transition: 0.3s;
-      display: inline-block;
-    }
-    
-    .btn-hero-outline:hover {
-      background: rgba(255,255,255,0.1);
-      border-color: #fff;
-      color: #fff;
-    }
-    
-    .hero-stat {
-      display: flex;
-      gap: 32px;
-      margin-top: 32px;
-    }
-    
-    .hero-stat-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    .hero-stat-item i {
-      font-size: 1.2rem;
-    }
-    
-    .hero-image {
-      max-height: 400px;
-      width: 100%;
-      object-fit: contain;
-    }
-    
-    /* ─── SECTION TITLE ─── */
-    .section-title {
-      font-size: 2.2rem;
-      font-weight: 900;
-      color: var(--secondary);
-    }
-    
-    .section-title span {
-      color: var(--primary);
-    }
-    
-    .section-subtitle {
-      color: var(--text-muted);
-      font-weight: 600;
-    }
-    
-    /* ─── FEATURE CARDS ─── */
-    .feature-card {
-      background: #fff;
-      border: none;
-      border-radius: 20px;
-      padding: 32px 24px;
-      text-align: center;
-      transition: 0.3s;
-      height: 100%;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.04);
-    }
-    
-    .feature-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 12px 40px rgba(0,0,0,0.08);
-    }
-    
-    .feature-icon {
-      width: 72px;
-      height: 72px;
-      border-radius: 18px;
-      background: rgba(14, 165, 233, 0.1);
-      color: var(--primary);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2rem;
-      margin: 0 auto 16px;
-    }
-    
-    .feature-card h5 {
-      font-weight: 800;
-      color: var(--secondary);
-    }
-    
-    .feature-card p {
-      color: var(--text-muted);
-      font-size: 0.95rem;
-      line-height: 1.7;
-    }
-    
-    /* ─── PRICING ─── */
-    .pricing-card {
-      background: #fff;
-      border-radius: 24px;
-      padding: 32px 24px;
-      text-align: center;
-      transition: 0.3s;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.04);
-      height: 100%;
-    }
-    
-    .pricing-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 12px 40px rgba(0,0,0,0.08);
-    }
-    
-    .pricing-card.popular {
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      color: #fff;
-      transform: scale(1.05);
-    }
-    
-    .pricing-card.popular:hover {
-      transform: scale(1.05) translateY(-6px);
-    }
-    
-    .pricing-card.popular .price {
-      color: #fff;
-    }
-    
-    .pricing-card.popular .price-period {
-      color: rgba(255,255,255,0.7);
-    }
-    
-    .pricing-card.popular ul li {
-      color: rgba(255,255,255,0.9);
-    }
-    
-    .pricing-card.popular .btn-pricing {
-      background: #fff;
-      color: var(--primary);
-    }
-    
-    .pricing-card.popular .btn-pricing:hover {
-      background: #f0f9ff;
-      color: var(--primary-dark);
-    }
-    
-    .pricing-card .price {
-      font-size: 2.8rem;
-      font-weight: 900;
-      color: var(--secondary);
-    }
-    
-    .pricing-card .price-period {
-      color: var(--text-muted);
-      font-weight: 600;
-    }
-    
-    .pricing-card ul {
-      list-style: none;
-      padding: 0;
-      margin: 24px 0;
-    }
-    
-    .pricing-card ul li {
-      padding: 8px 0;
-      font-weight: 600;
-      color: var(--secondary);
-    }
-    
-    .pricing-card ul li i {
-      color: var(--primary);
-      margin-right: 10px;
-    }
-    
-    .badge-popular {
-      background: #fbbf24;
-      color: #0f172a;
-      font-weight: 800;
-      padding: 4px 16px;
-      border-radius: 50px;
-      font-size: 0.8rem;
-      display: inline-block;
-      margin-bottom: 12px;
-    }
-    
-    .btn-pricing {
-      background: transparent;
-      border: 2px solid var(--primary);
-      color: var(--primary);
-      font-weight: 800;
-      padding: 10px 40px;
-      border-radius: 50px;
-      transition: 0.3s;
-      text-decoration: none;
-      display: inline-block;
-    }
-    
-    .btn-pricing:hover {
-      background: var(--primary);
-      color: #fff;
-      transform: translateY(-2px);
-    }
-    
-    /* ─── PPOB SECTION ─── */
-    .ppob-list li {
-      padding: 12px 0;
-      font-weight: 600;
-      color: var(--secondary);
-      border-bottom: 1px solid rgba(0,0,0,0.05);
-    }
-    
-    .ppob-list li:last-child {
-      border-bottom: none;
-    }
-    
-    .ppob-list li i {
-      color: var(--primary);
-      margin-right: 12px;
-      font-size: 1.2rem;
-    }
-    
-    .btn-ppob {
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      color: #fff;
-      font-weight: 800;
-      padding: 14px 48px;
-      border-radius: 50px;
-      text-decoration: none;
-      transition: 0.3s;
-      display: inline-block;
-      border: none;
-    }
-    
-    .btn-ppob:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 24px rgba(14, 165, 233, 0.3);
-      color: #fff;
-    }
-    
-    /* ─── CTA SECTION ─── */
-    .cta-section {
-      background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
-      padding: 80px 0;
-    }
-    
-    .cta-section h2 {
-      font-weight: 900;
-    }
-    
-    .btn-cta {
-      background: #fff;
-      color: var(--primary-dark);
-      font-weight: 800;
-      padding: 14px 48px;
-      border-radius: 50px;
-      text-decoration: none;
-      transition: 0.3s;
-      display: inline-block;
-    }
-    
-    .btn-cta:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 32px rgba(0,0,0,0.15);
-      color: var(--primary-dark);
-    }
-    
-    .whatsapp-link {
-      color: rgba(255,255,255,0.8);
-      text-decoration: none;
-      font-weight: 600;
-      transition: 0.3s;
-    }
-    
-    .whatsapp-link:hover {
-      color: #fff;
-    }
-    
-    /* ─── FOOTER ─── */
-    .footer-custom {
-      background: #0f172a;
-      color: #94a3b8;
-      padding: 48px 0 24px;
-    }
-    
-    .footer-custom h5,
-    .footer-custom h6 {
-      color: #fff;
-      font-weight: 800;
-    }
-    
-    .footer-custom a {
-      color: #94a3b8;
-      text-decoration: none;
-      transition: 0.3s;
-      font-weight: 600;
-    }
-    
-    .footer-custom a:hover {
-      color: var(--primary);
-    }
-    
-    .footer-custom .social-icon {
-      color: #94a3b8;
-      font-size: 1.5rem;
-      transition: 0.3s;
-      margin-right: 16px;
-    }
-    
-    .footer-custom .social-icon:hover {
-      color: var(--primary);
-      transform: translateY(-3px);
-    }
-    
-    /* ─── RESPONSIVE ─── */
-    @media (max-width: 992px) {
-      .hero-title {
-        font-size: 2.5rem;
-      }
-      .pricing-card.popular {
-        transform: scale(1);
-      }
-      .pricing-card.popular:hover {
-        transform: scale(1) translateY(-6px);
-      }
-    }
-    
-    @media (max-width: 768px) {
-      .hero-title {
-        font-size: 2rem;
-      }
-      .hero-section {
-        min-height: auto;
-        padding: 100px 0 60px;
-      }
-      .hero-stat {
-        flex-wrap: wrap;
-        gap: 16px;
-      }
-      .section-title {
-        font-size: 1.8rem;
-      }
-      .pricing-card.popular {
-        transform: scale(1);
-      }
-    }
-    
-    @media (max-width: 576px) {
-      .hero-title {
-        font-size: 1.7rem;
-      }
-      .btn-hero-primary,
-      .btn-hero-outline {
-        padding: 12px 24px;
-        font-size: 0.9rem;
-        width: 100%;
-        text-align: center;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xtrimer Media · VPN & PPOB Digital</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        /* ─── ROOT VARIABLES ─── */
+        :root {
+            --bg-body: #f1f5f9;
+            --bg-card: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --border-color: #e2e8f0;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --accent-light: #eff6ff;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 24px rgba(0,0,0,0.06);
+            --shadow-lg: 0 8px 40px rgba(0,0,0,0.08);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="dark"] {
+            --bg-body: #0b1120;
+            --bg-card: #1a2332;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #64748b;
+            --border-color: #2d3a4f;
+            --accent: #60a5fa;
+            --accent-hover: #93bbfc;
+            --accent-light: rgba(59, 130, 246, 0.12);
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+            --shadow-md: 0 4px 24px rgba(0,0,0,0.4);
+            --shadow-lg: 0 8px 40px rgba(0,0,0,0.5);
+        }
+
+        /* ─── BASE ─── */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-primary);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { text-decoration: none; }
+        img { max-width: 100%; }
+
+        /* ─── SCROLLBAR ─── */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-body); }
+        ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+        /* ─── NAVBAR ─── */
+        .navbar-custom {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 12px 0;
+            transition: var(--transition);
+        }
+
+        .navbar-custom .navbar-brand {
+            font-weight: 900;
+            font-size: 1.25rem;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+        }
+
+        .navbar-custom .navbar-brand i {
+            color: var(--accent);
+            font-size: 1.5rem;
+        }
+
+        .btn-theme-toggle {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 1px solid var(--border-color);
+            background: var(--bg-body);
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .btn-theme-toggle:hover {
+            background: var(--accent-light);
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .btn-login {
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.875rem;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-login:hover {
+            background: var(--accent-hover);
+            color: #fff;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3);
+        }
+
+        /* ─── HERO ─── */
+        .hero {
+            padding: 60px 0 40px;
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--accent-light);
+            color: var(--accent);
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            border: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-size: 2.75rem;
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            line-height: 1.15;
+            color: var(--text-primary);
+        }
+
+        .hero h1 .highlight {
+            background: linear-gradient(135deg, var(--accent), #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 16px auto 28px;
+            line-height: 1.7;
+        }
+
+        .btn-hero {
+            padding: 14px 40px;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 1rem;
+            background: linear-gradient(135deg, var(--accent), #8b5cf6);
+            color: #fff;
+            border: none;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.25);
+        }
+
+        .btn-hero:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(59, 130, 246, 0.35);
+            color: #fff;
+        }
+
+        /* ─── SECTION HEADER ─── */
+        .section-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .section-header h2 {
+            font-size: 1.75rem;
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+        }
+
+        .section-header p {
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-top: 4px;
+        }
+
+        /* ─── CARDS ─── */
+        .card-modern {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 28px 24px;
+            transition: var(--transition);
+            height: 100%;
+        }
+
+        .card-modern:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent);
+            box-shadow: var(--shadow-md);
+        }
+
+        .card-modern .icon-wrap {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            background: var(--accent-light);
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            margin-bottom: 14px;
+        }
+
+        .card-modern h5 {
+            font-weight: 800;
+            font-size: 1.05rem;
+            color: var(--text-primary);
+        }
+
+        .card-modern p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        /* ─── PROTOCOL GRID ─── */
+        .protocol-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+            gap: 12px;
+        }
+
+        .protocol-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 16px 10px;
+            text-align: center;
+            transition: var(--transition);
+            cursor: default;
+        }
+
+        .protocol-item:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .protocol-item i {
+            font-size: 22px;
+            color: var(--accent);
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .protocol-item span {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        /* ─── INFO SECTION ─── */
+        .info-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 40px 36px;
+        }
+
+        .info-box h3 {
+            font-weight: 900;
+            font-size: 1.5rem;
+            text-align: center;
+            color: var(--text-primary);
+            margin-bottom: 28px;
+        }
+
+        .info-item {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+
+        .info-item .icon {
+            width: 44px;
+            height: 44px;
+            flex-shrink: 0;
+            border-radius: 12px;
+            background: var(--accent-light);
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .info-item h6 {
+            font-weight: 800;
+            font-size: 1rem;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+
+        .info-item p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        /* ─── FOOTER ─── */
+        .footer-custom {
+            border-top: 1px solid var(--border-color);
+            padding: 30px 0 24px;
+            margin-top: 40px;
+        }
+
+        .footer-custom a {
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: var(--transition);
+        }
+
+        .footer-custom a:hover { color: var(--accent); }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 768px) {
+            .hero { padding: 40px 0 24px; }
+            .hero h1 { font-size: 2rem; }
+            .hero p { font-size: 1rem; }
+            .info-box { padding: 28px 20px; }
+            .section-header h2 { font-size: 1.5rem; }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 { font-size: 1.6rem; }
+            .protocol-grid { grid-template-columns: repeat(2, 1fr); }
+            .btn-hero { padding: 12px 28px; font-size: 0.9rem; }
+        }
+
+        @media (min-width: 992px) {
+            .hero { padding: 80px 0 56px; }
+            .hero h1 { font-size: 3.25rem; }
+        }
+    </style>
 </head>
 <body>
 
-<!-- ─── NAVBAR ─── -->
-<nav class="navbar navbar-expand-lg navbar-custom fixed-top">
-  <div class="container">
-    <a class="navbar-brand navbar-brand-custom" href="#">
-      <i class="bi bi-shield-lock-fill me-2"></i>Zoy Digital
-    </a>
-    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-      <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto gap-1">
-        <li class="nav-item"><a class="nav-link nav-link-custom active" href="#home">Beranda</a></li>
-        <li class="nav-item"><a class="nav-link nav-link-custom" href="#layanan">Layanan</a></li>
-        <li class="nav-item"><a class="nav-link nav-link-custom" href="#paket">Paket VPN</a></li>
-        <li class="nav-item"><a class="nav-link nav-link-custom" href="#ppob">PPOB</a></li>
-        <li class="nav-item"><a class="nav-link nav-link-custom" href="#kontak">Kontak</a></li>
-      </ul>
-      <a href="#" class="btn-daftar-nav ms-lg-3 mt-3 mt-lg-0">Daftar</a>
-    </div>
-  </div>
-</nav>
+    <!-- ─── NAVBAR ─── -->
+    <nav class="navbar navbar-expand navbar-custom sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+                <i class="bi bi-shield-lock-fill"></i>
+                <span>XTRIMER</span>
+            </a>
 
-<!-- ─── HERO ─── -->
-<section id="home" class="hero-section text-white">
-  <div class="container">
-    <div class="row align-items-center">
-      <div class="col-lg-6 mb-4 mb-lg-0">
-        <h1 class="hero-title">
-          Bayar Tagihan & <br/>Amankan Koneksi <br/>dalam Satu Platform
-        </h1>
-        <p class="hero-subtitle my-4">
-          PPOB + VPN terintegrasi. Bayar listrik, pulsa, PDAM, dan nikmati internet aman & cepat dengan sekali klik.
-        </p>
-        <div class="d-flex flex-wrap gap-3">
-          <a href="#paket" class="btn-hero-primary">Mulai Sekarang</a>
-          <a href="#ppob" class="btn-hero-outline"><i class="bi bi-play-circle me-2"></i>Lihat Demo</a>
+            <div class="d-flex align-items-center gap-2">
+                <button class="btn-theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                    <i class="bi bi-moon-fill" id="themeIcon"></i>
+                </button>
+                <a href="login.html" class="btn-login">
+                    <i class="bi bi-box-arrow-in-right"></i> Masuk
+                </a>
+            </div>
         </div>
-        <div class="hero-stat">
-          <div class="hero-stat-item"><i class="bi bi-check-circle-fill"></i> 50.000+ transaksi</div>
-          <div class="hero-stat-item"><i class="bi bi-check-circle-fill"></i> 10+ penyedia VPN</div>
-        </div>
-      </div>
-      <div class="col-lg-6 text-center">
-        <img src="https://via.placeholder.com/500x400/0ea5e9/ffffff?text=ZOY+DIGITAL" alt="Zoy Digital" class="hero-image rounded-4 shadow-lg"/>
-      </div>
-    </div>
-  </div>
-</section>
+    </nav>
 
-<!-- ─── LAYANAN ─── -->
-<section id="layanan" class="py-5">
-  <div class="container py-4">
-    <div class="text-center mb-5">
-      <h2 class="section-title">Layanan <span>Kami</span></h2>
-      <p class="section-subtitle">Solusi lengkap untuk kebutuhan digital Anda sehari-hari</p>
-    </div>
-    <div class="row g-4">
-      <div class="col-md-4">
-        <div class="feature-card">
-          <div class="feature-icon"><i class="bi bi-credit-card"></i></div>
-          <h5>PPOB Lengkap</h5>
-          <p>Listrik, PDAM, BPJS, Pulsa, Token PLN, Internet, TV kabel & lebih dari 50 produk.</p>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="feature-card">
-          <div class="feature-icon"><i class="bi bi-shield-lock"></i></div>
-          <h5>VPN Premium</h5>
-          <p>Proteksi privasi, bypass geo-block, kecepatan tinggi, dan server di 20+ negara.</p>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="feature-card">
-          <div class="feature-icon"><i class="bi bi-arrows-angle-expand"></i></div>
-          <h5>All-in-One Dashboard</h5>
-          <p>Kelola tagihan & koneksi VPN dari satu akun. Riwayat transaksi jelas.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+    <main>
 
-<!-- ─── PAKET VPN ─── -->
-<section id="paket" class="py-5 bg-light">
-  <div class="container py-4">
-    <div class="text-center mb-5">
-      <h2 class="section-title">Paket <span>VPN</span></h2>
-      <p class="section-subtitle">Pilih sesuai kebutuhan Anda</p>
-    </div>
-    <div class="row g-4 align-items-center">
-      <div class="col-md-4">
-        <div class="pricing-card">
-          <h5>Starter</h5>
-          <div class="price">Rp49.000</div>
-          <div class="price-period">/ bulan</div>
-          <ul>
-            <li><i class="bi bi-check-circle-fill"></i> 5 perangkat</li>
-            <li><i class="bi bi-check-circle-fill"></i> Server 10 negara</li>
-            <li><i class="bi bi-check-circle-fill"></i> Kecepatan 10 Mbps</li>
-          </ul>
-          <a href="#" class="btn-pricing">Pilih</a>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="pricing-card popular">
-          <span class="badge-popular">⭐ POPULER</span>
-          <h5>Pro</h5>
-          <div class="price">Rp99.000</div>
-          <div class="price-period">/ bulan</div>
-          <ul>
-            <li><i class="bi bi-check-circle-fill"></i> 10 perangkat</li>
-            <li><i class="bi bi-check-circle-fill"></i> Server 25 negara</li>
-            <li><i class="bi bi-check-circle-fill"></i> Kecepatan 50 Mbps</li>
-            <li><i class="bi bi-check-circle-fill"></i> No-log policy</li>
-          </ul>
-          <a href="#" class="btn-pricing">Pilih Pro</a>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="pricing-card">
-          <h5>Business</h5>
-          <div class="price">Rp249.000</div>
-          <div class="price-period">/ bulan</div>
-          <ul>
-            <li><i class="bi bi-check-circle-fill"></i> 25 perangkat</li>
-            <li><i class="bi bi-check-circle-fill"></i> Server 40+ negara</li>
-            <li><i class="bi bi-check-circle-fill"></i> Kecepatan 200 Mbps</li>
-            <li><i class="bi bi-check-circle-fill"></i> Dedicated IP</li>
-          </ul>
-          <a href="#" class="btn-pricing">Pilih</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+        <!-- ─── HERO ─── -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-badge">
+                    <i class="bi bi-check-circle-fill"></i> 100% Trusted · 24/7 Active
+                </div>
+                <h1>
+                    VPN Tunneling Premium &<br>
+                    <span class="highlight">Agen PPOB Termurah</span>
+                </h1>
+                <p>
+                    Xtrimer Media adalah platform digital otomatis 24 jam untuk penyedia layanan internet aman
+                    menggunakan akun VPN Premium dengan protokol terbaik.
+                </p>
+                <a href="login.html" class="btn-hero">
+                    <i class="bi bi-google"></i> Mulai Sekarang
+                </a>
+            </div>
+        </section>
 
-<!-- ─── PPOB ─── -->
-<section id="ppob" class="py-5">
-  <div class="container py-4">
-    <div class="row align-items-center">
-      <div class="col-lg-6 mb-4 mb-lg-0">
-        <h2 class="section-title">Bayar Tagihan <span>PPOB</span> Gampang</h2>
-        <p class="fs-5 text-secondary mb-4">Cukup pilih produk, masukkan nomor/ID, dan bayar. Semua dalam satu aplikasi.</p>
-        <ul class="ppob-list">
-          <li><i class="bi bi-check-circle-fill"></i> Listrik (PLN, prabayar & pascabayar)</li>
-          <li><i class="bi bi-check-circle-fill"></i> PDAM & BPJS Kesehatan</li>
-          <li><i class="bi bi-check-circle-fill"></i> Pulsa & Paket Data semua operator</li>
-          <li><i class="bi bi-check-circle-fill"></i> Internet & TV kabel (Indihome, First Media)</li>
-          <li><i class="bi bi-check-circle-fill"></i> E-wallet top-up (OVO, GoPay, DANA)</li>
-        </ul>
-        <a href="#" class="btn-ppob mt-3">Coba Sekarang</a>
-      </div>
-      <div class="col-lg-6 text-center">
-        <img src="https://via.placeholder.com/450x350/0ea5e9/ffffff?text=PPOB+App" alt="PPOB" class="img-fluid rounded-4 shadow-lg"/>
-      </div>
-    </div>
-  </div>
-</section>
+        <!-- ─── FEATURES ─── -->
+        <section class="py-3">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Layanan Utama</h2>
+                    <p>Solusi lengkap untuk kebutuhan digital Anda</p>
+                </div>
 
-<!-- ─── KONTAK / CTA ─── -->
-<section id="kontak" class="cta-section text-white">
-  <div class="container text-center py-4">
-    <h2 class="display-5 fw-bold">Siap Untuk Mulai?</h2>
-    <p class="lead mb-4">Daftar sekarang dan nikmati kemudahan PPOB + keamanan VPN dalam satu platform.</p>
-    <a href="#" class="btn-cta">Daftar Gratis</a>
-    <p class="mt-4">
-      atau hubungi kami di 
-      <a href="#" class="whatsapp-link"><i class="bi bi-whatsapp ms-2"></i> +62 812-3456-7890</a>
-    </p>
-  </div>
-</section>
+                <div class="row g-4">
+                    <div class="col-12 col-md-6">
+                        <div class="card-modern">
+                            <div class="icon-wrap"><i class="bi bi-shield-check"></i></div>
+                            <h5>VPN Tunneling Premium</h5>
+                            <p>Nikmati koneksi internet aman dan stabil dengan protokol terbaik. Server berkualitas dengan kecepatan tinggi dan enkripsi maksimal.</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="card-modern">
+                            <div class="icon-wrap"><i class="bi bi-phone"></i></div>
+                            <h5>Agen PPOB Digital</h5>
+                            <p>Layanan top-up pulsa, paket data, token PLN, voucher game, dan pembayaran tagihan dengan proses instan 24 jam non-stop.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-<!-- ─── FOOTER ─── -->
-<footer class="footer-custom">
-  <div class="container">
-    <div class="row gy-4">
-      <div class="col-md-4">
-        <h5><i class="bi bi-shield-lock-fill me-2" style="color: var(--primary);"></i>Zoy Digital</h5>
-        <p class="text-secondary">PPOB + VPN terintegrasi. #SatuUntukSemua</p>
-      </div>
-      <div class="col-md-4">
-        <h6>Layanan</h6>
-        <ul class="list-unstyled">
-          <li><a href="#">PPOB</a></li>
-          <li><a href="#">VPN</a></li>
-          <li><a href="#">Bantuan</a></li>
-        </ul>
-      </div>
-      <div class="col-md-4">
-        <h6>Ikuti Kami</h6>
-        <div class="d-flex">
-          <a href="#" class="social-icon"><i class="bi bi-instagram"></i></a>
-          <a href="#" class="social-icon"><i class="bi bi-twitter-x"></i></a>
-          <a href="#" class="social-icon"><i class="bi bi-youtube"></i></a>
+        <!-- ─── PROTOCOLS ─── -->
+        <section class="py-3">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Protokol Tunneling</h2>
+                    <p>Berbagai pilihan protokol untuk kebutuhan Anda</p>
+                </div>
+                <div class="protocol-grid">
+                    <div class="protocol-item"><i class="bi bi-terminal"></i><span>SSH</span></div>
+                    <div class="protocol-item"><i class="bi bi-globe2"></i><span>VMESS</span></div>
+                    <div class="protocol-item"><i class="bi bi-shield-check"></i><span>VLESS</span></div>
+                    <div class="protocol-item"><i class="bi bi-shield-fill"></i><span>TROJAN</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── PPOB SERVICES ─── -->
+        <section class="py-3">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Layanan PPOB</h2>
+                    <p>Transaksi instan tanpa antre</p>
+                </div>
+                <div class="row g-3">
+                    <div class="col-4 col-md-2"><div class="protocol-item"><i class="bi bi-phone"></i><span>Pulsa</span></div></div>
+                    <div class="col-4 col-md-2"><div class="protocol-item"><i class="bi bi-wifi"></i><span>Paket Data</span></div></div>
+                    <div class="col-4 col-md-2"><div class="protocol-item"><i class="bi bi-lightbulb"></i><span>Token PLN</span></div></div>
+                    <div class="col-4 col-md-2"><div class="protocol-item"><i class="bi bi-wallet2"></i><span>E-Wallet</span></div></div>
+                    <div class="col-4 col-md-2"><div class="protocol-item"><i class="bi bi-controller"></i><span>Voucher Game</span></div></div>
+                    <div class="col-4 col-md-2"><div class="protocol-item"><i class="bi bi-tv"></i><span>TV Kabel</span></div></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── INFO SECTION ─── -->
+        <section class="py-4">
+            <div class="container">
+                <div class="info-box">
+                    <h3>Kenapa Pilih Xtrimer Media?</h3>
+                    <div class="row g-4">
+                        <div class="col-12 col-md-6">
+                            <div class="info-item">
+                                <div class="icon"><i class="bi bi-shield-lock"></i></div>
+                                <div>
+                                    <h6>VPN Aman & Stabil</h6>
+                                    <p>Server VPN Tunneling dengan protokol SSH, VMess, VLess, dan Trojan, dilengkapi enkripsi tingkat tinggi untuk menjaga privasi koneksi internet Anda.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="info-item">
+                                <div class="icon"><i class="bi bi-speedometer2"></i></div>
+                                <div>
+                                    <h6>Performa Tinggi 24 Jam</h6>
+                                    <p>Semua layanan berjalan otomatis dan aktif 24 jam non-stop, tanpa perlu menunggu proses manual, sehingga koneksi tetap cepat dan andal.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="info-item">
+                                <div class="icon"><i class="bi bi-cash-coin"></i></div>
+                                <div>
+                                    <h6>PPOB Harga Termurah</h6>
+                                    <p>Transaksi pulsa, paket data, token PLN, e-wallet, voucher game, hingga TV kabel dengan harga bersaing dan proses instan.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="info-item">
+                                <div class="icon"><i class="bi bi-headset"></i></div>
+                                <div>
+                                    <h6>Dukungan Terpercaya</h6>
+                                    <p>Ribuan pengguna telah merasakan kemudahan platform kami, didukung sistem yang 100% terpercaya dan siap membantu kapan pun.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ─── FOOTER ─── -->
+    <footer class="footer-custom">
+        <div class="container">
+            <div class="row align-items-center g-3 text-center text-md-start">
+                <div class="col-12 col-md-6">
+                    <p class="fw-bold mb-0" style="color: var(--text-secondary); font-size: 0.9rem;">
+                        &copy; 2026 Xtrimer Media. All Rights Reserved.
+                    </p>
+                </div>
+                <div class="col-12 col-md-6 d-flex justify-content-center justify-content-md-end gap-3">
+                    <a href="terms.html">Syarat Layanan</a>
+                    <a href="privacy.html">Kebijakan Privasi</a>
+                </div>
+            </div>
         </div>
-        <p class="mt-3 text-secondary">&copy; 2026 Zoy Digital. All rights reserved.</p>
-      </div>
-    </div>
-  </div>
-</footer>
+    </footer>
 
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- ─── SCRIPT ─── -->
+    <script>
+        (function() {
+            const themeToggle = document.getElementById('themeToggle');
+            const themeIcon = document.getElementById('themeIcon');
+            const html = document.documentElement;
+
+            // Load saved theme or system preference
+            const loadTheme = () => {
+                const saved = localStorage.getItem('theme');
+                if (saved === 'dark' || saved === 'light') {
+                    html.setAttribute('data-theme', saved);
+                } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    html.setAttribute('data-theme', 'dark');
+                } else {
+                    html.setAttribute('data-theme', 'light');
+                }
+                updateIcon();
+            };
+
+            const updateIcon = () => {
+                const theme = html.getAttribute('data-theme');
+                if (theme === 'dark') {
+                    themeIcon.className = 'bi bi-sun-fill';
+                } else {
+                    themeIcon.className = 'bi bi-moon-fill';
+                }
+            };
+
+            const toggleTheme = () => {
+                const current = html.getAttribute('data-theme');
+                const next = current === 'dark' ? 'light' : 'dark';
+                html.setAttribute('data-theme', next);
+                localStorage.setItem('theme', next);
+                updateIcon();
+            };
+
+            themeToggle.addEventListener('click', toggleTheme);
+            loadTheme();
+
+            // Listen for system theme changes
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                if (!localStorage.getItem('theme')) {
+                    html.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+                    updateIcon();
+                }
+            });
+        })();
+    </script>
+
 </body>
 </html>
