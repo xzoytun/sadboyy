@@ -3,47 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zoy Digital | PPOB & VPN Services</title>
+    <title>Zoy Digital | Solusi Digital Anda</title>
+    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f8f9fa; color: #333; }
+        .navbar { background-color: #ffffff; border-bottom: 1px solid #e9ecef; }
+        .hero { padding: 80px 0; background-color: #ffffff; }
+        .card { border: none; box-shadow: 0 10px 20px rgba(0,0,0,0.05); transition: 0.3s; }
+        .card:hover { box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+        .btn-primary { background-color: #0d6efd; padding: 10px 30px; }
+    </style>
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg sticky-top">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="#">ZOY DIGITAL</a>
-            <div class="d-flex">
-                <a href="login.html" class="btn btn-primary">Login / Register</a>
-            </div>
+            <a class="navbar-brand fw-bold text-primary" href="#">ZOY DIGITAL</a>
+            <a href="login.html" class="btn btn-primary btn-sm">Login Member</a>
         </div>
     </nav>
 
-    <header class="bg-light py-5">
-        <div class="container text-center">
-            <h1 class="display-4">Solusi PPOB & VPN Terpercaya</h1>
-            <p class="lead">Layanan pembayaran digital dan koneksi aman dalam satu genggaman.</p>
-            <a href="login.html" class="btn btn-success btn-lg mt-3">Mulai Sekarang</a>
+    <!-- Hero Section -->
+    <header class="hero text-center">
+        <div class="container">
+            <h1 class="fw-bold mb-3">Layanan PPOB & VPN Terpadu</h1>
+            <p class="text-muted mb-4 fs-5">Satu dashboard untuk semua kebutuhan pembayaran dan koneksi aman Anda.</p>
+            <a href="login.html" class="btn btn-primary btn-lg">Masuk ke Akun Anda</a>
         </div>
     </header>
 
+    <!-- Features -->
     <section class="container py-5">
-        <div class="row text-center">
+        <div class="row g-4">
             <div class="col-md-6">
-                <div class="card p-4">
-                    <h3>PPOB</h3>
-                    <p>Bayar PLN, PDAM, BPJS, dan isi pulsa dengan harga termurah.</p>
+                <div class="card p-4 h-100">
+                    <h5 class="text-primary mb-3">💰 PPOB Lengkap</h5>
+                    <p>Bayar listrik, PDAM, BPJS, hingga top-up e-wallet dan pulsa dengan sistem yang stabil dan cepat.</p>
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="card p-4">
-                    <h3>VPN Services</h3>
-                    <p>Jaga privasi internet Anda dengan koneksi server stabil dan cepat.</p>
+                <div class="card p-4 h-100">
+                    <h5 class="text-primary mb-3">🌐 VPN Premium</h5>
+                    <p>Dapatkan privasi tingkat tinggi dengan akses ke berbagai server global. Browsing aman dan tanpa batas.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <footer class="text-center py-4 bg-dark text-white">
-        <p>&copy; 2026 Zoy Digital. All rights reserved.</p>
+    <!-- Footer -->
+    <footer class="text-center py-4 text-muted">
+        <p>&copy; 2026 Zoy Digital. Terpercaya dan Aman.</p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
