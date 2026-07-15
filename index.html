@@ -1,27 +1,32 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zoy Digital – PPOB + VPN</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Zoy Digital · PPOB + VPN</title>
     <!-- Bootstrap 5 + Icons -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
     <!-- Google Font (Inter) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
     <style>
-        * { font-family: 'Inter', sans-serif; }
+        * {
+            font-family: 'Inter', sans-serif;
+        }
         body {
-            background: #f4f7fc;
+            background: #f8faff;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
         }
-        .navbar-brand {
-            font-weight: 700;
-            letter-spacing: -0.5px;
+        /* ----- BRAND COLOR ----- */
+        .brand-primary {
+            color: #0b2b5c;
+        }
+        .brand-bg {
+            background: #0b2b5c;
         }
         .brand-gradient {
             background: linear-gradient(135deg, #0b2b5c 0%, #1a4a8a 100%);
@@ -29,111 +34,158 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        .brand-bg {
+        .brand-bg-gradient {
             background: linear-gradient(135deg, #0b2b5c, #1a4a8a);
         }
-        .card-hover {
-            transition: all 0.25s ease;
-            border: none;
-            border-radius: 20px;
-            box-shadow: 0 8px 24px rgba(0,20,50,0.06);
+        /* ----- NAVBAR ----- */
+        .navbar-brand {
+            font-weight: 700;
+            letter-spacing: -0.3px;
         }
-        .card-hover:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 16px 40px rgba(11,43,92,0.12);
+        .btn-login-outline {
+            border-radius: 60px;
+            padding: 8px 24px;
+            font-weight: 600;
+            border: 2px solid #0b2b5c;
+            color: #0b2b5c;
+            background: transparent;
+            transition: 0.2s;
         }
-        .service-icon {
-            width: 56px;
-            height: 56px;
+        .btn-login-outline:hover {
+            background: #0b2b5c;
+            color: #fff;
+        }
+        .btn-login-solid {
+            border-radius: 60px;
+            padding: 8px 24px;
+            font-weight: 600;
+            background: #0b2b5c;
+            color: #fff;
+            border: 2px solid #0b2b5c;
+            transition: 0.2s;
+        }
+        .btn-login-solid:hover {
+            background: #1a4a8a;
+            border-color: #1a4a8a;
+            color: #fff;
+        }
+        /* ----- HERO ----- */
+        .hero-section {
+            background: linear-gradient(145deg, #ffffff 0%, #f0f5fe 100%);
+            border-radius: 0 0 48px 48px;
+            padding: 2.5rem 0 4rem 0;
+        }
+        .hero-badge {
+            background: rgba(11, 43, 92, 0.08);
+            border-radius: 60px;
+            padding: 6px 20px;
+            font-weight: 500;
+            color: #0b2b5c;
+            display: inline-block;
+        }
+        .icon-circle {
+            width: 60px;
+            height: 60px;
+            background: rgba(11, 43, 92, 0.06);
+            border-radius: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(11,43,92,0.06);
-            border-radius: 16px;
-            font-size: 26px;
+            font-size: 28px;
             color: #0b2b5c;
         }
-        .btn-primary-custom {
-            background: #0b2b5c;
+        /* ----- CARD LAYANAN (deskripsi) ----- */
+        .service-card {
             border: none;
-            padding: 10px 28px;
-            border-radius: 50px;
+            border-radius: 28px;
+            background: #ffffff;
+            padding: 2rem 1.8rem;
+            box-shadow: 0 8px 30px rgba(11, 43, 92, 0.05);
+            transition: 0.25s ease;
+            height: 100%;
+        }
+        .service-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 48px rgba(11, 43, 92, 0.10);
+        }
+        .service-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 20px;
+            background: rgba(11, 43, 92, 0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            color: #0b2b5c;
+        }
+        .feature-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        .feature-list li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 0;
+            color: #2c3e5a;
+        }
+        .feature-list li i {
+            color: #0b2b5c;
+            font-size: 1.2rem;
+        }
+        /* ----- CTA LOGIN ----- */
+        .cta-box {
+            border-radius: 32px;
+            background: #0b2b5c;
+            padding: 3rem 2rem;
+            color: white;
+        }
+        .cta-box .btn-light-custom {
+            background: white;
+            color: #0b2b5c;
+            border-radius: 60px;
+            padding: 12px 36px;
+            font-weight: 700;
+            border: none;
+            transition: 0.2s;
+        }
+        .cta-box .btn-light-custom:hover {
+            background: #eef3fc;
+            transform: scale(1.02);
+        }
+        .cta-box .btn-outline-light-custom {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 60px;
+            padding: 12px 36px;
             font-weight: 600;
             transition: 0.2s;
         }
-        .btn-primary-custom:hover {
-            background: #1a4a8a;
-            transform: scale(1.02);
+        .cta-box .btn-outline-light-custom:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: white;
         }
-        .btn-outline-custom {
-            border: 2px solid #0b2b5c;
-            color: #0b2b5c;
-            border-radius: 50px;
-            font-weight: 600;
-            padding: 10px 28px;
-        }
-        .btn-outline-custom:hover {
-            background: #0b2b5c;
-            color: white;
-        }
-        .hero-section {
-            background: linear-gradient(145deg, #ffffff 0%, #f0f5fe 100%);
-            border-radius: 0 0 40px 40px;
-            padding-bottom: 3rem;
-        }
-        .vpn-badge {
-            background: rgba(11,43,92,0.08);
-            border-radius: 40px;
-            padding: 6px 18px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            color: #0b2b5c;
-        }
+        /* ----- FOOTER ----- */
         .footer-link {
             text-decoration: none;
-            color: #6c7a92;
+            color: #6a7b94;
             font-weight: 500;
             transition: 0.2s;
         }
         .footer-link:hover {
             color: #0b2b5c;
         }
-        .login-btn-header {
-            border-radius: 40px;
-            padding: 8px 22px;
-            font-weight: 600;
-            background: transparent;
-            border: 2px solid #0b2b5c;
-            color: #0b2b5c;
-            transition: 0.2s;
-        }
-        .login-btn-header:hover {
-            background: #0b2b5c;
-            color: white;
-        }
-        .feature-chip {
-            background: white;
-            border-radius: 40px;
-            padding: 6px 18px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
-            border: 1px solid rgba(11,43,92,0.06);
-        }
-        .price-tag {
-            font-weight: 700;
-            color: #0b2b5c;
-        }
-        .border-glass {
-            background: rgba(255,255,255,0.5);
-            backdrop-filter: blur(2px);
-            border: 1px solid rgba(255,255,255,0.6);
-        }
-        /* login.html link styling */
-        .login-link {
-            text-decoration: none;
-        }
-        /* responsive */
+        /* ----- RESPONSIVE ----- */
         @media (max-width: 576px) {
-            .hero-section { border-radius: 0 0 24px 24px; }
+            .hero-section {
+                border-radius: 0 0 24px 24px;
+                padding: 1.5rem 0 2.5rem 0;
+            }
+            .cta-box {
+                padding: 2rem 1.5rem;
+            }
         }
     </style>
 </head>
@@ -143,180 +195,161 @@
     <nav class="navbar navbar-expand-lg bg-white py-3 shadow-sm">
         <div class="container">
             <a class="navbar-brand fw-bold fs-3" href="#">
-                <i class="bi bi-bolt-fill text-primary me-1" style="color:#0b2b5c !important;"></i>
+                <i class="bi bi-bolt-fill me-1" style="color:#0b2b5c;"></i>
                 <span class="brand-gradient">Zoy Digital</span>
             </a>
-            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navMenu">
+            <div class="collapse navbar-collapse" id="mainNav">
                 <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-2">
                     <li class="nav-item"><a class="nav-link fw-semibold active" href="#">Beranda</a></li>
                     <li class="nav-item"><a class="nav-link fw-semibold" href="#">PPOB</a></li>
                     <li class="nav-item"><a class="nav-link fw-semibold" href="#">VPN</a></li>
-                    <li class="nav-item"><a class="nav-link fw-semibold" href="#">Promo</a></li>
+                    <li class="nav-item"><a class="nav-link fw-semibold" href="#">Tentang</a></li>
                 </ul>
-                <!-- Tombol Login (arah ke login.html) -->
-                <a href="login.html" class="btn login-btn-header">
+                <!-- Tombol Login (ke login.html) -->
+                <a href="login.html" class="btn btn-login-outline">
                     <i class="bi bi-box-arrow-in-right me-1"></i> Login
                 </a>
             </div>
         </div>
     </nav>
 
-    <!-- ========== HERO / BRAND SECTION ========== -->
-    <section class="hero-section pt-4 pt-md-5">
+    <!-- ========== HERO ========== -->
+    <section class="hero-section">
         <div class="container">
-            <div class="row align-items-center g-4">
-                <div class="col-md-6">
-                    <span class="vpn-badge mb-3 d-inline-block">
-                        <i class="bi bi-shield-lock-fill me-1"></i> PPOB + VPN Premium
-                    </span>
-                    <h1 class="display-4 fw-bold mb-3" style="color: #0b2b5c;">
-                        Bayar Tagihan & <br>Jelajahi <span class="brand-gradient">Aman</span>
+            <div class="row align-items-center g-5">
+                <div class="col-lg-6">
+                    <div class="hero-badge mb-3">
+                        <i class="bi bi-shield-check me-1"></i> PPOB + VPN Premium
+                    </div>
+                    <h1 class="display-4 fw-bold" style="color: #0b2b5c;">
+                        Bayar Tagihan, <br /><span class="brand-gradient">Jelajahi Dunia</span>
                     </h1>
-                    <p class="text-secondary fs-5 mb-4" style="max-width: 90%;">
-                        Satu platform untuk pembayaran PPOB cepat dan koneksi VPN privat. 
-                        Zoy Digital – #1 solusi digital modern.
+                    <p class="text-secondary fs-5 mt-3" style="max-width: 90%;">
+                        Zoy Digital adalah solusi cerdas untuk pembayaran PPOB instan 
+                        dan koneksi VPN pribadi. Cepat, aman, dan terpercaya.
                     </p>
-                    <div class="d-flex flex-wrap gap-3">
-                        <a href="#" class="btn btn-primary-custom text-white px-5">
-                            <i class="bi bi-wallet2 me-2"></i> Mulai Bayar
+                    <div class="d-flex flex-wrap gap-3 mt-4">
+                        <a href="#layanan" class="btn btn-login-solid px-5">
+                            <i class="bi bi-grid-3x3-gap-fill me-2"></i> Layanan
                         </a>
-                        <a href="#" class="btn btn-outline-custom">
-                            <i class="bi bi-lock-fill me-2"></i> Coba VPN
+                        <a href="login.html" class="btn btn-login-outline px-5">
+                            <i class="bi bi-box-arrow-in-right me-2"></i> Masuk
                         </a>
                     </div>
-                    <div class="mt-4 d-flex gap-3 flex-wrap">
-                        <span class="feature-chip"><i class="bi bi-check-circle-fill text-primary me-1" style="color:#0b2b5c !important;"></i> 20+ Provider</span>
-                        <span class="feature-chip"><i class="bi bi-globe2 me-1"></i> 10+ Lokasi VPN</span>
-                        <span class="feature-chip"><i class="bi bi-clock-history me-1"></i> 24/7 Support</span>
+                    <div class="mt-4 d-flex gap-4 flex-wrap">
+                        <span><i class="bi bi-check-circle-fill me-1" style="color:#0b2b5c;"></i> 30+ Provider PPOB</span>
+                        <span><i class="bi bi-globe2 me-1" style="color:#0b2b5c;"></i> 10+ Server VPN</span>
+                        <span><i class="bi bi-headset me-1" style="color:#0b2b5c;"></i> 24/7 Dukungan</span>
                     </div>
                 </div>
-                <div class="col-md-6 text-center text-md-end">
+                <div class="col-lg-6 text-center text-lg-end">
                     <img src="https://placehold.co/600x400/0b2b5c/ffffff?text=Zoy+Digital+%7C+PPOB+%2B+VPN" 
-                         alt="Zoy Digital illustration" 
-                         class="img-fluid rounded-4 shadow-lg" style="max-width: 100%; border: 1px solid rgba(255,255,255,0.3);">
+                         alt="Zoy Digital" 
+                         class="img-fluid rounded-4 shadow-lg" style="max-width: 100%; border: 1px solid rgba(255,255,255,0.3);" />
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ========== LAYANAN PPOB + VPN ========== -->
-    <div class="container my-5">
+    <!-- ========== LAYANAN (deskripsi, tanpa harga) ========== -->
+    <section id="layanan" class="container my-5">
         <div class="text-center mb-5">
-            <h2 class="fw-bold" style="color: #0b2b5c;">Layanan <span class="brand-gradient">Zoy Digital</span></h2>
-            <p class="text-secondary">PPOB dan VPN dalam satu genggaman</p>
+            <h2 class="fw-bold" style="color: #0b2b5c;">Layanan <span class="brand-gradient">Kami</span></h2>
+            <p class="text-secondary">Dua solusi dalam satu platform, dirancang untuk kemudahan Anda.</p>
         </div>
 
         <div class="row g-4">
             <!-- PPOB -->
             <div class="col-md-6">
-                <div class="card card-hover h-100 p-4">
+                <div class="service-card">
                     <div class="d-flex align-items-center gap-3 mb-3">
-                        <div class="service-icon"><i class="bi bi-receipt"></i></div>
-                        <h5 class="fw-bold mb-0" style="color:#0b2b5c;">PPOB (Pembayaran)</h5>
+                        <div class="service-icon"><i class="bi bi-receipt-cutoff"></i></div>
+                        <h5 class="fw-bold mb-0" style="color:#0b2b5c;">PPOB</h5>
                     </div>
-                    <p class="text-secondary">Listrik, PDAM, BPJS, Pulsa, data, TV kabel, dan masih banyak lagi. Proses cepat & tanpa antri.</p>
-                    <div class="mt-2 d-flex flex-wrap gap-2">
-                        <span class="badge bg-light text-dark border px-3 py-2">Listrik</span>
-                        <span class="badge bg-light text-dark border px-3 py-2">Pulsa</span>
-                        <span class="badge bg-light text-dark border px-3 py-2">BPJS</span>
-                        <span class="badge bg-light text-dark border px-3 py-2">PDAM</span>
-                    </div>
-                    <div class="mt-3">
-                        <a href="#" class="btn btn-sm btn-outline-custom">Lihat semua <i class="bi bi-arrow-right"></i></a>
-                    </div>
+                    <p class="text-secondary" style="line-height:1.7;">
+                        Bayar listrik, PDAM, BPJS, pulsa, paket data, TV kabel, dan berbagai 
+                        tagihan lainnya. Proses cepat, transparan, dan tanpa antrian.
+                    </p>
+                    <ul class="feature-list">
+                        <li><i class="bi bi-check-circle-fill"></i> 30+ penyedia layanan</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Transaksi instan</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Riwayat pembayaran lengkap</li>
+                    </ul>
+                    <a href="#" class="btn btn-outline-custom mt-2" style="border-radius:60px; border:2px solid #0b2b5c; color:#0b2b5c; font-weight:600; padding:8px 28px;">
+                        Pelajari <i class="bi bi-arrow-right-short"></i>
+                    </a>
                 </div>
             </div>
             <!-- VPN -->
             <div class="col-md-6">
-                <div class="card card-hover h-100 p-4">
+                <div class="service-card">
                     <div class="d-flex align-items-center gap-3 mb-3">
-                        <div class="service-icon"><i class="bi bi-shield-check"></i></div>
+                        <div class="service-icon"><i class="bi bi-shield-lock"></i></div>
                         <h5 class="fw-bold mb-0" style="color:#0b2b5c;">VPN Premium</h5>
                     </div>
-                    <p class="text-secondary">Akses aman & privat, proteksi data, dan bebas geoblokir. Tersedia server di 10+ negara.</p>
-                    <div class="mt-2 d-flex flex-wrap gap-2">
-                        <span class="badge bg-light text-dark border px-3 py-2">🇺🇸 US</span>
-                        <span class="badge bg-light text-dark border px-3 py-2">🇸🇬 SG</span>
-                        <span class="badge bg-light text-dark border px-3 py-2">🇯🇵 JP</span>
-                        <span class="badge bg-light text-dark border px-3 py-2">🇩🇪 DE</span>
-                    </div>
-                    <div class="mt-3">
-                        <a href="#" class="btn btn-sm btn-outline-custom">Pilih server <i class="bi bi-arrow-right"></i></a>
-                    </div>
+                    <p class="text-secondary" style="line-height:1.7;">
+                        Lindungi privasi Anda, akses konten global, dan amankan data 
+                        pribadi. Server tersebar di 10+ negara dengan koneksi stabil.
+                    </p>
+                    <ul class="feature-list">
+                        <li><i class="bi bi-check-circle-fill"></i> 10+ server global</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Enkripsi militer</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Tanpa log aktivitas</li>
+                    </ul>
+                    <a href="#" class="btn btn-outline-custom mt-2" style="border-radius:60px; border:2px solid #0b2b5c; color:#0b2b5c; font-weight:600; padding:8px 28px;">
+                        Pelajari <i class="bi bi-arrow-right-short"></i>
+                    </a>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== KEUNGGULAN (deskriptif) ========== -->
+    <div class="container my-5">
+        <div class="row g-4 align-items-center">
+            <div class="col-md-6">
+                <img src="https://placehold.co/600x400/eef3fc/0b2b5c?text=Zoy+Digital+%7C+Modern+%26+Secure" 
+                     alt="Keunggulan Zoy Digital" 
+                     class="img-fluid rounded-4 shadow-sm" />
+            </div>
+            <div class="col-md-6">
+                <span class="hero-badge mb-3"><i class="bi bi-star-fill me-1"></i> Mengapa Zoy Digital?</span>
+                <h3 class="fw-bold" style="color:#0b2b5c;">Semua dalam Satu <br />Platform Digital</h3>
+                <p class="text-secondary mt-3">
+                    Kami menggabungkan kemudahan pembayaran tagihan dengan keamanan VPN 
+                    berkelas. Cukup satu akun untuk semua kebutuhan digital Anda.
+                </p>
+                <ul class="feature-list mt-3">
+                    <li><i class="bi bi-check-circle-fill"></i> Proses pembayaran 1 menit</li>
+                    <li><i class="bi bi-check-circle-fill"></i> VPN dengan kecepatan tinggi</li>
+                    <li><i class="bi bi-check-circle-fill"></i> Support 24 jam via chat</li>
+                    <li><i class="bi bi-check-circle-fill"></i> Cocok untuk individu & bisnis</li>
+                </ul>
             </div>
         </div>
     </div>
 
-    <!-- ========== PAKET & HARGA (PREMIUM) ========== -->
+    <!-- ========== CTA LOGIN (tanpa harga) ========== -->
     <div class="container my-5">
-        <div class="row g-4">
-            <div class="col-lg-4">
-                <div class="card card-hover p-4 h-100">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <span class="badge bg-light text-dark border px-3 py-2">PPOB</span>
-                        <span class="price-tag fs-5">Mulai 1.500</span>
-                    </div>
-                    <h5 class="fw-bold mt-3" style="color:#0b2b5c;">Bayar Tagihan</h5>
-                    <ul class="list-unstyled mt-3">
-                        <li><i class="bi bi-check-circle-fill me-2" style="color:#0b2b5c;"></i> 50+ penyedia</li>
-                        <li><i class="bi bi-check-circle-fill me-2" style="color:#0b2b5c;"></i> Cashback & promo</li>
-                        <li><i class="bi bi-check-circle-fill me-2" style="color:#0b2b5c;"></i> Riwayat transparan</li>
-                    </ul>
-                    <a href="#" class="btn btn-primary-custom text-white w-100">Bayar Sekarang</a>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="card card-hover p-4 h-100 border border-primary" style="border-width:2px !important;">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <span class="badge bg-primary text-white px-3 py-2">POPULER</span>
-                        <span class="price-tag fs-5">Rp49.000</span>
-                    </div>
-                    <h5 class="fw-bold mt-3" style="color:#0b2b5c;">VPN 1 Bulan</h5>
-                    <ul class="list-unstyled mt-3">
-                        <li><i class="bi bi-check-circle-fill me-2" style="color:#0b2b5c;"></i> Server 10 negara</li>
-                        <li><i class="bi bi-check-circle-fill me-2" style="color:#0b2b5c;"></i> Kecepatan tinggi</li>
-                        <li><i class="bi bi-check-circle-fill me-2" style="color:#0b2b5c;"></i> Tanpa log aktivitas</li>
-                    </ul>
-                    <a href="#" class="btn btn-primary-custom text-white w-100">Langganan VPN</a>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="card card-hover p-4 h-100">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <span class="badge bg-light text-dark border px-3 py-2">PPOB+VPN</span>
-                        <span class="price-tag fs-5">Rp99.000</span>
-                    </div>
-                    <h5 class="fw-bold mt-3" style="color:#0b2b5c;">Paket Combo</h5>
-                    <ul class="list-unstyled mt-3">
-                        <li><i class="bi bi-check-circle-fill me-2" style="color:#0b2b5c;"></i> Semua fitur PPOB</li>
-                        <li><i class="bi bi-check-circle-fill me-2" style="color:#0b2b5c;"></i> VPN 3 bulan</li>
-                        <li><i class="bi bi-check-circle-fill me-2" style="color:#0b2b5c;"></i> Hemat 20%</li>
-                    </ul>
-                    <a href="#" class="btn btn-primary-custom text-white w-100">Pilih Combo</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ========== CTA + LOGIN (link ke login.html) ========== -->
-    <div class="container my-5">
-        <div class="p-5 rounded-4 brand-bg text-white text-center" style="background: linear-gradient(135deg, #0b2b5c, #1a4a8a);">
-            <h3 class="fw-bold">Sudah siap jadi bagian dari <span style="opacity:0.9;">Zoy Digital</span>?</h3>
-            <p class="mb-4 opacity-75">Login untuk akses semua layanan PPOB & VPN. Atau daftar sekarang.</p>
-            <div class="d-flex justify-content-center gap-3 flex-wrap">
-                <!-- Tombol Login ke login.html -->
-                <a href="login.html" class="btn btn-light px-5 py-3 fw-bold rounded-pill" style="color:#0b2b5c;">
-                    <i class="bi bi-box-arrow-in-right me-2"></i> Login
+        <div class="cta-box text-center">
+            <h3 class="fw-bold">Siap Memulai?</h3>
+            <p class="opacity-75 mx-auto" style="max-width:500px;">
+                Login ke akun Zoy Digital Anda dan nikmati kemudahan PPOB serta keamanan VPN dalam satu genggaman.
+            </p>
+            <div class="d-flex flex-wrap justify-content-center gap-3 mt-4">
+                <a href="login.html" class="btn btn-light-custom">
+                    <i class="bi bi-box-arrow-in-right me-2"></i> Login Sekarang
                 </a>
-                <a href="#" class="btn btn-outline-light px-5 py-3 fw-bold rounded-pill">
-                    Daftar Akun
+                <a href="#" class="btn btn-outline-light-custom">
+                    <i class="bi bi-person-plus me-2"></i> Daftar
                 </a>
             </div>
-            <p class="mt-4 small opacity-75"><i class="bi bi-shield-lock-fill me-1"></i> 100% aman & terpercaya</p>
+            <p class="mt-4 small opacity-50">
+                <i class="bi bi-shield-lock-fill me-1"></i> Keamanan data adalah prioritas kami
+            </p>
         </div>
     </div>
 
@@ -340,9 +373,7 @@
         </div>
     </footer>
 
-    <!-- Bootstrap JS (for toggler etc) -->
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- pesan kecil: login.html tersedia -->
-    <div style="display:none;"><!-- halaman login.html sudah terintegrasi via link --></div>
 </body>
-                        </html>
+</html>
