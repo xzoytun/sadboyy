@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Xtrimer Media · VPN & PPOB Digital</title>
+    <title>ZOY Digital · VPN & PPOB Digital</title>
 
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -11,45 +11,32 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <style>
-        /* ─── PALET WARNA BARU ─── */
+        /* ─── PALET WARNA ─── */
         :root {
-            /* Warna Utama */
             --primary: #6C3CE1;
             --primary-light: #8B5CF6;
             --primary-dark: #5B21B6;
             --primary-subtle: #F3F0FF;
             
-            /* Warna Sekunder */
             --secondary: #F59E0B;
             --secondary-light: #FCD34D;
             --secondary-subtle: #FFFBEB;
             
-            /* Warna Netral */
             --bg-body: #FAF9FE;
             --bg-card: #FFFFFF;
-            --bg-white: #FFFFFF;
             --text-primary: #1E1B4B;
             --text-secondary: #4B5563;
             --text-muted: #9CA3AF;
             --border-color: #E5E7EB;
             
-            /* Warna Aksen */
-            --accent-teal: #14B8A6;
-            --accent-rose: #F43F5E;
-            --accent-blue: #3B82F6;
-            
-            /* Shadow */
             --shadow-sm: 0 1px 3px rgba(108, 60, 225, 0.08);
             --shadow-md: 0 4px 24px rgba(108, 60, 225, 0.10);
             --shadow-lg: 0 8px 48px rgba(108, 60, 225, 0.12);
-            --shadow-xl: 0 12px 64px rgba(108, 60, 225, 0.15);
             
-            /* Radius */
             --radius: 16px;
             --radius-sm: 10px;
             --radius-full: 50px;
             
-            /* Transition */
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
@@ -65,28 +52,24 @@
         }
 
         a { text-decoration: none; }
-        img { max-width: 100%; }
 
         /* ─── SCROLLBAR ─── */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: var(--bg-body); }
         ::-webkit-scrollbar-thumb { background: var(--primary-light); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
 
         /* ─── NAVBAR ─── */
         .navbar-custom {
-            background: rgba(255, 255, 255, 0.92);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border-bottom: 2px solid var(--border-color);
-            padding: 10px 0;
-            transition: var(--transition);
+            border-bottom: 1px solid var(--border-color);
+            padding: 12px 0;
         }
 
         .navbar-custom .navbar-brand {
             font-weight: 900;
-            font-size: 1.3rem;
-            letter-spacing: -0.02em;
+            font-size: 1.35rem;
             color: var(--text-primary);
             display: flex;
             align-items: center;
@@ -97,8 +80,8 @@
             color: var(--primary);
             font-size: 1.6rem;
             background: var(--primary-subtle);
-            padding: 6px;
-            border-radius: 10px;
+            padding: 8px;
+            border-radius: 12px;
         }
 
         .navbar-custom .navbar-brand span {
@@ -109,56 +92,41 @@
         }
 
         .btn-login {
-            padding: 9px 24px;
+            padding: 8px 22px;
             border-radius: var(--radius-full);
             font-weight: 700;
-            font-size: 0.875rem;
+            font-size: 0.85rem;
             background: linear-gradient(135deg, var(--primary), var(--primary-light));
             color: #fff;
             border: none;
             transition: var(--transition);
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 16px rgba(108, 60, 225, 0.25);
+            gap: 6px;
+            box-shadow: 0 4px 16px rgba(108, 60, 225, 0.2);
         }
 
         .btn-login:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 32px rgba(108, 60, 225, 0.35);
+            box-shadow: 0 8px 32px rgba(108, 60, 225, 0.3);
             color: #fff;
         }
 
-        .btn-login i { font-size: 1rem; }
-
         /* ─── HERO ─── */
         .hero {
-            padding: 70px 0 50px;
+            padding: 60px 0 40px;
             text-align: center;
             position: relative;
-            overflow: hidden;
         }
 
         .hero::before {
             content: '';
             position: absolute;
-            top: -50%;
-            right: -20%;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(108, 60, 225, 0.06) 0%, transparent 70%);
-            border-radius: 50%;
-            pointer-events: none;
-        }
-
-        .hero::after {
-            content: '';
-            position: absolute;
-            bottom: -30%;
-            left: -10%;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(245, 158, 11, 0.05) 0%, transparent 70%);
+            top: -40%;
+            right: -15%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(108, 60, 225, 0.05) 0%, transparent 70%);
             border-radius: 50%;
             pointer-events: none;
         }
@@ -169,20 +137,18 @@
             gap: 8px;
             background: var(--primary-subtle);
             color: var(--primary);
-            padding: 6px 18px;
+            padding: 5px 16px;
             border-radius: var(--radius-full);
             font-weight: 700;
-            font-size: 0.8rem;
-            border: 1px solid rgba(108, 60, 225, 0.15);
-            margin-bottom: 20px;
+            font-size: 0.75rem;
+            border: 1px solid rgba(108, 60, 225, 0.12);
+            margin-bottom: 16px;
             position: relative;
             z-index: 1;
         }
 
-        .hero-badge i { color: var(--secondary); }
-
         .hero h1 {
-            font-size: 3rem;
+            font-size: 2.8rem;
             font-weight: 900;
             letter-spacing: -0.03em;
             line-height: 1.15;
@@ -199,17 +165,17 @@
         }
 
         .hero p {
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             color: var(--text-secondary);
-            max-width: 600px;
-            margin: 16px auto 32px;
+            max-width: 580px;
+            margin: 14px auto 28px;
             line-height: 1.8;
             position: relative;
             z-index: 1;
         }
 
         .btn-hero {
-            padding: 14px 44px;
+            padding: 13px 40px;
             border-radius: var(--radius-full);
             font-weight: 800;
             font-size: 1rem;
@@ -226,32 +192,53 @@
         }
 
         .btn-hero:hover {
-            transform: translateY(-3px) scale(1.02);
+            transform: translateY(-3px);
             box-shadow: 0 8px 40px rgba(108, 60, 225, 0.4);
             color: #fff;
+        }
+
+        /* ─── STATS ─── */
+        .stats-section {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: var(--radius);
+            padding: 32px 20px;
+            color: #fff;
+        }
+
+        .stats-section .stat-number {
+            font-size: 2.2rem;
+            font-weight: 900;
+            letter-spacing: -0.02em;
+        }
+
+        .stats-section .stat-label {
+            font-weight: 600;
+            opacity: 0.85;
+            font-size: 0.85rem;
+            margin-top: 2px;
         }
 
         /* ─── SECTION HEADER ─── */
         .section-header {
             text-align: center;
-            margin-bottom: 36px;
+            margin-bottom: 30px;
         }
 
         .section-header .badge-section {
             display: inline-block;
             background: var(--secondary-subtle);
             color: var(--secondary);
-            padding: 4px 16px;
+            padding: 3px 14px;
             border-radius: var(--radius-full);
             font-weight: 700;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .section-header h2 {
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 900;
             letter-spacing: -0.02em;
             color: var(--text-primary);
@@ -260,119 +247,70 @@
         .section-header p {
             color: var(--text-secondary);
             font-weight: 500;
-            margin-top: 4px;
-            font-size: 1.05rem;
+            margin-top: 2px;
+            font-size: 1rem;
         }
 
         /* ─── CARDS ─── */
         .card-modern {
             background: var(--bg-card);
-            border: 2px solid var(--border-color);
+            border: 1px solid var(--border-color);
             border-radius: var(--radius);
-            padding: 32px 28px;
+            padding: 28px 24px;
             transition: var(--transition);
             height: 100%;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .card-modern::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            opacity: 0;
-            transition: var(--transition);
         }
 
         .card-modern:hover {
-            transform: translateY(-6px);
+            transform: translateY(-4px);
             border-color: var(--primary-light);
             box-shadow: var(--shadow-lg);
         }
 
-        .card-modern:hover::before {
-            opacity: 1;
-        }
-
         .card-modern .icon-wrap {
-            width: 56px;
-            height: 56px;
+            width: 52px;
+            height: 52px;
             border-radius: 14px;
             background: var(--primary-subtle);
             color: var(--primary);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
-            margin-bottom: 16px;
+            font-size: 22px;
+            margin-bottom: 14px;
             transition: var(--transition);
         }
 
         .card-modern:hover .icon-wrap {
             background: var(--primary);
             color: #fff;
-            transform: scale(1.05);
         }
 
         .card-modern h5 {
             font-weight: 800;
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             color: var(--text-primary);
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
 
         .card-modern p {
-            font-size: 0.9rem;
+            font-size: 0.875rem;
             color: var(--text-secondary);
             margin: 0;
             line-height: 1.7;
         }
 
-        /* ─── PROTOCOL GRID ─── */
+        /* ─── PROTOCOL & PPOB ITEMS ─── */
         .protocol-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 14px;
+            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+            gap: 12px;
         }
 
-        .protocol-item {
-            background: var(--bg-card);
-            border: 2px solid var(--border-color);
-            border-radius: var(--radius-sm);
-            padding: 18px 12px;
-            text-align: center;
-            transition: var(--transition);
-            cursor: default;
-        }
-
-        .protocol-item:hover {
-            border-color: var(--primary-light);
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-md);
-            background: var(--primary-subtle);
-        }
-
-        .protocol-item i {
-            font-size: 26px;
-            color: var(--primary);
-            display: block;
-            margin-bottom: 6px;
-        }
-
-        .protocol-item span {
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-
-        /* ─── PPOB SERVICES ─── */
+        .protocol-item,
         .ppob-item {
             background: var(--bg-card);
-            border: 2px solid var(--border-color);
+            border: 1px solid var(--border-color);
             border-radius: var(--radius-sm);
             padding: 16px 10px;
             text-align: center;
@@ -380,20 +318,31 @@
             cursor: default;
         }
 
+        .protocol-item:hover {
+            border-color: var(--primary-light);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-sm);
+            background: var(--primary-subtle);
+        }
+
         .ppob-item:hover {
             border-color: var(--secondary);
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-md);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-sm);
             background: var(--secondary-subtle);
         }
 
+        .protocol-item i,
         .ppob-item i {
             font-size: 24px;
-            color: var(--secondary);
             display: block;
             margin-bottom: 4px;
         }
 
+        .protocol-item i { color: var(--primary); }
+        .ppob-item i { color: var(--secondary); }
+
+        .protocol-item span,
         .ppob-item span {
             font-size: 0.8rem;
             font-weight: 700;
@@ -403,31 +352,17 @@
         /* ─── INFO SECTION ─── */
         .info-box {
             background: var(--bg-card);
-            border: 2px solid var(--border-color);
+            border: 1px solid var(--border-color);
             border-radius: var(--radius);
-            padding: 48px 40px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .info-box::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -10%;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(108, 60, 225, 0.04) 0%, transparent 70%);
-            border-radius: 50%;
-            pointer-events: none;
+            padding: 40px 36px;
         }
 
         .info-box h3 {
             font-weight: 900;
-            font-size: 1.75rem;
+            font-size: 1.5rem;
             text-align: center;
             color: var(--text-primary);
-            margin-bottom: 32px;
+            margin-bottom: 28px;
         }
 
         .info-box h3 i {
@@ -437,9 +372,9 @@
 
         .info-item {
             display: flex;
-            gap: 18px;
+            gap: 16px;
             align-items: flex-start;
-            padding: 16px;
+            padding: 12px 16px;
             border-radius: var(--radius-sm);
             transition: var(--transition);
         }
@@ -449,8 +384,8 @@
         }
 
         .info-item .icon {
-            width: 48px;
-            height: 48px;
+            width: 44px;
+            height: 44px;
             flex-shrink: 0;
             border-radius: 12px;
             background: var(--primary-subtle);
@@ -458,7 +393,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
+            font-size: 18px;
             transition: var(--transition);
         }
 
@@ -469,50 +404,72 @@
 
         .info-item h6 {
             font-weight: 800;
-            font-size: 1rem;
+            font-size: 0.95rem;
             color: var(--text-primary);
             margin-bottom: 2px;
         }
 
         .info-item p {
-            font-size: 0.875rem;
+            font-size: 0.85rem;
             color: var(--text-secondary);
             margin: 0;
-            line-height: 1.7;
+            line-height: 1.6;
         }
 
-        /* ─── STATS SECTION ─── */
-        .stats-section {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        /* ─── CTA BANNER ─── */
+        .cta-banner {
+            padding: 40px 30px;
             border-radius: var(--radius);
-            padding: 40px 20px;
-            color: #fff;
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary-subtle), var(--secondary-subtle));
+            border: 1px solid var(--border-color);
         }
 
-        .stats-section .stat-number {
-            font-size: 2.5rem;
+        .cta-banner h3 {
             font-weight: 900;
-            letter-spacing: -0.02em;
+            font-size: 1.5rem;
+            color: var(--text-primary);
         }
 
-        .stats-section .stat-label {
-            font-weight: 600;
-            opacity: 0.85;
-            font-size: 0.9rem;
+        .cta-banner p {
+            color: var(--text-secondary);
+            max-width: 450px;
+            margin: 6px auto 18px;
+        }
+
+        .btn-cta {
+            padding: 11px 36px;
+            border-radius: var(--radius-full);
+            font-weight: 800;
+            font-size: 0.95rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: #fff;
+            border: none;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 20px rgba(108, 60, 225, 0.25);
+        }
+
+        .btn-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(108, 60, 225, 0.35);
+            color: #fff;
         }
 
         /* ─── FOOTER ─── */
         .footer-custom {
-            border-top: 2px solid var(--border-color);
-            padding: 32px 0 24px;
-            margin-top: 48px;
+            border-top: 1px solid var(--border-color);
+            padding: 28px 0 20px;
+            margin-top: 40px;
             background: var(--bg-white);
         }
 
         .footer-custom a {
             color: var(--text-secondary);
             font-weight: 600;
-            font-size: 0.875rem;
+            font-size: 0.85rem;
             transition: var(--transition);
         }
 
@@ -521,8 +478,8 @@
         }
 
         .footer-custom .social-icon {
-            width: 40px;
-            height: 40px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
             background: var(--primary-subtle);
             color: var(--primary);
@@ -530,7 +487,7 @@
             align-items: center;
             justify-content: center;
             transition: var(--transition);
-            font-size: 1.1rem;
+            font-size: 1rem;
         }
 
         .footer-custom .social-icon:hover {
@@ -541,29 +498,32 @@
 
         /* ─── RESPONSIVE ─── */
         @media (max-width: 992px) {
-            .hero h1 { font-size: 2.5rem; }
+            .hero h1 { font-size: 2.3rem; }
         }
 
         @media (max-width: 768px) {
-            .hero { padding: 40px 0 30px; }
-            .hero h1 { font-size: 2rem; }
-            .hero p { font-size: 1rem; }
-            .info-box { padding: 28px 20px; }
-            .section-header h2 { font-size: 1.5rem; }
-            .stats-section .stat-number { font-size: 2rem; }
+            .hero { padding: 40px 0 24px; }
+            .hero h1 { font-size: 1.8rem; }
+            .hero p { font-size: 0.95rem; }
+            .info-box { padding: 24px 16px; }
+            .section-header h2 { font-size: 1.4rem; }
+            .stats-section .stat-number { font-size: 1.6rem; }
+            .cta-banner { padding: 28px 20px; }
+            .cta-banner h3 { font-size: 1.2rem; }
         }
 
         @media (max-width: 480px) {
-            .hero h1 { font-size: 1.6rem; }
+            .hero h1 { font-size: 1.4rem; }
             .protocol-grid { grid-template-columns: repeat(2, 1fr); }
-            .btn-hero { padding: 12px 28px; font-size: 0.9rem; }
+            .btn-hero { padding: 11px 24px; font-size: 0.85rem; }
             .navbar-custom .navbar-brand { font-size: 1.1rem; }
-            .btn-login { padding: 7px 16px; font-size: 0.8rem; }
+            .btn-login { padding: 6px 16px; font-size: 0.75rem; }
+            .navbar-custom .navbar-brand i { font-size: 1.3rem; padding: 6px; }
         }
 
         @media (min-width: 1200px) {
-            .hero { padding: 90px 0 60px; }
-            .hero h1 { font-size: 3.5rem; }
+            .hero { padding: 80px 0 50px; }
+            .hero h1 { font-size: 3.2rem; }
         }
     </style>
 </head>
@@ -574,14 +534,12 @@
         <div class="container">
             <a class="navbar-brand" href="index.html">
                 <i class="bi bi-shield-lock-fill"></i>
-                <span>XTRIMER</span>
+                <span>ZOY DIGITAL</span>
             </a>
 
-            <div class="d-flex align-items-center gap-3">
-                <a href="login.html" class="btn-login">
-                    <i class="bi bi-box-arrow-in-right"></i> Masuk
-                </a>
-            </div>
+            <a href="login.html" class="btn-login">
+                <i class="bi bi-box-arrow-in-right"></i> Masuk
+            </a>
         </div>
     </nav>
 
@@ -598,11 +556,11 @@
                     <span class="highlight">Agen PPOB Termurah</span>
                 </h1>
                 <p>
-                    Xtrimer Media adalah platform digital otomatis 24 jam untuk penyedia layanan internet aman
+                    ZOY Digital adalah platform digital otomatis 24 jam untuk penyedia layanan internet aman
                     menggunakan akun VPN Premium dengan protokol terbaik dan performa tinggi.
                 </p>
                 <a href="login.html" class="btn-hero">
-                    <i class="bi bi-google"></i> Mulai Sekarang
+                    <i class="bi bi-rocket-takeoff"></i> Mulai Sekarang
                 </a>
             </div>
         </section>
@@ -611,7 +569,7 @@
         <section class="py-3">
             <div class="container">
                 <div class="stats-section">
-                    <div class="row text-center g-4">
+                    <div class="row text-center g-3">
                         <div class="col-6 col-md-3">
                             <div class="stat-number">10K+</div>
                             <div class="stat-label">Pengguna Aktif</div>
@@ -647,14 +605,14 @@
                         <div class="card-modern">
                             <div class="icon-wrap"><i class="bi bi-shield-check"></i></div>
                             <h5>VPN Tunneling Premium</h5>
-                            <p>Nikmati koneksi internet aman dan stabil dengan protokol terbaik. Server berkualitas dengan kecepatan tinggi dan enkripsi maksimal untuk privasi Anda.</p>
+                            <p>Nikmati koneksi internet aman dan stabil dengan protokol terbaik. Server berkualitas dengan kecepatan tinggi dan enkripsi maksimal.</p>
                         </div>
                     </div>
                     <div class="col-12 col-md-6">
                         <div class="card-modern">
                             <div class="icon-wrap"><i class="bi bi-phone"></i></div>
                             <h5>Agen PPOB Digital</h5>
-                            <p>Layanan top-up pulsa, paket data, token PLN, voucher game, dan pembayaran tagihan dengan proses instan 24 jam non-stop tanpa antre.</p>
+                            <p>Layanan top-up pulsa, paket data, token PLN, voucher game, dan pembayaran tagihan dengan proses instan 24 jam non-stop.</p>
                         </div>
                     </div>
                 </div>
@@ -743,14 +701,14 @@
         <section class="py-4">
             <div class="container">
                 <div class="info-box">
-                    <h3><i class="bi bi-stars"></i> Kenapa Pilih Xtrimer Media?</h3>
+                    <h3><i class="bi bi-stars"></i> Kenapa Pilih ZOY Digital?</h3>
                     <div class="row g-2">
                         <div class="col-12 col-md-6">
                             <div class="info-item">
                                 <div class="icon"><i class="bi bi-shield-lock"></i></div>
                                 <div>
                                     <h6>VPN Aman & Stabil</h6>
-                                    <p>Server VPN Tunneling dengan protokol SSH, VMess, VLess, dan Trojan, dilengkapi enkripsi tingkat tinggi untuk menjaga privasi koneksi internet Anda.</p>
+                                    <p>Server VPN dengan protokol SSH, VMess, VLess, dan Trojan, dilengkapi enkripsi tinggi untuk privasi maksimal.</p>
                                 </div>
                             </div>
                         </div>
@@ -759,7 +717,7 @@
                                 <div class="icon"><i class="bi bi-speedometer2"></i></div>
                                 <div>
                                     <h6>Performa Tinggi 24 Jam</h6>
-                                    <p>Semua layanan berjalan otomatis dan aktif 24 jam non-stop, tanpa perlu menunggu proses manual, sehingga koneksi tetap cepat dan andal.</p>
+                                    <p>Semua layanan berjalan otomatis dan aktif 24 jam non-stop, koneksi tetap cepat dan andal setiap saat.</p>
                                 </div>
                             </div>
                         </div>
@@ -768,7 +726,7 @@
                                 <div class="icon"><i class="bi bi-cash-coin"></i></div>
                                 <div>
                                     <h6>PPOB Harga Termurah</h6>
-                                    <p>Transaksi pulsa, paket data, token PLN, e-wallet, voucher game, hingga TV kabel dengan harga bersaing dan proses instan tanpa antre.</p>
+                                    <p>Transaksi pulsa, paket data, token PLN, e-wallet, voucher game, hingga TV kabel dengan harga bersaing.</p>
                                 </div>
                             </div>
                         </div>
@@ -777,7 +735,7 @@
                                 <div class="icon"><i class="bi bi-headset"></i></div>
                                 <div>
                                     <h6>Dukungan Terpercaya</h6>
-                                    <p>Ribuan pengguna telah merasakan kemudahan platform kami, didukung sistem yang 100% terpercaya dan siap membantu kapan pun dibutuhkan.</p>
+                                    <p>Ribuan pengguna telah merasakan kemudahan platform kami, siap membantu kapan pun dibutuhkan.</p>
                                 </div>
                             </div>
                         </div>
@@ -789,12 +747,10 @@
         <!-- ─── CTA BANNER ─── -->
         <section class="py-4">
             <div class="container">
-                <div class="p-5 rounded-4 text-center" style="background: linear-gradient(135deg, var(--primary-subtle), var(--secondary-subtle)); border: 2px solid var(--border-color);">
-                    <h3 class="fw-bold" style="color: var(--text-primary);">Siap Bergabung dengan Xtrimer Media?</h3>
-                    <p class="text-secondary" style="max-width: 500px; margin: 8px auto 20px;">
-                        Daftar sekarang dan nikmati kemudahan akses VPN Premium & PPOB termurah
-                    </p>
-                    <a href="login.html" class="btn-hero" style="display: inline-flex;">
+                <div class="cta-banner">
+                    <h3>Siap Bergabung dengan ZOY Digital?</h3>
+                    <p>Daftar sekarang dan nikmati kemudahan akses VPN Premium & PPOB termurah</p>
+                    <a href="login.html" class="btn-cta">
                         <i class="bi bi-person-plus"></i> Daftar Sekarang
                     </a>
                 </div>
@@ -806,16 +762,16 @@
     <!-- ─── FOOTER ─── -->
     <footer class="footer-custom">
         <div class="container">
-            <div class="row align-items-center g-4">
+            <div class="row align-items-center g-3">
                 <div class="col-12 col-md-6 text-center text-md-start">
-                    <p class="fw-bold mb-0" style="color: var(--text-secondary); font-size: 0.9rem;">
-                        &copy; 2026 <span style="color: var(--primary); font-weight: 900;">Xtrimer Media</span>. All Rights Reserved.
+                    <p class="fw-bold mb-0" style="color: var(--text-secondary); font-size: 0.85rem;">
+                        &copy; 2026 <span style="color: var(--primary); font-weight: 900;">ZOY Digital</span>. All Rights Reserved.
                     </p>
                 </div>
                 <div class="col-12 col-md-6 d-flex justify-content-center justify-content-md-end gap-3 align-items-center">
                     <a href="terms.html">Syarat Layanan</a>
                     <a href="privacy.html">Kebijakan Privasi</a>
-                    <div class="vr" style="color: var(--border-color);"></div>
+                    <div class="vr" style="color: var(--border-color); height: 20px;"></div>
                     <a href="#" class="social-icon"><i class="bi bi-instagram"></i></a>
                     <a href="#" class="social-icon"><i class="bi bi-twitter-x"></i></a>
                     <a href="#" class="social-icon"><i class="bi bi-youtube"></i></a>
