@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZOY Digital · VPN & PPOB Digital</title>
+    <title>ZOY Digital · Marketplace Digital Indonesia</title>
 
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -11,27 +11,28 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <style>
-        /* ─── PALET WARNA ─── */
+        /* ─── ROOT VARIABLES ─── */
         :root {
-            --primary: #6C3CE1;
-            --primary-light: #8B5CF6;
+            --primary: #7C3AED;
             --primary-dark: #5B21B6;
-            --primary-subtle: #F3F0FF;
+            --primary-light: #A78BFA;
+            --primary-subtle: #F5F3FF;
             
             --secondary: #F59E0B;
             --secondary-light: #FCD34D;
-            --secondary-subtle: #FFFBEB;
             
-            --bg-body: #FAF9FE;
+            --bg-body: #F8FAFC;
             --bg-card: #FFFFFF;
-            --text-primary: #1E1B4B;
-            --text-secondary: #4B5563;
-            --text-muted: #9CA3AF;
-            --border-color: #E5E7EB;
+            --bg-dark: #0F172A;
             
-            --shadow-sm: 0 1px 3px rgba(108, 60, 225, 0.08);
-            --shadow-md: 0 4px 24px rgba(108, 60, 225, 0.10);
-            --shadow-lg: 0 8px 48px rgba(108, 60, 225, 0.12);
+            --text-primary: #0F172A;
+            --text-secondary: #475569;
+            --text-muted: #94A3B8;
+            --border-color: #E2E8F0;
+            
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 20px rgba(0,0,0,0.06);
+            --shadow-lg: 0 8px 40px rgba(0,0,0,0.08);
             
             --radius: 16px;
             --radius-sm: 10px;
@@ -64,12 +65,12 @@
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border-bottom: 1px solid var(--border-color);
-            padding: 12px 0;
+            padding: 14px 0;
         }
 
         .navbar-custom .navbar-brand {
             font-weight: 900;
-            font-size: 1.35rem;
+            font-size: 1.4rem;
             color: var(--text-primary);
             display: flex;
             align-items: center;
@@ -78,87 +79,68 @@
 
         .navbar-custom .navbar-brand i {
             color: var(--primary);
-            font-size: 1.6rem;
-            background: var(--primary-subtle);
-            padding: 8px;
-            border-radius: 12px;
+            font-size: 1.8rem;
         }
 
         .navbar-custom .navbar-brand span {
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
         .btn-login {
-            padding: 8px 22px;
+            padding: 8px 24px;
             border-radius: var(--radius-full);
             font-weight: 700;
             font-size: 0.85rem;
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            background: var(--primary);
             color: #fff;
             border: none;
             transition: var(--transition);
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            box-shadow: 0 4px 16px rgba(108, 60, 225, 0.2);
+            box-shadow: 0 4px 16px rgba(124, 58, 237, 0.2);
         }
 
         .btn-login:hover {
+            background: var(--primary-dark);
             transform: translateY(-2px);
-            box-shadow: 0 8px 32px rgba(108, 60, 225, 0.3);
+            box-shadow: 0 8px 32px rgba(124, 58, 237, 0.3);
             color: #fff;
         }
 
         /* ─── HERO ─── */
         .hero {
             padding: 60px 0 40px;
-            text-align: center;
-            position: relative;
         }
 
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -40%;
-            right: -15%;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(108, 60, 225, 0.05) 0%, transparent 70%);
-            border-radius: 50%;
-            pointer-events: none;
-        }
-
-        .hero-badge {
+        .hero-tag {
             display: inline-flex;
             align-items: center;
             gap: 8px;
             background: var(--primary-subtle);
             color: var(--primary);
-            padding: 5px 16px;
+            padding: 4px 14px;
             border-radius: var(--radius-full);
             font-weight: 700;
             font-size: 0.75rem;
-            border: 1px solid rgba(108, 60, 225, 0.12);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
             margin-bottom: 16px;
-            position: relative;
-            z-index: 1;
         }
 
         .hero h1 {
             font-size: 2.8rem;
             font-weight: 900;
             letter-spacing: -0.03em;
-            line-height: 1.15;
+            line-height: 1.1;
             color: var(--text-primary);
-            position: relative;
-            z-index: 1;
         }
 
         .hero h1 .highlight {
-            background: linear-gradient(135deg, var(--primary), var(--primary-light), var(--secondary));
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -167,68 +149,157 @@
         .hero p {
             font-size: 1.05rem;
             color: var(--text-secondary);
-            max-width: 580px;
-            margin: 14px auto 28px;
+            max-width: 520px;
+            margin: 12px 0 24px;
             line-height: 1.8;
-            position: relative;
-            z-index: 1;
         }
 
-        .btn-hero {
-            padding: 13px 40px;
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .btn-primary-custom {
+            padding: 12px 32px;
             border-radius: var(--radius-full);
-            font-weight: 800;
-            font-size: 1rem;
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            font-weight: 700;
+            font-size: 0.9rem;
+            background: var(--primary);
             color: #fff;
             border: none;
             transition: var(--transition);
             display: inline-flex;
             align-items: center;
-            gap: 10px;
-            box-shadow: 0 4px 24px rgba(108, 60, 225, 0.3);
-            position: relative;
-            z-index: 1;
+            gap: 8px;
         }
 
-        .btn-hero:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 40px rgba(108, 60, 225, 0.4);
+        .btn-primary-custom:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(124, 58, 237, 0.3);
             color: #fff;
         }
 
-        /* ─── STATS ─── */
-        .stats-section {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        .btn-outline-custom {
+            padding: 12px 32px;
+            border-radius: var(--radius-full);
+            font-weight: 700;
+            font-size: 0.9rem;
+            background: transparent;
+            color: var(--text-secondary);
+            border: 2px solid var(--border-color);
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-outline-custom:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        /* ─── COOKIE BANNER ─── */
+        .cookie-banner {
+            background: var(--bg-dark);
             border-radius: var(--radius);
-            padding: 32px 20px;
+            padding: 24px 28px;
+            margin-top: 32px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .cookie-banner .cookie-text {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .cookie-banner .cookie-text p {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 0.85rem;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .cookie-banner .cookie-text a {
+            color: var(--secondary-light);
+            font-weight: 600;
+        }
+
+        .cookie-banner .cookie-text a:hover {
+            color: var(--secondary);
+        }
+
+        .cookie-banner .cookie-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .btn-cookie-accept {
+            padding: 8px 24px;
+            border-radius: var(--radius-full);
+            font-weight: 700;
+            font-size: 0.8rem;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            transition: var(--transition);
+        }
+
+        .btn-cookie-accept:hover {
+            background: var(--primary-dark);
             color: #fff;
         }
 
-        .stats-section .stat-number {
-            font-size: 2.2rem;
-            font-weight: 900;
-            letter-spacing: -0.02em;
+        .btn-cookie-decline {
+            padding: 8px 24px;
+            border-radius: var(--radius-full);
+            font-weight: 700;
+            font-size: 0.8rem;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: var(--transition);
         }
 
-        .stats-section .stat-label {
-            font-weight: 600;
-            opacity: 0.85;
-            font-size: 0.85rem;
-            margin-top: 2px;
+        .btn-cookie-decline:hover {
+            border-color: rgba(255, 255, 255, 0.5);
+            color: #fff;
+        }
+
+        .btn-cookie-settings {
+            padding: 8px 20px;
+            border-radius: var(--radius-full);
+            font-weight: 700;
+            font-size: 0.8rem;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: var(--transition);
+        }
+
+        .btn-cookie-settings:hover {
+            border-color: rgba(255, 255, 255, 0.5);
+            color: #fff;
         }
 
         /* ─── SECTION HEADER ─── */
         .section-header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 32px;
         }
 
         .section-header .badge-section {
             display: inline-block;
-            background: var(--secondary-subtle);
-            color: var(--secondary);
-            padding: 3px 14px;
+            background: var(--primary-subtle);
+            color: var(--primary);
+            padding: 4px 16px;
             border-radius: var(--radius-full);
             font-weight: 700;
             font-size: 0.7rem;
@@ -329,7 +400,7 @@
             border-color: var(--secondary);
             transform: translateY(-3px);
             box-shadow: var(--shadow-sm);
-            background: var(--secondary-subtle);
+            background: var(--primary-subtle);
         }
 
         .protocol-item i,
@@ -416,48 +487,6 @@
             line-height: 1.6;
         }
 
-        /* ─── CTA BANNER ─── */
-        .cta-banner {
-            padding: 40px 30px;
-            border-radius: var(--radius);
-            text-align: center;
-            background: linear-gradient(135deg, var(--primary-subtle), var(--secondary-subtle));
-            border: 1px solid var(--border-color);
-        }
-
-        .cta-banner h3 {
-            font-weight: 900;
-            font-size: 1.5rem;
-            color: var(--text-primary);
-        }
-
-        .cta-banner p {
-            color: var(--text-secondary);
-            max-width: 450px;
-            margin: 6px auto 18px;
-        }
-
-        .btn-cta {
-            padding: 11px 36px;
-            border-radius: var(--radius-full);
-            font-weight: 800;
-            font-size: 0.95rem;
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
-            color: #fff;
-            border: none;
-            transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 20px rgba(108, 60, 225, 0.25);
-        }
-
-        .btn-cta:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 32px rgba(108, 60, 225, 0.35);
-            color: #fff;
-        }
-
         /* ─── FOOTER ─── */
         .footer-custom {
             border-top: 1px solid var(--border-color);
@@ -477,48 +506,54 @@
             color: var(--primary);
         }
 
-        .footer-custom .social-icon {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            background: var(--primary-subtle);
-            color: var(--primary);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition);
-            font-size: 1rem;
-        }
-
-        .footer-custom .social-icon:hover {
-            background: var(--primary);
-            color: #fff;
-            transform: translateY(-2px);
-        }
-
         /* ─── RESPONSIVE ─── */
         @media (max-width: 992px) {
-            .hero h1 { font-size: 2.3rem; }
+            .hero h1 { font-size: 2.2rem; }
         }
 
         @media (max-width: 768px) {
             .hero { padding: 40px 0 24px; }
             .hero h1 { font-size: 1.8rem; }
             .hero p { font-size: 0.95rem; }
+            
+            .cookie-banner {
+                flex-direction: column;
+                text-align: center;
+                padding: 20px;
+            }
+            .cookie-banner .cookie-actions {
+                justify-content: center;
+            }
+            
             .info-box { padding: 24px 16px; }
             .section-header h2 { font-size: 1.4rem; }
-            .stats-section .stat-number { font-size: 1.6rem; }
-            .cta-banner { padding: 28px 20px; }
-            .cta-banner h3 { font-size: 1.2rem; }
         }
 
         @media (max-width: 480px) {
             .hero h1 { font-size: 1.4rem; }
             .protocol-grid { grid-template-columns: repeat(2, 1fr); }
-            .btn-hero { padding: 11px 24px; font-size: 0.85rem; }
+            
+            .hero-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+            .hero-actions .btn-primary-custom,
+            .hero-actions .btn-outline-custom {
+                justify-content: center;
+                width: 100%;
+            }
+            
             .navbar-custom .navbar-brand { font-size: 1.1rem; }
             .btn-login { padding: 6px 16px; font-size: 0.75rem; }
-            .navbar-custom .navbar-brand i { font-size: 1.3rem; padding: 6px; }
+            
+            .cookie-banner .cookie-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+            .cookie-banner .cookie-actions button {
+                width: 100%;
+                justify-content: center;
+            }
         }
 
         @media (min-width: 1200px) {
@@ -548,44 +583,68 @@
         <!-- ─── HERO ─── -->
         <section class="hero">
             <div class="container">
-                <div class="hero-badge">
-                    <i class="bi bi-check-circle-fill"></i> 100% Trusted · 24/7 Active
+                <div class="row align-items-center">
+                    <div class="col-12 col-lg-7">
+                        <div class="hero-tag">
+                            <i class="bi bi-check-circle-fill"></i> MARKETPLACE DIGITAL INDONESIA
+                        </div>
+                        <h1>
+                            Solusi Digital Premium –<br>
+                            <span class="highlight">Instan & Terpercaya</span>
+                        </h1>
+                        <p>
+                            VPN Premium, PPOB digital, aplikasi berlisensi, dan layanan tunneling—semua siap pakai. 
+                            Bayar lewat QRIS, pesanan Anda tiba hanya dalam hitungan detik.
+                        </p>
+                        <div class="hero-actions">
+                            <a href="login.html" class="btn-primary-custom">
+                                <i class="bi bi-eye"></i> Lihat Katalog
+                            </a>
+                            <a href="#" class="btn-outline-custom">
+                                <i class="bi bi-info-circle"></i> Cara Belanja
+                            </a>
+                        </div>
+                    </div>
                 </div>
-                <h1>
-                    VPN Tunneling Premium &<br>
-                    <span class="highlight">Agen PPOB Termurah</span>
-                </h1>
-                <p>
-                    ZOY Digital adalah platform digital otomatis 24 jam untuk penyedia layanan internet aman
-                    menggunakan akun VPN Premium dengan protokol terbaik dan performa tinggi.
-                </p>
-                <a href="login.html" class="btn-hero">
-                    <i class="bi bi-rocket-takeoff"></i> Mulai Sekarang
-                </a>
+
+                <!-- ─── COOKIE BANNER ─── -->
+                <div class="cookie-banner">
+                    <div class="cookie-text">
+                        <p>
+                            <i class="bi bi-shield-check" style="color: var(--secondary-light);"></i>
+                            <strong style="color: #fff;">Privasi Anda, pilihan Anda</strong><br>
+                            Kami pakai cookie untuk jaga checkout aman & ingat preferensi. 
+                            <a href="privacy.html">Selengkapnya</a>
+                        </p>
+                    </div>
+                    <div class="cookie-actions">
+                        <button class="btn-cookie-accept">Terima semua</button>
+                        <button class="btn-cookie-decline">Tolak opsional</button>
+                        <button class="btn-cookie-settings">Atur</button>
+                    </div>
+                </div>
             </div>
         </section>
 
         <!-- ─── STATS ─── -->
         <section class="py-3">
             <div class="container">
-                <div class="stats-section">
-                    <div class="row text-center g-3">
-                        <div class="col-6 col-md-3">
-                            <div class="stat-number">10K+</div>
-                            <div class="stat-label">Pengguna Aktif</div>
-                        </div>
-                        <div class="col-6 col-md-3">
-                            <div class="stat-number">99.9%</div>
-                            <div class="stat-label">Uptime Server</div>
-                        </div>
-                        <div class="col-6 col-md-3">
-                            <div class="stat-number">50+</div>
-                            <div class="stat-label">Server Tersedia</div>
-                        </div>
-                        <div class="col-6 col-md-3">
-                            <div class="stat-number">24/7</div>
-                            <div class="stat-label">Dukungan Aktif</div>
-                        </div>
+                <div class="row g-4 text-center">
+                    <div class="col-6 col-md-3">
+                        <h3 class="fw-900 mb-0" style="font-size: 2rem; color: var(--primary);">10K+</h3>
+                        <p class="text-secondary fw-600" style="font-size: 0.85rem;">Pengguna Aktif</p>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <h3 class="fw-900 mb-0" style="font-size: 2rem; color: var(--primary);">99.9%</h3>
+                        <p class="text-secondary fw-600" style="font-size: 0.85rem;">Uptime Server</p>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <h3 class="fw-900 mb-0" style="font-size: 2rem; color: var(--primary);">50+</h3>
+                        <p class="text-secondary fw-600" style="font-size: 0.85rem;">Server Tersedia</p>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <h3 class="fw-900 mb-0" style="font-size: 2rem; color: var(--primary);">24/7</h3>
+                        <p class="text-secondary fw-600" style="font-size: 0.85rem;">Dukungan Aktif</p>
                     </div>
                 </div>
             </div>
@@ -744,19 +803,6 @@
             </div>
         </section>
 
-        <!-- ─── CTA BANNER ─── -->
-        <section class="py-4">
-            <div class="container">
-                <div class="cta-banner">
-                    <h3>Siap Bergabung dengan ZOY Digital?</h3>
-                    <p>Daftar sekarang dan nikmati kemudahan akses VPN Premium & PPOB termurah</p>
-                    <a href="login.html" class="btn-cta">
-                        <i class="bi bi-person-plus"></i> Daftar Sekarang
-                    </a>
-                </div>
-            </div>
-        </section>
-
     </main>
 
     <!-- ─── FOOTER ─── -->
@@ -768,13 +814,9 @@
                         &copy; 2026 <span style="color: var(--primary); font-weight: 900;">ZOY Digital</span>. All Rights Reserved.
                     </p>
                 </div>
-                <div class="col-12 col-md-6 d-flex justify-content-center justify-content-md-end gap-3 align-items-center">
+                <div class="col-12 col-md-6 d-flex justify-content-center justify-content-md-end gap-3">
                     <a href="terms.html">Syarat Layanan</a>
                     <a href="privacy.html">Kebijakan Privasi</a>
-                    <div class="vr" style="color: var(--border-color); height: 20px;"></div>
-                    <a href="#" class="social-icon"><i class="bi bi-instagram"></i></a>
-                    <a href="#" class="social-icon"><i class="bi bi-twitter-x"></i></a>
-                    <a href="#" class="social-icon"><i class="bi bi-youtube"></i></a>
                 </div>
             </div>
         </div>
